@@ -119,6 +119,7 @@ defmodule Explorer.Chain.Import do
   """
   @spec all(all_options()) :: all_result()
   def all(options) when is_map(options) do
+    inspect(options)
     with {:ok, runner_options_pairs} <- validate_options(options),
          {:ok, valid_runner_option_pairs} <- validate_runner_options_pairs(runner_options_pairs),
          {:ok, runner_to_changes_list} <- runner_to_changes_list(valid_runner_option_pairs),
@@ -300,6 +301,7 @@ defmodule Explorer.Chain.Import do
   end
 
   defp insert_runner_to_changes_list(runner_to_changes_list, options) when is_map(runner_to_changes_list) do
+    inspect(runner_to_changes_list)
     runner_to_changes_list
     |> runner_to_changes_list_to_multis(options)
     |> logged_import(options)

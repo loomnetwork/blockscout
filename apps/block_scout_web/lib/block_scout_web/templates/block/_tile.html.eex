@@ -52,20 +52,5 @@
         </div>
       <% end %>
     </div>
-    <div class="col-md-4 col-lg-3 text-md-right d-flex flex-column align-items-md-end justify-content-md-end mt-3 mt-md-0">
-      <!-- Gas Limit -->
-      <span> <%= formatted_gas(@block.gas_limit) %> <%= gettext "Gas Limit" %> </span>
-      <!-- Gas Used -->
-      <div class="mr-3 mr-md-0">
-        <%= formatted_gas(@block.gas_used) %>
-        (<%= formatted_gas(Decimal.to_integer(@block.gas_used) / Decimal.to_integer(@block.gas_limit), format: "#.#%") %>)
-        <%= gettext "Gas Used" %>
-      </div>
-      <!-- Progress bar -->
-      <div class="progress w-100 mt-3 mt-md-0">
-        <div class="progress-bar" role="progressbar" style="width: <%= formatted_gas(Decimal.to_integer(@block.gas_used) / Decimal.to_integer(@block.gas_limit), format: "#.#%") %>;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-        </div>
-      </div>
-    </div>
   </div>
 </div>

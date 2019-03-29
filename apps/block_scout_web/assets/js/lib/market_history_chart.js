@@ -124,6 +124,7 @@ class MarketHistoryChart {
 
 export function createMarketHistoryChart (el) {
   const dataPath = el.dataset.market_history_chart_path
+  console.log('dataPath', dataPath)
   const $chartLoading = $('[data-chart-loading-message]')
   const $chartError = $('[data-chart-error-message]')
   const chart = new MarketHistoryChart(el, 0, [])

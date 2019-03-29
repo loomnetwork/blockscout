@@ -146,18 +146,6 @@
                 </dd>
               </dl>
             <% end %>
-          <% else %>
-            <h2 class="card-title"> <%= gettext "Gas Used" %> </h2>
-
-            <div class="text-right">
-              <!-- Gas Used -->
-              <h3>
-                <%= @block.gas_used |> Cldr.Number.to_string! %>
-                <span class="text-muted"> (<%= (Decimal.to_integer(@block.gas_used) / Decimal.to_integer(@block.gas_limit)) |> Cldr.Number.to_string!(format: "#.#%") %>) </span>
-              </h3>
-              <!-- Gas Limit -->
-              <span class="text-muted"> <%= @block.gas_limit |> Cldr.Number.to_string! %> <%= gettext "Gas Limit" %> </span>
-            </div>
           <% end %>
         </div>
       </div>
