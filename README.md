@@ -1,29 +1,8 @@
-<p align="center">
-  <a href="https://blockscout.com">
-    <img width="200" src="https://blockscout.com/eth/mainnet/android-chrome-192x192.png" \>
-  </a>
-</p>
+# BlockScout
 
-<h1 align="center">BlockScout</h1>
-<p align="center">Blockchain Explorer for inspecting and analyzing EVM Chains.</p>
-<div align="center">
-
-[![CircleCI](https://circleci.com/gh/poanetwork/blockscout.svg?style=svg&circle-token=f8823a3d0090407c11f87028c73015a331dbf604)](https://circleci.com/gh/poanetwork/blockscout) [![Coverage Status](https://coveralls.io/repos/github/poanetwork/blockscout/badge.svg?branch=master)](https://coveralls.io/github/poanetwork/blockscout?branch=master) [![Join the chat at https://gitter.im/poanetwork/blockscout](https://badges.gitter.im/poanetwork/blockscout.svg)](https://gitter.im/poanetwork/blockscout?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-</div>
-
-BlockScout provides a comprehensive, easy-to-use interface for users to view, confirm, and inspect transactions on **all EVM** (Ethereum Virtual Machine) blockchains. This includes the Ethereum main and test networks as well as **Ethereum forks and sidechains**.
+BlockScout provides a comprehensive, easy-to-use interface for users to view, confirm, and inspect transactions on **all EVM** (Ethereum Virtual Machine) blockchains. This includes the Ethereum main and test networks as well as **Ethereum forks and sidechains**. This version is customized for Loomchain
 
 Following is an overview of the project and instructions for [getting started](#getting-started).
-
-Visit the [POA BlockScout forum](https://forum.poa.network/c/blockscout) or the [Gitter Channel](https://gitter.im/poanetwork/blockscout) to access additional information or post questions.
-
-## About BlockScout
-
-BlockScout is an Elixir application that allows users to search transactions, view accounts and balances, and verify smart contracts on the entire Ethereum network including all forks and sidechains.
-
-Currently available block explorers (i.e. Etherscan and Etherchain) are closed systems which are not independently verifiable.  As Ethereum sidechains continue to proliferate in both private and public settings, transparent tools are needed to analyze and validate transactions.
-
 
 ### Features
 
@@ -39,39 +18,9 @@ Currently available block explorers (i.e. Etherscan and Etherchain) are closed s
 
 - [x] **Ethereum sidechain networks**: BlockScout supports the Ethereum mainnet, Ethereum testnets, POA network, and forks like Ethereum Classic, xDAI, additional sidechains, and private EVM networks.
 
-### Supported Projects
-
-#### Hosted Chains
-
-* [POA Core Network](https://blockscout.com/poa/core)
-* [POA Sokol Testnet](https://blockscout.com/poa/sokol)
-* [xDai Chain](https://blockscout.com/poa/dai)
-* [Ethereum Mainnet](https://blockscout.com/eth/mainnet)
-* [Kovan Testnet](https://blockscout.com/eth/kovan)
-* [Ropsten Testnet](https://blockscout.com/eth/ropsten)
-* [Goerli Testnet](https://blockscout.com/eth/goerli)
-* [Rinkeby Testnet](https://blockscout.com/eth/rinkeby)
-* [Ethereum Classic](https://blockscout.com/etc/mainnet)
-
-#### Additional Chains Utilizing BlockScout
-
-* [Oasis Labs](https://blockexplorer.oasiscloud.io/)
-* [Fuse Network](https://explorer.fuse.io/)
-* [ARTIS](https://explorer.sigma1.artis.network)
-* [SafeChain](https://explorer.safechain.io)
-* [SpringChain](https://explorer.springrole.com/)
-* [PIRL](http://pirl.es/)
-
-
-### Visual Interface
-
-Interface for the POA network _updated 02/2019_
-
-![BlockScout Example](explorer_example_2_2019.gif)
-
 ## Getting Started
 
-We use [Terraform](https://www.terraform.io/intro/getting-started/install.html) to build the correct infrastructure to run BlockScout. See [https://github.com/poanetwork/blockscout-terraform](https://github.com/poanetwork/blockscout-terraform) for details.
+We use [Terraform](https://www.terraform.io/intro/getting-started/install.html) to build the correct infrastructure to run BlockScout. See [https://github.com/poanetwork/blockscout-terraform](https://github.com/loomnetwork/blockscout-terraform) for details.
 
 ### Requirements
 
@@ -79,20 +28,20 @@ The [development stack page](https://github.com/poanetwork/blockscout/wiki/Devel
 
 | Dependency  | Mac | Linux |
 |-------------|-----|-------|
-| [Erlang/OTP 21.0.4](https://github.com/erlang/otp) | `brew install erlang` | [Erlang Install Example](https://github.com/poanetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L134) |
-| [Elixir 1.8.1](https://elixir-lang.org/) | :point_up: | [Elixir Install Example](https://github.com/poanetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L138) |
-| [Postgres 10.3](https://www.postgresql.org/) | `brew install postgresql` | [Postgres Install Example](https://github.com/poanetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L187) |
-| [Node.js 10.5.0](https://nodejs.org/en/) | `brew install node` | [Node.js Install Example](https://github.com/poanetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L66) |
-| [Automake](https://www.gnu.org/software/automake/) | `brew install automake` | [Automake Install Example](https://github.com/poanetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L72) |
-| [Libtool](https://www.gnu.org/software/libtool/) | `brew install libtool` | [Libtool Install Example](https://github.com/poanetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L62) |
+| [Erlang/OTP 21.0.4](https://github.com/erlang/otp) | `brew install erlang` | [Erlang Install Example](https://github.com/loomnetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L134) |
+| [Elixir 1.8.1](https://elixir-lang.org/) | :point_up: | [Elixir Install Example](https://github.com/loomnetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L138) |
+| [Postgres 10.3](https://www.postgresql.org/) | `brew install postgresql` | [Postgres Install Example](https://github.com/loomnetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L187) |
+| [Node.js 10.5.0](https://nodejs.org/en/) | `brew install node` | [Node.js Install Example](https://github.com/loomnetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L66) |
+| [Automake](https://www.gnu.org/software/automake/) | `brew install automake` | [Automake Install Example](https://github.com/loomnetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L72) |
+| [Libtool](https://www.gnu.org/software/libtool/) | `brew install libtool` | [Libtool Install Example](https://github.com/loomnetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L62) |
 | [Inotify-tools](https://github.com/rvoicilas/inotify-tools/wiki) | Not Required | Ubuntu - `apt-get install inotify-tools` |
-| [GCC Compiler](https://gcc.gnu.org/) | `brew install gcc` | [GCC Compiler Example](https://github.com/poanetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L70) |
-| [GMP](https://gmplib.org/) | `brew install gmp` | [Install GMP Devel](https://github.com/poanetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L74) |
+| [GCC Compiler](https://gcc.gnu.org/) | `brew install gcc` | [GCC Compiler Example](https://github.com/loomnetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L70) |
+| [GMP](https://gmplib.org/) | `brew install gmp` | [Install GMP Devel](https://github.com/loomnetwork/blockscout-terraform/blob/33f68e816e36dc2fb055911fa0372531f0e956e7/modules/stack/libexec/init.sh#L74) |
 
 ### Build and Run
 
   1. Clone the repository.
-  `git clone https://github.com/poanetwork/blockscout`
+  `git clone https://github.com/loomnetwork/blockscout`
 
   2. Go to the explorer subdirectory.
   `cd blockscout`
@@ -124,7 +73,9 @@ The [development stack page](https://github.com/poanetwork/blockscout/wiki/Devel
   8. Update your JSON RPC Endpoint in `apps/explorer/config/dev/` and `apps/indexer/config/dev/`
   For the `variant` chosen in step 7, enter the correct information for the corresponding JSON RPC Endpoint in `parity.exs`, `geth.exs`, or `ganache.exs`
 
-  9. Enable HTTPS in development. The Phoenix server only runs with HTTPS.
+  9. Use the environment variables to correct set the `ETHEREUM_JSONRPC_HTTP_URL` which should point for the loomchain `http://IP-ADDRESS:PORT/eth` for instance `http://localhost:46658/eth`, also set the websocket env var `ETHEREUM_JSONRPC_WS_URL` which should point for loomchain also but using `ws` istead of `http`, for istance `ws://IP-ADDRESS:PORT/eth`
+
+  10. Enable HTTPS in development. The Phoenix server only runs with HTTPS.
      * `cd apps/block_scout_web`
      * `mix phx.gen.cert blockscout blockscout.local; cd -`
      * Add blockscout and blockscout.local to your `/etc/hosts`
@@ -135,7 +86,7 @@ The [development stack page](https://github.com/poanetwork/blockscout/wiki/Devel
       ```
       * If using Chrome, Enable `chrome://flags/#allow-insecure-localhost`.
 
-  9. Start Phoenix Server.
+  11. Start Phoenix Server.
   `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
@@ -193,12 +144,6 @@ Each OTP application has a restricted domain.
 | `apps/block_scout_web`     | `:block_scout_web`     | `BlockScoutWeb`     | Phoenix interface to `:explorer`.  The minimum interface to allow web access should go in `:block_scout_web`.  Any business rules or interface not tied directly to `Phoenix` or `Plug` should go in `:explorer`. MUST be able to boot in a read-only mode when run independently from `:indexer`, so cannot depend on `:indexer` as that would start `:indexer` indexing. |
 | `apps/indexer`          | `:indexer`          | `Indexer`         | Uses `:ethereum_jsonrpc` to index chain and batch import data into `:explorer`.  Any process, `Task`, or `GenServer` that automatically reads from the chain and writes to `:explorer` should be in `:indexer`. This restricts automatic writes to `:indexer` and read-only mode can be achieved by not running `:indexer`.                                             |
 
-
-### CircleCI Updates
-
-To monitor build status, configure your local [CCMenu](http://ccmenu.org/) with the following url: [`https://circleci.com/gh/poanetwork/blockscout.cc.xml?circle-token=f8823a3d0090407c11f87028c73015a331dbf604`](https://circleci.com/gh/poanetwork/blockscout.cc.xml?circle-token=f8823a3d0090407c11f87028c73015a331dbf604)
-
-
 ### Testing
 
 #### Requirements
@@ -232,18 +177,6 @@ To monitor build status, configure your local [CCMenu](http://ccmenu.org/) with 
   8. Test the JavaScript code.
   `cd apps/block_scout_web/assets && npm run test; cd -`
 
-##### Parity
-
-###### Mox
-
-**This is the default setup.  `mix coveralls.html --umbrella` will work on its own, but to be explicit, use the following setup**:
-
-```shell
-export ETHEREUM_JSONRPC_CASE=EthereumJSONRPC.Case.Parity.Mox
-export ETHEREUM_JSONRPC_WEB_SOCKET_CASE=EthereumJSONRPC.WebSocket.Case.Mox
-mix coveralls.html --umbrella --exclude no_parity
-```
-
 ###### HTTP / WebSocket
 
 ```shell
@@ -256,29 +189,6 @@ mix coveralls.html --umbrella --exclude no_parity
 |:----------|:-----------------------------------|
 | HTTP      | `http://localhost:8545`  |
 | WebSocket | `ws://localhost:8546`    |
-
-##### Geth
-
-###### Mox
-
-```shell
-export ETHEREUM_JSONRPC_CASE=EthereumJSONRPC.Case.Geth.Mox
-export ETHEREUM_JSONRPC_WEB_SOCKET_CASE=EthereumJSONRPC.WebSocket.Case.Mox
-mix coveralls.html --umbrella --exclude no_geth
-```
-
-###### HTTP / WebSocket
-
-```shell
-export ETHEREUM_JSONRPC_CASE=EthereumJSONRPC.Case.Geth.HTTPWebSocket
-export ETHEREUM_JSONRPC_WEB_SOCKET_CASE=EthereumJSONRPC.WebSocket.Case.Geth
-mix coveralls.html --umbrella --exclude no_geth
-```
-
-| Protocol  | URL                                               |
-|:----------|:--------------------------------------------------|
-| HTTP      | `https://mainnet.infura.io/8lTvJTKmHPCHazkneJsY`  |
-| WebSocket | `wss://mainnet.infura.io/ws/8lTvJTKmHPCHazkneJsY` |
 
 ### API Documentation
 
@@ -293,7 +203,7 @@ To view Modules and API Reference documentation:
 
 ### Javascript
 
-All Javascript files are under [apps/block_scout_web/assets/js](https://github.com/poanetwork/blockscout/tree/master/apps/block_scout_web/assets/js) and the main file is [app.js](https://github.com/poanetwork/blockscout/blob/master/apps/block_scout_web/assets/js/app.js). This file imports all javascript used in the application. If you want to create a new JS file consider creating into [/js/pages](https://github.com/poanetwork/blockscout/tree/master/apps/block_scout_web/assets/js/pages) or [/js/lib](https://github.com/poanetwork/blockscout/tree/master/apps/block_scout_web/assets/js/lib), as follows:
+All Javascript files are under [apps/block_scout_web/assets/js](https://github.com/loomnetwork/blockscout/tree/master/apps/block_scout_web/assets/js) and the main file is [app.js](https://github.com/loomnetwork/blockscout/blob/master/apps/block_scout_web/assets/js/app.js). This file imports all javascript used in the application. If you want to create a new JS file consider creating into [/js/pages](https://github.com/loomnetwork/blockscout/tree/master/apps/block_scout_web/assets/js/pages) or [/js/lib](https://github.com/loomnetwork/blockscout/tree/master/apps/block_scout_web/assets/js/lib), as follows:
 
 #### js/lib
 This folder contains all scripts that can be reused in any page or can be used as a helper to some component.
@@ -302,9 +212,9 @@ This folder contains all scripts that can be reused in any page or can be used a
 This folder contains the scripts that are specific for some page.
 
 #### Redux
-This project uses Redux to control the state in some pages. There are pages that have things happening in real-time thanks to the Phoenix channels, e.g. Address page, so the page state changes a lot depending on which events it is listening. The redux is also used to load some contents asynchronous, see [async_listing_load.js](https://github.com/poanetwork/blockscout/blob/master/apps/block_scout_web/assets/js/lib/async_listing_load.js).
+This project uses Redux to control the state in some pages. There are pages that have things happening in real-time thanks to the Phoenix channels, e.g. Address page, so the page state changes a lot depending on which events it is listening. The redux is also used to load some contents asynchronous, see [async_listing_load.js](https://github.com/loomnetwork/blockscout/blob/master/apps/block_scout_web/assets/js/lib/async_listing_load.js).
 
-To understand how to build new pages that need redux in this project, see the [redux_helpers.js](https://github.com/poanetwork/blockscout/blob/master/apps/block_scout_web/assets/js/lib/redux_helpers.js)
+To understand how to build new pages that need redux in this project, see the [redux_helpers.js](https://github.com/loomnetwork/blockscout/blob/master/apps/block_scout_web/assets/js/lib/redux_helpers.js)
 
 ## Internationalization
 
@@ -385,11 +295,6 @@ If all queues are at their minimum size, then no more memory can be reclaimed an
 ## Acknowledgements
 
 We would like to thank the [EthPrize foundation](http://ethprize.io/) for their funding support.
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and pull request protocol. We expect contributors to follow our [code of conduct](CODE_OF_CONDUCT.md) when submitting code or comments.
-
 
 ## License
 
