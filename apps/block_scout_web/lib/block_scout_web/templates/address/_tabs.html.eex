@@ -8,29 +8,11 @@
         ) %>
   </li>
 
-  <li class="nav-item">
-    <%= link(
-          gettext("Tokens"),
-          class: "nav-link #{tab_status("tokens", @conn.request_path)}",
-          to: address_token_path(@conn, :index, @address.hash),
-          "data-test": "tokens_tab_link"
-        ) %>
-  </li>
-
   <li class="nav-item"> <%= link(
           gettext("Internal Transactions"),
           class: "nav-link #{tab_status("internal_transactions", @conn.request_path)}",
           "data-test": "internal_transactions_tab_link",
           to: address_internal_transaction_path(@conn, :index, @address.hash)
-        ) %>
-  </li>
-
-  <li class="nav-item">
-    <%= link(
-          gettext("Coin Balance History"),
-          class: "nav-link #{tab_status("coin_balances", @conn.request_path)}",
-          "data-test": "coin_balance_tab_link",
-          to: address_coin_balance_path(@conn, :index, @address.hash)
         ) %>
   </li>
 

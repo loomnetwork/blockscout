@@ -1080,7 +1080,7 @@ defmodule Explorer.Chain do
   def list_top_addresses do
     query =
       from(a in Address,
-        where: a.fetched_coin_balance > ^0,
+        where: a.fetched_coin_balance >= ^0,
         order_by: [desc: a.fetched_coin_balance, asc: a.hash],
         preload: [:names],
         select: {a, fragment("coalesce(1 + ?, 0)", a.nonce)},
