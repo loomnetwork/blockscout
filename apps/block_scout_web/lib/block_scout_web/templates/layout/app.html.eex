@@ -38,7 +38,7 @@
         <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
         <%= render @view_module, @view_template, assigns %>
       </main>
-
+      <%= render BlockScoutWeb.LayoutView, "_footer.html", assigns %>
     </div>
     <script>
       window.localized = {

@@ -11,13 +11,10 @@
 
       <div class="col-md-3">
         <div class="icon-links icon-links-primary footer-social-icons">
-          <a href="https://github.com/poanetwork" rel="noreferrer" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="<%= gettext("Github") %>">
+          <a href="https://github.com/loomnetwork" rel="noreferrer" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="Github">
             <i class="fab fa-github"></i>
           </a>
-          <a href="https://www.twitter.com/PoaNetwork/" rel="noreferrer" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="<%= gettext("Twitter") %>">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="http://t.me/oraclesnetwork" rel="noreferrer" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="<%= gettext("Telegram") %>">
+          <a href="https://t.me/loomnetwork" rel="noreferrer" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="Telegram">
             <i class="fab fa-telegram-plane"></i>
           </a>
         </div>
@@ -59,21 +56,6 @@
         </div>
       <% end %>
 
-      <% test_nets = test_nets() %>
-
-      <%= unless Enum.empty?(test_nets) do %>
-        <div class="col-md-<%= col_size %> footer-list">
-          <h3><%= gettext("Test Networks") %></h3>
-          <hr>
-          <ul>
-            <%= for %{title: title, url: url} <- test_nets do %>
-              <li><a href="<%= url%>" rel="noreferrer" class="footer-link"> <%= title %> </a></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-
       <%= unless Enum.empty?(other_explorers) do %>
         <div class="col-md-<%= col_size %> footer-list">
           <h3><%= gettext("Other Explorers") %></h3>
@@ -86,14 +68,5 @@
         </div>
       <% end %>
     </div>
-
-    <% version = version() %>
-
-    <%= unless ignore_version?(version) do %>
-      <% release_link = release_link(version) %>
-      <div>
-        <%= gettext("Version") %>: <%= release_link %>
-      </div>
-    <% end %>
   </div>
 </footer>
