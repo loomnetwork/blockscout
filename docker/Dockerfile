@@ -10,10 +10,13 @@ ENV PORT=4000 \
 
 # Cache elixir deps
 ADD mix.exs mix.lock ./
-ADD apps/block_scout_web/mix.exs ./apps/block_scout_web/
-ADD apps/explorer/mix.exs ./apps/explorer/
-ADD apps/ethereum_jsonrpc/mix.exs ./apps/ethereum_jsonrpc/
-ADD apps/indexer/mix.exs ./apps/indexer/
+#ADD apps/block_scout_web/mix.exs ./apps/block_scout_web/
+ADD apps/ ./apps
+# ADD apps/explorer/mix.exs ./apps/explorer/
+# ADD apps/ethereum_jsonrpc/mix.exs ./apps/ethereum_jsonrpc/
+# ADD apps/indexer/mix.exs ./apps/indexer/
+
+# RUN cat ./apps/block_scout_web/assets/css/theme/_base_variables.scss
 
 RUN mix do deps.get, deps.compile
 
