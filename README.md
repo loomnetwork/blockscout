@@ -1,5 +1,7 @@
 # BlockScout
 
+Fork for Loom Dappchains, it has additional compatiblity with Plasmachain and other Loom SDK based chains. 
+
 BlockScout provides a comprehensive, easy-to-use interface for users to view, confirm, and inspect transactions on **all EVM** (Ethereum Virtual Machine) blockchains. This includes the Ethereum main and test networks as well as **Ethereum forks and sidechains**. This version is customized for Loomchain
 
 Following is an overview of the project and instructions for [getting started](#getting-started).
