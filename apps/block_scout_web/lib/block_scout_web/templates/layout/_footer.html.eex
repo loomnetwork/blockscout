@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <% col_size = if Enum.empty?(other_explorers), do: 4, else: 3 %>
+    <% col_size = if Enum.empty?(other_explorers()), do: 4, else: 3 %>
 
     <div class="row">
       <div class="col-md-<%= col_size %> footer-list">
@@ -47,14 +47,14 @@
           <li><a href="https://solidityx.org" rel="noreferrer" class="footer-link" target="_blank">SolidityX.org</a></li>
         </ul>
       </div>
-      <% main_nets = main_nets() %>
+      <% _main_nets = main_nets() %>
 
-      <%= unless Enum.empty?(other_explorers) do %>
+      <%= unless Enum.empty?(other_explorers()) do %>
         <div class="col-md-<%= col_size %> footer-list">
           <h3><%= gettext("Other Explorers") %></h3>
           <hr>
           <ul>
-            <%= for {name, url} <- other_explorers do %>
+            <%= for {name, url} <- other_explorers() do %>
               <li><a href="<%= url%>" rel="noreferrer" class="footer-link"> <%= name %> </a></li>
             <% end %>
           </ul>
