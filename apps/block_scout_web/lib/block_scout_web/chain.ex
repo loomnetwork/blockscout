@@ -60,6 +60,10 @@ defmodule BlockScoutWeb.Chain do
   @spec from_param(String.t()) :: {:ok, Address.t() | Block.t() | Transaction.t()} | {:error, :not_found}
   def from_param(param)
 
+  def from_param("loom" <> number_string = param) do
+    from_param("0x#{number_string}" )
+  end
+
   def from_param("0x" <> number_string = param) do
     case String.length(number_string) do
       40 -> address_from_param(param)
