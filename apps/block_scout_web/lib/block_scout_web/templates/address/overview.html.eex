@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-body">
           <div class="icon-links float-right">
-            <span data-clipboard-text="<%= @address %>">
+            <span data-clipboard-text="<%= @address |> loomnify %>">
               <button type="button" class="icon-link" id="button" data-toggle="tooltip" data-placement="top" title="<%= gettext("Copy Address") %>" aria-label="<%= gettext("Copy Address") %>">
                 <i class="fas fa-clone"></i>
               </button>
@@ -23,7 +23,9 @@
             <% end %>
           </div>
           <h1 class="card-title"><%= address_title(@address) %> <%= gettext "Details" %> </h1>
-          <h3 class="<%= if BlockScoutWeb.AddressView.contract?(@address) do %>contract-address<% end %>" data-test="address_detail_hash"><%= @address %></h3>
+          <h3 class="<%= if BlockScoutWeb.AddressView.contract?(@address) do %>contract-address<% end %>" data-test="address_detail_hash">
+            <%= @address |> loomnify %>
+          </h3>
           <div class="d-flex flex-column flex-lg-row justify-content-start text-muted">
             <%= if address_name = primary_name(@address) do %>
               <strong class="mr-4 mb-2 text-primary"><%= address_name %></strong>
