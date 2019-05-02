@@ -64,10 +64,10 @@ defmodule BlockScoutWeb.Chain do
     from_param("0x#{number_string}" )
   end
 
-  def from_param("0x" <> number_string = _param) do
+  def from_param("0x" <> number_string = param) do
     case String.length(number_string) do
-      40 -> address_from_param(_param)
-      64 -> block_or_transaction_from_param(_param)
+      40 -> address_from_param(param)
+      64 -> block_or_transaction_from_param(param)
       _ -> {:error, :not_found}
     end
   end
@@ -79,10 +79,10 @@ defmodule BlockScoutWeb.Chain do
     end
   end
 
-  def next_page_params([], _list, _params), do: nil
+  def next_page_params([], _list, params), do: nil
 
-  def next_page_params(_, list, _params) do
-    Map.merge(_params, paging_params(List.last(list)))
+  def next_page_params(_, list, params) do
+    Map.merge(params, paging_params(List.last(list)))
   end
 
   def paging_options(%{
