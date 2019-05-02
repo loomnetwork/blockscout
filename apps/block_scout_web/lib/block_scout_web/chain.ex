@@ -79,7 +79,7 @@ defmodule BlockScoutWeb.Chain do
     end
   end
 
-  def next_page_params([], _list, params), do: nil
+  def next_page_params([], _list, _params), do: nil
 
   def next_page_params(_, list, params) do
     Map.merge(params, paging_params(List.last(list)))
