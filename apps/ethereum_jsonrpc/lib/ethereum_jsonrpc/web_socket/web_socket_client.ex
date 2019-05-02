@@ -151,6 +151,7 @@ defmodule EthereumJSONRPC.WebSocket.WebSocketClient do
 
   @impl :websocket_client
   def websocket_handle({:ping, ""}, _request, %__MODULE__{} = state), do: {:reply, {:pong, ""}, state}
+  def websocket_handle({:pong, "foo"}, _request, %__MODULE__{} = state), do: {:reply, {:pong, "foo"}, state}
 
   @impl :websocket_client
   def websocket_info({:"$gen_call", from, request}, _, %__MODULE__{} = state) do
