@@ -120,7 +120,9 @@ defmodule Indexer.Fetcher.ContractCode do
       {:ok, fetched_balances} ->
         balance_addresses_params = balances_params_to_address_params(fetched_balances.params_list)
 
-        merged_addresses_params = Addresses.merge_addresses(addresses_params ++ balance_addresses_params)
+        merged_addresses_params =
+          Addresses.merge_addresses(addresses_params ++ balance_addresses_params)
+          |> Enum.filter(&(&1.contract_code != "0x0"))
 
         case Chain.import(%{
                addresses: %{params: merged_addresses_params},
