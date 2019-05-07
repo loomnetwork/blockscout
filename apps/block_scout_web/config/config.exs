@@ -32,7 +32,9 @@ config :block_scout_web,
     }
   ]
 
-config :block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter, enabled: true
+config :block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter,
+  enabled: true,
+  show_indexing_banner: false
 
 # Configures the endpoint
 config :block_scout_web, BlockScoutWeb.Endpoint,
