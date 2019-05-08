@@ -100,7 +100,6 @@ defmodule Indexer.Fetcher.ContractCode do
     |> case do
       {:ok, create_address_codes} ->
         addresses_params = Addresses.extract_addresses(%{codes: create_address_codes.params_list})
-
         import_with_balances(addresses_params, entries, json_rpc_named_arguments)
 
       {:error, reason} ->
@@ -117,8 +116,11 @@ defmodule Indexer.Fetcher.ContractCode do
     |> coin_balances_request_params()
     |> EthereumJSONRPC.fetch_balances(json_rpc_named_arguments)
     |> case do
-      {:ok, fetched_balances} ->
-        balance_addresses_params = balances_params_to_address_params(fetched_balances.params_list)
+      {:ok, %{params_list: params_list}} ->
+        params_list = params_list
+          |> Enum.reject(&(&1.address_hash == "0x0000000000000000000000000000000000000000"))
+
+        balance_addresses_params = balances_params_to_address_params(params_list)
 
         merged_addresses_params =
           Addresses.merge_addresses(addresses_params ++ balance_addresses_params)

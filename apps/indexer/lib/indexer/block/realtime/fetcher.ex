@@ -232,6 +232,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
   defp reorg?(_, _), do: false
 
   @reorg_delay 5_000
+  @small_delay 2_000
 
   @decorate trace(name: "fetch", resource: "Indexer.Block.Realtime.Fetcher.fetch_and_import_block/3", tracer: Tracer)
   def fetch_and_import_block(block_number_to_fetch, block_fetcher, reorg?, retry \\ 3) do
@@ -242,6 +243,8 @@ defmodule Indexer.Block.Realtime.Fetcher do
           # before fetching again, to reduce block consensus mistakes
           :timer.sleep(@reorg_delay)
         end
+
+        :timer.sleep(@small_delay)
 
         do_fetch_and_import_block(block_number_to_fetch, block_fetcher, retry)
       end,
