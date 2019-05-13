@@ -81,7 +81,7 @@ defmodule Indexer.Temporary.UnclesWithoutIndex do
       {:error, reason} ->
         Logger.error(
           fn ->
-            ["failed to fetch: ", inspect(reason)]
+            ["failed to fetch uncles without index:", inspect(reason)]
           end,
           error_count: hash_count
         )
@@ -123,7 +123,7 @@ defmodule Indexer.Temporary.UnclesWithoutIndex do
       Logger.error(
         fn ->
           [
-            "failed to fetch: ",
+            "failed to fetch uncles without index:",
             errors_to_iodata(loggable_errors)
           ]
         end,

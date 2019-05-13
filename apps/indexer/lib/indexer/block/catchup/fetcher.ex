@@ -124,7 +124,6 @@ defmodule Indexer.Block.Catchup.Fetcher do
 
   @impl Block.Fetcher
   def import(%Block.Fetcher{json_rpc_named_arguments: json_rpc_named_arguments}, options) when is_map(options) do
-    inspect(options)
     {async_import_remaining_block_data_options, options_with_block_rewards_errors} =
       Map.split(options, @async_import_remaining_block_data_options)
 
@@ -209,7 +208,7 @@ defmodule Indexer.Block.Catchup.Fetcher do
       {:error, {step, reason}} = error ->
         Logger.error(
           fn ->
-            ["failed to fetch: ", inspect(reason), ". Retrying."]
+            ["failed to fetch catchup block: ", inspect(reason), ". Retrying."]
           end,
           step: step
         )
@@ -221,7 +220,7 @@ defmodule Indexer.Block.Catchup.Fetcher do
       {:error, {step, failed_value, _changes_so_far}} = error ->
         Logger.error(
           fn ->
-            ["failed to insert: ", inspect(failed_value), ". Retrying."]
+            ["failed to insert fetch catchup block: ", inspect(failed_value), ". Retrying."]
           end,
           step: step
         )

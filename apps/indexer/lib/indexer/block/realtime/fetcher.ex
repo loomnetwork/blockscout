@@ -262,7 +262,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
       {:ok, %{inserted: _, errors: [_ | _] = errors}} ->
         Logger.error(fn ->
           [
-            "failed to fetch block: ",
+            "failed to fetch realtime block: ",
             inspect(errors),
             ".  Block will be retried by catchup indexer."
           ]
@@ -298,7 +298,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
         Logger.error(
           fn ->
             [
-              "failed to fetch: ",
+              "failed to fetch realtime block:",
               inspect(reason),
               ".  Block will be retried by catchup indexer."
             ]

@@ -101,7 +101,7 @@ defmodule Indexer.Fetcher.BlockReward do
       {:error, reason} ->
         Logger.error(
           fn ->
-            ["failed to fetch: ", inspect(reason)]
+            ["failed to fetch block reward: ", inspect(reason)]
           end,
           error_count: consensus_number_count
         )
@@ -263,7 +263,7 @@ defmodule Indexer.Fetcher.BlockReward do
     Logger.error(
       fn ->
         [
-          "failed to fetch: ",
+          "failed to fetch block reward:",
           fetched_beneficiaries_errors_to_iodata(errors)
         ]
       end,
