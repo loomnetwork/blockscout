@@ -10,7 +10,7 @@
     </div>
 
     <% other_explorers = other_explorers() %>
-    <% col_size = if Enum.empty?(other_explorers), do: 3, else: 4 %>
+    <% _col_size = if Enum.empty?(other_explorers), do: 3, else: 4 %>
 
       <div class="col-md-3">
         <div class="icon-links icon-links-primary footer-social-icons">
