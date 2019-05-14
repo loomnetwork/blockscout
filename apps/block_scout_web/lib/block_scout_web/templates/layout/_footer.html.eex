@@ -1,13 +1,16 @@
 <footer class="footer">
   <div class="footer-body container">
-    <div class="row">
-      <div class="col-md-4">
+    <!-- Logo -->
+    <div class="row footer-logo-row">
+      <div class="col-md-12">
         <%= link to: chain_path(@conn, :show), class: "footer-brand" do %>
-          <img class="footer-logo" src="<%= logo() %>" alt="<%= subnetwork_title() %>" />
+          <img class="footer-logo" src="<%= logo_footer() %>" alt="<%= subnetwork_title() %>" />
         <% end %>
       </div>
-      <div class="col-md-5">
-      </div>
+    </div>
+
+    <% other_explorers = other_explorers() %>
+    <% col_size = if Enum.empty?(other_explorers), do: 3, else: 4 %>
 
       <div class="col-md-3">
         <div class="icon-links icon-links-primary footer-social-icons">
@@ -31,7 +34,6 @@
           </a>
         </div>
       </div>
-    </div>
 
     <% col_size = if Enum.empty?(other_explorers()), do: 4, else: 3 %>
 
@@ -52,7 +54,6 @@
       <%= unless Enum.empty?(other_explorers()) do %>
         <div class="col-md-<%= col_size %> footer-list">
           <h3><%= gettext("Other Explorers") %></h3>
-          <hr>
           <ul>
             <%= for {name, url} <- other_explorers() do %>
               <li><a href="<%= url%>" rel="noreferrer" class="footer-link"> <%= name %> </a></li>

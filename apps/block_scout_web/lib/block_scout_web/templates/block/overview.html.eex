@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12 col-lg-12">
       <!-- Block Details -->
-      <div class="card">
+      <div class="card card-mr-50-md">
         <div class="card-body">
           <h1 class="card-title" data-test="detail_type">
             <%= gettext("%{block_type} Details", block_type: block_type(@block)) %>
@@ -30,18 +30,18 @@
 
           <!-- Block Hash -->
           <dl class="row">
-            <dt class="col-sm-3 text-muted"> <%= gettext "Hash" %> </dt>
-            <dd class="col-sm-9"> <%= to_string(@block.hash) %> </dd>
+            <dt class="col-sm-3 text-muted"><%= gettext "Hash" %></dt>
+            <dd class="col-sm-9"><a class="transaction__link"><%= to_string(@block.hash) %></a></dd>
           </dl>
 
           <%= unless @block.number == 0 do %>
               <!-- Parent Hash -->
               <dl class="row">
-                <dt class="col-sm-3 text-muted"> <%= gettext "Parent Hash" %> </dt>
+                <dt class="col-sm-3 text-muted"><%= gettext "Parent Hash" %></dt>
                 <dd class="col-sm-9">
                   <%= link(
                       @block.parent_hash,
-                      class: "block__link",
+                      class: "transaction__link",
                       to: block_path(@conn, :show, @block.number - 1)
                     ) %>
                 </dd>
@@ -54,15 +54,14 @@
               <dl class="row">
                 <dt class="col-sm-3 text-muted"><%= gettext "Gas Used" %></dt>
                 <dd class="col-sm-9">
-                  <%= @block.gas_used |> Cldr.Number.to_string! %>
-                  <span class="text-muted"> (<%= (Decimal.to_integer(@block.gas_used) / Decimal.to_integer(@block.gas_limit)) |> Cldr.Number.to_string!(format: "#.#%") %>) </span>
+                  <span class="font-weight-bold"><%= @block.gas_used |> Cldr.Number.to_string! %></span>
+                  <span class="text-muted">(<%= (Decimal.to_integer(@block.gas_used) / Decimal.to_integer(@block.gas_limit)) |> Cldr.Number.to_string!(format: "#.#%") %>)</span>
                 </dt>
               </dl>
-
               <dl class="row mb-0">
                 <dt class="col-sm-3 text-muted"><%= gettext "Gas Limit" %></dt>
                 <dd class="col-sm-9">
-                  <%= Cldr.Number.to_string!(@block.gas_limit) %>
+                  <span class="font-weight-bold"><%= Cldr.Number.to_string!(@block.gas_limit) %></span>
                 </dd>
               </dl>
             <% end %>
