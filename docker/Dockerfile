@@ -22,6 +22,9 @@ ADD . .
 ARG COIN
 RUN if [ "$COIN" != "" ]; then sed -i s/"POA"/"${COIN}"/g apps/block_scout_web/priv/gettext/en/LC_MESSAGES/default.po; fi
 
+# Fetch lock version
+RUN mix deps.get
+
 # Run forderground build and phoenix digest
 RUN mix compile
 
