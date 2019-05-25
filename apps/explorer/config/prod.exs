@@ -5,6 +5,7 @@ config :explorer, Explorer.Repo,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: String.equivalent?(System.get_env("ECTO_USE_SSL") || "true", "true"),
+  queue_target: String.to_integer(System.get_env("QUEUE_TARGET") || "50"),
   prepare: :unnamed,
   timeout: :timer.seconds(60)
 
