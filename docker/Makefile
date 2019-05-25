@@ -45,6 +45,15 @@ endif
 ifdef NETWORK_PATH
 	BLOCKSCOUT_CONTAINNER_PARAMS += -e 'NETWORK_PATH=$(NETWORK_PATH)'
 endif
+ifdef MEMORY_LIMIT
+	BLOCKSCOUT_CONTAINNER_PARAMS += -e 'MEMORY_LIMIT=$(MEMORY_LIMIT)'
+endif
+ifdef QUEUE_TARGET
+	BLOCKSCOUT_CONTAINNER_PARAMS += -e 'QUEUE_TARGET=$(QUEUE_TARGET)'
+endif
+ifdef QUEUE_INTERVAL
+	BLOCKSCOUT_CONTAINNER_PARAMS += -e 'QUEUE_INTERVAL=$(QUEUE_INTERVAL)'
+endif
 
 HAS_BLOCKSCOUT_IMAGE := $(shell docker images | grep ${DOCKER_IMAGE})
 build: 
@@ -85,7 +94,7 @@ else
 	@$(MAKE) -f $(THIS_FILE) migrate
 endif
 
-start: build postgres 
+start: build postgres
 	@echo "==> Starting blockscout"
 	@docker run --rm \
 					$(BLOCKSCOUT_CONTAINNER_PARAMS) \
