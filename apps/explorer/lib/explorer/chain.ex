@@ -2133,7 +2133,7 @@ defmodule Explorer.Chain do
   def transaction_to_status(%Transaction{status: :ok}), do: :success
 
   def transaction_to_status(%Transaction{status: :error, internal_transactions_indexed_at: nil, error: nil}),
-    do: {:error, :awaiting_internal_transactions}
+    do: {:error, "Transaction failed"}
 
   def transaction_to_status(%Transaction{status: :error, error: error}) when is_binary(error), do: {:error, error}
 
