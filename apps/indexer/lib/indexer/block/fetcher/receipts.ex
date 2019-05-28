@@ -17,6 +17,7 @@ defmodule Indexer.Block.Fetcher.Receipts do
     stream_opts = [max_concurrency: state.receipts_concurrency, timeout: :infinity]
 
     transaction_params
+    |> Enum.reject(fn %{hash: hash} -> hash == "0x0" end)
     |> Enum.chunk_every(state.receipts_batch_size)
     |> Task.async_stream(&EthereumJSONRPC.fetch_transaction_receipts(&1, json_rpc_named_arguments), stream_opts)
     |> Enum.reduce_while({:ok, %{logs: [], receipts: []}}, fn
@@ -41,6 +42,7 @@ defmodule Indexer.Block.Fetcher.Receipts do
         {transaction_hash, receipt_params}
       end)
 
+    transactions_params = Enum.reject(transactions_params, &(&1.hash == "0x0"))
     Enum.map(transactions_params, fn %{hash: transaction_hash} = transaction_params ->
       receipts_params = Map.fetch!(transaction_hash_to_receipt_params, transaction_hash)
       merged_params = Map.merge(transaction_params, receipts_params)
