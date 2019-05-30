@@ -22,6 +22,11 @@
         &rarr;
         <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
       </span>
+      <span class="d-flex flex-md-row flex-column mt-3 mt-md-0">
+        <span class="tile-title">
+          <%= value(@transaction) %>
+        </span>
+      </span>
     </div>
     <div class="col-md-3 col-lg-2 d-flex flex-row flex-md-column flex-nowrap justify-content-start text-md-right mt-3 mt-md-0">
       <span class="mr-2 mr-md-0 order-1">

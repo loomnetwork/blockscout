@@ -28,6 +28,7 @@
         <!-- balance and percentage -->
         <div class="col-md-6 d-flex flex-column text-md-right mt-3 mt-md-0">
           <!-- address coin balance -->
+          <span class="tile-title" data-test="address_balance"><%= balance(@address) %></span>
           <div class="d-flex flex-column flex-md-row justify-content-md-end">
             <!-- USD value of the balance -->
             <span
@@ -36,6 +37,8 @@
                 data-usd-exchange-rate="<%= @exchange_rate.usd_value %>">
               <% end %>
             </span>
+            <!-- percentage of coins from total supply -->
+            <span class="ml-0 ml-md-2">(<%= balance_percentage(@address, @total_supply) %>)</span>
           </div>
         </div>
       </div>

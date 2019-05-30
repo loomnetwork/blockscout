@@ -61,7 +61,7 @@ defmodule BlockScoutWeb.WeiHelpers do
 
     if Keyword.get(options, :include_unit_label, true) do
       display_unit = display_unit(unit)
-      "#{converted_value} #{display_unit}"
+      "#{converted_value} #{Explorer.coin}"
     else
       converted_value
     end

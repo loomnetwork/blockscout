@@ -156,9 +156,10 @@ defmodule BlockScoutWeb.Mixfile do
 
   defp package do
     [
-      maintainers: ["POA Networks Ltd."],
+      description: "Forked from the mighty Poa Blockscout",
+      maintainers: ["Loom Network"],
       licenses: ["GPL 3.0"],
-      links: %{"GitHub" => "https://github.com/poanetwork/blockscout"}
+      links: %{"GitHub" => "https://github.com/loomnetwork/blockscout"}
     ]
   end
 end
