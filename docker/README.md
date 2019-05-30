@@ -12,8 +12,8 @@ To connect it to your local environment you will have to configure it using [env
 
 Example connecting to local `ganache` instance running on port `2000` on Mac/Windows:
 ```bash
-COIN=DAI \
-ETHEREUM_JSONRPC_VARIANT=ganache \ 
+COIN=LOOM \
+ETHEREUM_JSONRPC_VARIANT=loom \
 ETHEREUM_JSONRPC_HTTP_URL=http://host.docker.internal:2000 \
 ETHEREUM_JSONRPC_WS_URL=ws://host.docker.internal:2000 \
 make start
@@ -39,39 +39,21 @@ Variant could be configured using `ETHEREUM_JSONRPC_VARIANT` environment variabl
 
 Example: 
 ```bash
-ETHEREUM_JSONRPC_VARIANT=ganache make start
+ETHEREUM_JSONRPC_VARIANT=loom make start
 ```
 
 Available options are:
 
- * `parity` - Parity JSON RPC (**Default one**)
- * `geth` - Geth JSON RPC
- * `ganache` - Ganache JSON RPC
- 
+ * `loom` - Loom JSON RPC (**Default one**)
 
 | Variable | Description | Default value |
 | -------- | ----------- | ------------- |
-| `ETHEREUM_JSONRPC_VARIANT` | Variant of your JSON RPC service: `parity`, `geth` or `ganache` | `parity` |
-| `ETHEREUM_JSONRPC_HTTP_URL` | HTTP JSON RPC URL Only for `geth` or `ganache` variant | Different per JSONRPC variant |
-| `ETHEREUM_JSONRPC_WS_URL` | WS JSON RPC url | Different per JSONRPC variant |
-| `ETHEREUM_JSONRPC_TRACE_URL` | Trace URL **Only for `parity` variant** | `http://localhost:8545` |
-| `COIN` | Default Coin | `POA` |
-| `LOGO` | Coin logo | Empty | 
+| `ETHEREUM_JSONRPC_VARIANT` | Variant of your JSON RPC | `loom` |
+| `ETHEREUM_JSONRPC_HTTP_URL` | HTTP JSON RPC URL | `http://localhost:46658` |
+| `ETHEREUM_JSONRPC_WS_URL` | WS JSON RPC url | `ws://localhost:46658` |
+| `COIN` | Default Coin | `LOOM` |
+| `LOGO` | Coin logo | Empty |
 | `NETWORK` | Network | Empty |
 | `SUBNETWORK` | Subnetwork | Empty |
-| `NETWORK_ICON` | Network icon | Empty | 
+| `NETWORK_ICON` | Network icon | Empty |
 | `NETWORK_PATH` | Network path | `/` |
-
-
-`ETHEREUM_JSONRPC_HTTP_URL` default values:
-
- * For `parity` - `http://localhost:8545`
- * For `geth` - `https://mainnet.infura.io/8lTvJTKmHPCHazkneJsY`
- * For `ganache` - `http://localhost:7545`
-
-`ETHEREUM_JSONRPC_WS_URL` default values:
-
- * For `parity` - `ws://localhost:8546`
- * For `geth` - `wss://mainnet.infura.io/8lTvJTKmHPCHazkneJsY/ws`
- * For `ganache` - `ws://localhost:7545`
-

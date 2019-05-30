@@ -105,4 +105,24 @@ defmodule Explorer.Repo do
   def stream_reduce(query, initial, reducer) when is_function(reducer, 2) do
     stream_in_transaction(query, &Enum.reduce(&1, initial, reducer))
   end
+
+  def debug_query(query) do
+    {sql, params} = Ecto.Adapters.SQL.to_sql(:all, Explorer.Repo, query)
+    sql = String.replace(sql, "\"", "")
+
+    sql = Enum.reduce(Enum.with_index(params, 1), sql, fn {param, idx}, acc ->
+      cond do
+        is_boolean(param) ->
+          param = if param == true, do: "TRUE", else: "FALSE"
+          String.replace(acc, "$#{idx}", param)
+        is_number(param) ->
+          String.replace(acc, "$#{idx}", to_string(param))
+        :true ->
+          acc
+      end
+    end)
+
+    IO.puts "#{sql} (#{inspect params})"
+    query
+  end
 end

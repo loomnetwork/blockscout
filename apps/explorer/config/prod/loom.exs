@@ -8,7 +8,7 @@ config :explorer,
       url: System.get_env("ETHEREUM_JSONRPC_HTTP_URL") || "http://localhost:46658/eth",
       http_options: [recv_timeout: :timer.minutes(1), timeout: :timer.minutes(1), hackney: [pool: :ethereum_jsonrpc]]
     ],
-    variant: EthereumJSONRPC.Ganache
+    variant: EthereumJSONRPC.Loom
   ],
   subscribe_named_arguments: [
     transport: EthereumJSONRPC.WebSocket,
@@ -16,5 +16,5 @@ config :explorer,
       web_socket: EthereumJSONRPC.WebSocket.WebSocketClient,
       url: System.get_env("ETHEREUM_JSONRPC_WS_URL") || "ws://localhost:46658/eth",
     ],
-    variant: EthereumJSONRPC.Ganache
+    variant: EthereumJSONRPC.Loom
   ]

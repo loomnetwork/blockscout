@@ -10,11 +10,11 @@
 
   <li class="nav-item">
     <%= link(
-          gettext("Tokens"),
-          class: "nav-link #{tab_status("tokens", @conn.request_path)}",
-          to: address_token_path(@conn, :index, @address.hash),
-          "data-test": "tokens_tab_link"
-        ) %>
+        gettext("Tokens"),
+        class: "nav-link #{tab_status("tokens", @conn.request_path)}",
+        to: address_token_path(@conn, :index, @address.hash),
+        "data-test": "tokens_tab_link"
+      ) %>
   </li>
 
   <li class="nav-item"> <%= link(
@@ -58,15 +58,6 @@
           <%= gettext("Decompiled code") %>
           <i class="far fa-check-circle text-success"></i>
        <% end %>
-    </li>
-  <% end %>
-
-  <%= if smart_contract_with_read_only_functions?(@address) do %>
-    <li class="nav-item">
-      <%= link(
-          gettext("Read Contract"),
-          to: address_read_contract_path(@conn, :index, @address.hash),
-          class: "nav-link #{tab_status("read_contract", @conn.request_path)}")%>
     </li>
   <% end %>
 </ul>
