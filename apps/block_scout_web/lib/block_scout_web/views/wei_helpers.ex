@@ -60,14 +60,14 @@ defmodule BlockScoutWeb.WeiHelpers do
       |> Cldr.Number.to_string!(format: "#,##0.##################")
 
     if Keyword.get(options, :include_unit_label, true) do
-      display_unit = display_unit(unit)
+      _display_unit = _display_unit(unit)
       "#{converted_value} #{Explorer.coin}"
     else
       converted_value
     end
   end
 
-  defp display_unit(:wei), do: gettext("Wei")
-  defp display_unit(:gwei), do: gettext("Gwei")
-  defp display_unit(:ether), do: gettext("Ether")
+  defp _display_unit(:wei), do: gettext("Wei")
+  defp _display_unit(:gwei), do: gettext("Gwei")
+  defp _display_unit(:ether), do: gettext("Ether")
 end
