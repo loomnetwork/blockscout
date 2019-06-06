@@ -50,6 +50,8 @@ defmodule Explorer.Application do
       configure(Explorer.KnownTokens),
       configure(Explorer.Market.History.Cataloger),
       configure(Explorer.Counters.AddressesWithBalanceCounter),
+      configure(Explorer.Chain.Transaction.HistoryCache),
+      configure(Explorer.Chain.Address.HistoryCache),
       configure(Explorer.Counters.AverageBlockTime),
       configure(Explorer.Validator.MetadataProcessor),
       configure(Explorer.Staking.EpochCounter)

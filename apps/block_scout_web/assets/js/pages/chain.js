@@ -8,6 +8,8 @@ import { createStore, connectElements } from '../lib/redux_helpers.js'
 import { batchChannel } from '../lib/utils'
 import listMorph from '../lib/list_morph'
 import { createMarketHistoryChart } from '../lib/market_history_chart'
+import { createTransactionHistoryChart } from '../lib/transaction_history_chart'
+import { createAddressTotalHistoryChart } from '../lib/address_total_history_chart'
 
 const BATCH_THRESHOLD = 6
 
@@ -16,6 +18,7 @@ export const initialState = {
   availableSupply: null,
   averageBlockTime: null,
   marketHistoryData: null,
+  transactionHistoryData: null,
   blocks: [],
   blocksLoading: true,
   blocksError: false,
@@ -144,6 +147,24 @@ const elements = {
     render ($el, state, oldState) {
       if (!chart || (oldState.availableSupply === state.availableSupply && oldState.marketHistoryData === state.marketHistoryData)) return
       chart.update(state.availableSupply, state.marketHistoryData)
+    }
+  },
+  '[data-transaction-chart="transactionHistoryChart"]': {
+    load ($el) {
+      chart = createTransactionHistoryChart($el[0])
+    },
+    render ($el, state, oldState) {
+      if (!chart || (oldState.availableSupply === state.availableSupply && oldState.transactionHistoryData === state.transactionHistoryData)) return
+      chart.update(state.availableSupply, state.transactionHistoryData)
+    }
+  },
+  '[data-address-total-chart="addressTotalHistoryChart"]': {
+    load ($el) {
+      chart = createAddressTotalHistoryChart($el[0])
+    },
+    render ($el, state, oldState) {
+      if (!chart || (oldState.availableSupply === state.availableSupply && oldState.addressTotalHistoryData === state.addressTotalHistoryData)) return
+      chart.update(state.availableSupply, state.addressTotalHistoryData)
     }
   },
   '[data-selector="transaction-count"]': {
