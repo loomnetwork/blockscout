@@ -19,6 +19,7 @@ export const initialState = {
   averageBlockTime: null,
   marketHistoryData: null,
   transactionHistoryData: null,
+  addressTotalHistoryData: null,
   blocks: [],
   blocksLoading: true,
   blocksError: false,
@@ -155,7 +156,7 @@ const elements = {
     },
     render ($el, state, oldState) {
       if (!chart || (oldState.availableSupply === state.availableSupply && oldState.transactionHistoryData === state.transactionHistoryData)) return
-      chart.update(state.availableSupply, state.transactionHistoryData)
+      chart.update(state.transactionHistoryData)
     }
   },
   '[data-address-total-chart="addressTotalHistoryChart"]': {
@@ -164,7 +165,7 @@ const elements = {
     },
     render ($el, state, oldState) {
       if (!chart || (oldState.availableSupply === state.availableSupply && oldState.addressTotalHistoryData === state.addressTotalHistoryData)) return
-      chart.update(state.availableSupply, state.addressTotalHistoryData)
+      chart.update(state.addressTotalHistoryData)
     }
   },
   '[data-selector="transaction-count"]': {
