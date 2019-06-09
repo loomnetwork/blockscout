@@ -78,12 +78,12 @@ class AddressTotalHistoryChart {
   }
 
   update (addressTotalHistoryData) {
-    this.addressTotal.data = getTransactionHistoryData(addressTotalHistoryData)
+    this.addressTotal.data = getAddressTotalHistoryData(addressTotalHistoryData)
     this.chart.update()
   }
 }
 
-function getTransactionHistoryData (addressTotalHistoryData) {
+function getAddressTotalHistoryData (addressTotalHistoryData) {
   return addressTotalHistoryData.map(txHistoryData => ({
     x: txHistoryData[0].replace('T00:00:00.000000', ''),
     y: `${txHistoryData[1]}`
