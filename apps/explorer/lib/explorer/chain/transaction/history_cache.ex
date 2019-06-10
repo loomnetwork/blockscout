@@ -25,6 +25,7 @@ defmodule Explorer.Chain.Transaction.HistoryCache do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
+  @impl true
   def init(args) do
     create_table()
 
