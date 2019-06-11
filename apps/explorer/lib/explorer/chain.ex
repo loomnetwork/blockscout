@@ -120,6 +120,26 @@ defmodule Explorer.Chain do
     )
   end
 
+  def count_transactions_per_day_from_cache do
+    Transaction.HistoryCache.fetch()
+  end
+
+  def count_transactions_per_day do
+    Transaction.count_transactions_per_day
+    |> Repo.debug_query
+    |> Repo.all(timeout: :infinity)
+  end
+
+  def count_address_total_per_day_from_cache do
+    Address.HistoryCache.fetch()
+  end
+
+  def count_address_total_per_day do
+    Address.count_address_total_per_day
+    |> Repo.debug_query
+    |> Repo.all(timeout: :infinity)
+  end
+
   @doc """
   `t:Explorer.Chain.InternalTransaction/0`s from `address`.
 

@@ -46,7 +46,7 @@ defmodule Explorer.ChainTest do
       addresses_with_balance = Chain.count_addresses_with_balance_from_cache()
 
       assert is_integer(addresses_with_balance)
-      assert addresses_with_balance == 2
+      assert addresses_with_balance == 6
     end
   end
 

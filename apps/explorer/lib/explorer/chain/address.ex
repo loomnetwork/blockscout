@@ -198,6 +198,19 @@ defmodule Explorer.Chain.Address do
     )
   end
 
+  @doc """
+  Counts all the address_total per day
+  """
+  def count_address_total_per_day do
+    from(
+      a in Address,
+      select: [fragment("date_trunc('day', ?)", a.inserted_at), fragment("COUNT(*)")],
+      where: fragment("inserted_at > date_trunc('day', now()) - INTERVAL '14 DAY' AND inserted_at < date_trunc('day', now())"),
+      group_by: [1],
+      order_by: [1]
+    )
+  end
+
   defimpl String.Chars do
     @doc """
     Uses `hash` as string representation, formatting it according to the eip-55 specification

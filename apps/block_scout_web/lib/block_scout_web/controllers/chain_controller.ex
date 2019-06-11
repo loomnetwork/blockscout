@@ -22,6 +22,8 @@ defmodule BlockScoutWeb.ChainController do
       average_block_time: AverageBlockTime.average_block_time(),
       exchange_rate: exchange_rate,
       chart_data_path: market_history_chart_path(conn, :show),
+      transaction_chart_data_path: transaction_history_chart_path(conn, :show),
+      address_total_chart_data_path: address_total_history_chart_path(conn, :show),
       transaction_estimated_count: transaction_estimated_count,
       transactions_path: recent_transactions_path(conn, :index),
       block_count: block_count
