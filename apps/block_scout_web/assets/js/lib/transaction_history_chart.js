@@ -25,7 +25,7 @@ const config = {
         type: 'time',
         time: {
           unit: 'day',
-          stepSize: 7
+          stepSize: 1
         }
       }],
       yAxes: [{
@@ -35,11 +35,6 @@ const config = {
         gridLines: {
           display: false,
           drawBorder: false
-        },
-        ticks: {
-          beginAtZero: true,
-          callback: (value) => `${value}`,
-          maxTicksLimit: 4
         }
       }]
     },
@@ -72,7 +67,7 @@ class TransactionHistoryChart {
       pointRadius: 0,
       backgroundColor: sassVariables.primary,
       borderColor: sassVariables.primary,
-      lineTension: 0
+      lineTension: 0.1
     }
 
     config.data.datasets = [this.transaction]
@@ -81,6 +76,20 @@ class TransactionHistoryChart {
 
   update (transactionHistoryData) {
     this.transaction.data = getTransactionHistoryData(transactionHistoryData)
+
+    const max = Math.max(...this.transaction.data.map(d => d.y)) + 100
+
+    config.options.scales.yAxes[0].ticks = {
+      maxTicksLimit: 4,
+      callback: (value, index, labels) => {
+        if (value === 0) return value
+        else if (value === max) return value
+        else if (index % 4 === 0) return value
+      },
+      max,
+      stepSize: 5
+    }
+
     this.chart.update()
   }
 }
