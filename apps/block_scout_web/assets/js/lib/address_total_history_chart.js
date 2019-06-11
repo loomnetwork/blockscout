@@ -25,11 +25,13 @@ const config = {
         type: 'time',
         time: {
           unit: 'day',
-          stepSize: 1
+          stepSize: 7
         }
       }],
       yAxes: [{
         id: 'addressTotal',
+        type: 'logarithmic',
+        display: true,
         gridLines: {
           display: false,
           drawBorder: false
