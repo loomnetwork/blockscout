@@ -30,10 +30,9 @@ const config = {
       }],
       yAxes: [{
         id: 'addressTotal',
-        type: 'logarithmic',
         display: true,
         gridLines: {
-          display: false,
+          display: true,
           drawBorder: false
         }
       }]
@@ -64,10 +63,9 @@ class AddressTotalHistoryChart {
       yAxisID: 'addressTotal',
       data: [],
       fill: false,
-      pointRadius: 0,
       backgroundColor: sassVariables.primary,
       borderColor: sassVariables.primary,
-      lineTension: 0.1
+      lineTension: 0.3
     }
 
     config.data.datasets = [this.addressTotal]
@@ -77,18 +75,26 @@ class AddressTotalHistoryChart {
   update (addressTotalHistoryData) {
     this.addressTotal.data = getAddressTotalHistoryData(addressTotalHistoryData)
 
-    const max = Math.max(...this.addressTotal.data.map(d => d.y)) + 100
+    const max = Math.ceil(Math.max(...this.addressTotal.data.map(d => d.y)) * 1.2)
+    const min = Math.ceil(Math.min(...this.addressTotal.data.map(d => d.y)) * 0.2)
 
+    const ticks = [max, Math.ceil(max * 0.75), Math.ceil(max * 0.5), Math.ceil(max * 0.25)]
     config.options.scales.yAxes[0].ticks = {
+      autoSkip: false,
       maxTicksLimit: 4,
-      callback: (value, index, labels) => {
-        if (value === 0) return value
-        else if (value === max) return value
-        else if (index % 4 === 0) return value
+      startAtZero: 0,
+      callback: (value) => {
+        return Math.abs(value) > 999 ? Math.floor(Math.sign(value) * ((Math.abs(value) / 1000).toFixed(1))) + 'k' : Math.sign(value) * Math.abs(value)
       },
       max,
-      stepSize: 5
+      min
     }
+
+    config.options.scales.yAxes[0].afterBuildTicks = (scale) => {
+      scale.ticks = ticks
+    }
+
+    config.options.scales.yAxes[0].beforeUpdate = () => {}
 
     this.chart.update()
   }
