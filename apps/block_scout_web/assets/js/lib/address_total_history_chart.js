@@ -78,8 +78,10 @@ class AddressTotalHistoryChart {
   }
 
   update (addressTotalHistoryData) {
-    this.addressTotal.data = getAddressTotalHistoryData(addressTotalHistoryData)
-    this.chart.update()
+    if (addressTotalHistoryData) {
+      this.addressTotal.data = getAddressTotalHistoryData(addressTotalHistoryData)
+      this.chart.update()
+    }
   }
 }
 

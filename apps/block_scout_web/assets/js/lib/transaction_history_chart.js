@@ -78,8 +78,10 @@ class TransactionHistoryChart {
   }
 
   update (transactionHistoryData) {
-    this.transaction.data = getTransactionHistoryData(transactionHistoryData)
-    this.chart.update()
+    if (transactionHistoryData) {
+      this.transaction.data = getTransactionHistoryData(transactionHistoryData)
+      this.chart.update()
+    }
   }
 }
 
