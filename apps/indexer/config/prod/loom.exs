@@ -3,7 +3,7 @@ use Mix.Config
 config :indexer,
   # Block interval for loomchain is 1 second
   # Let 5 to not overload the server
-  block_interval: :timer.seconds(5),
+  block_interval: :timer.seconds(10),
   json_rpc_named_arguments: [
     transport: EthereumJSONRPC.HTTP,
     transport_options: [
