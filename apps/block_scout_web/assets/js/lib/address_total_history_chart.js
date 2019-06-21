@@ -75,7 +75,6 @@ class AddressTotalHistoryChart {
   update (addressTotalHistoryData) {
     if (addressTotalHistoryData) {
       this.addressTotal.data = getAddressTotalHistoryData(addressTotalHistoryData)
-
       const max = Math.ceil(Math.max(...this.addressTotal.data.map(d => d.y)) * 1.2)
       const min = Math.ceil(Math.min(...this.addressTotal.data.map(d => d.y)) * 0.2)
 
