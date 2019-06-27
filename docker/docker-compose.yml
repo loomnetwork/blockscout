@@ -9,9 +9,3 @@ services:
       POSTGRES_PASSWORD: ""
     ports:
       - 5432:5432
-    volumes:
-      - blockscout_pgdata:/var/lib/postgresql/data
-
-volumes:
-  blockscout_pgdata:
-    external: true
