@@ -816,6 +816,10 @@ defmodule Explorer.Chain do
     end
   end
 
+  def find_address_from_hash(%Hash{byte_count: unquote(Hash.Address.byte_count())} = hash) do
+    hash_to_address(hash)
+  end
+
   @doc """
   Converts list of `t:Explorer.Chain.Address.t/0` `hash` to the `t:Explorer.Chain.Address.t/0` with that `hash`.
 
