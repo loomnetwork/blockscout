@@ -6,6 +6,7 @@ defmodule BlockScoutWeb.Chain do
   import Explorer.Chain,
     only: [
       find_or_insert_address_from_hash: 1,
+      find_address_from_hash: 1,
       hash_to_block: 1,
       hash_to_transaction: 1,
       number_to_block: 1,
@@ -158,7 +159,7 @@ defmodule BlockScoutWeb.Chain do
 
   defp address_from_param(param) do
     with {:ok, hash} <- string_to_address_hash(param) do
-      find_or_insert_address_from_hash(hash)
+      find_address_from_hash(hash)
     else
       :error -> {:error, :not_found}
     end
@@ -166,7 +167,7 @@ defmodule BlockScoutWeb.Chain do
 
   defp token_address_from_name(name) do
     case token_contract_address_from_token_name(name) do
-      {:ok, hash} -> find_or_insert_address_from_hash(hash)
+      {:ok, hash} -> find_address_from_hash(hash)
       _ -> {:error, :not_found}
     end
   end
