@@ -47,16 +47,15 @@ defmodule EthereumJSONRPC.FetchedBalance do
     {:error, annotated_error}
   end
 
-  @spec request(%{id: id, block_quantity: block_quantity, hash_data: hash_data}) :: %{
+  @spec request(%{id: id, hash_data: hash_data}) :: %{
           jsonrpc: String.t(),
           id: id,
           method: String.t(),
-          params: [hash_data | block_quantity]
+          params: [hash_data]
         }
         when id: EthereumJSONRPC.request_id(),
-             block_quantity: EthereumJSONRPC.quantity(),
              hash_data: EthereumJSONRPC.hash()
-  def request(%{id: id, block_quantity: block_quantity, hash_data: hash_data}) do
-    EthereumJSONRPC.request(%{id: id, method: "eth_getBalance", params: [hash_data, block_quantity]})
+  def request(%{id: id, hash_data: hash_data}) do
+    EthereumJSONRPC.request(%{id: id, method: "eth_getBalance", params: [hash_data, "latest"]})
   end
 end
