@@ -5,7 +5,6 @@ defmodule BlockScoutWeb.Chain do
 
   import Explorer.Chain,
     only: [
-      find_or_insert_address_from_hash: 1,
       find_address_from_hash: 1,
       hash_to_block: 1,
       hash_to_transaction: 1,
