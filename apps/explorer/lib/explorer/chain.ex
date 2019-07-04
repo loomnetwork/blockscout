@@ -673,19 +673,11 @@ defmodule Explorer.Chain do
   """
   @spec finished_indexing?() :: boolean()
   def finished_indexing? do
-    min_block_number_transaction = Repo.aggregate(Transaction, :min, :block_number)
+    ratio = indexed_ratio()
 
-    if min_block_number_transaction do
-      Transaction
-      |> where([t], t.block_number == ^min_block_number_transaction and is_nil(t.internal_transactions_indexed_at))
-      |> limit(1)
-      |> Repo.one()
-      |> case do
-        nil -> true
-        _ -> false
-      end
-    else
-      false
+    case Decimal.cmp(ratio, 1) do
+      :lt -> false
+      _ -> true
     end
   end
 

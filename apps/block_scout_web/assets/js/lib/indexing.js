@@ -4,7 +4,13 @@ import numeral from 'numeral'
 import socket from '../socket'
 
 function tryUpdateIndexedStatus (el, indexedRatio = el.dataset.indexedRatio, indexingFinished = false) {
-  if (indexingFinished) return $("[data-selector='indexed-status']").remove()
+  if (indexingFinished) {
+    // Reload window when indexing finished
+    $("[data-selector='indexed-status']").remove()
+    location.reload()
+    return
+  }
+
   const blocksPercentComplete = numeral(indexedRatio).format('0%')
   let indexedText
   if (blocksPercentComplete === '100%') {
