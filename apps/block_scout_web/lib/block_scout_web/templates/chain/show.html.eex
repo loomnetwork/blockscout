@@ -38,7 +38,6 @@
 
 <section class="container">
   <div class="card">
-    <%= if not Explorer.Chain.finished_indexing?() do %>
     <div class="card-body">
       <div class="row">
         <div class="col-sm-12  col-md-12 col-lg-6">
@@ -81,20 +80,6 @@
         </div>
       </div>
     <div>
-    <% else %>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-sm-12  col-md-12 col-lg-12">
-          <div class="tile tile-muted text-center">
-            <span class="loading-spinner-small mr-2">
-              <span class="loading-spinner-block-1"></span>
-            </span>
-            Waiting for indexing to finish to show charts
-          </div>
-        </div>
-      </div>
-    <div>
-    <% end %>
   </div>
 </section>
 
