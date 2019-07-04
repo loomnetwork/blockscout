@@ -37,10 +37,10 @@
 </div>
 
 <section class="container">
-  <div class="card card-chain-blocks">
+  <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-6">
+        <div class="col-sm-12  col-md-12 col-lg-6">
           <div data-address-total-chart-loading-message class="tile tile-muted text-center mt-5">
             <span class="loading-spinner-small mr-2">
               <span class="loading-spinner-block-1"></span>
@@ -59,7 +59,7 @@
             style="display: none;"
           />
         </div>
-        <div class="col-6">
+        <div class="col-sm-12  col-md-12 col-lg-6">
           <div data-transaction-chart-loading-message class="tile tile-muted text-center mt-5">
             <span class="loading-spinner-small mr-2">
               <span class="loading-spinner-block-1"></span>
