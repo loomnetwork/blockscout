@@ -204,8 +204,10 @@ defmodule Explorer.Chain.Address do
   def count_address_total_per_day do
     from(
       a in Address,
-      select: [fragment("date_trunc('day', ?)", a.inserted_at), fragment("COUNT(*)")],
-      where: fragment("inserted_at > date_trunc('day', now()) - INTERVAL '14 DAY' AND inserted_at < date_trunc('day', now())"),
+      inner_join: b in Block,
+      on: a.fetched_coin_balance_block_number == b.number,
+      select: [fragment("date_trunc('day', ?)", b.timestamp), fragment("COUNT(*)")],
+      where: fragment("timestamp > date_trunc('day', now()) - INTERVAL '14 DAY' AND timestamp < date_trunc('day', now())"),
       group_by: [1],
       order_by: [1]
     )

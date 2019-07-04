@@ -693,8 +693,10 @@ defmodule Explorer.Chain.Transaction do
   def count_transactions_per_day do
     from(
       t in Transaction,
-      select: [fragment("date_trunc('day', ?)", t.inserted_at), fragment("COUNT(*)")],
-      where: fragment("inserted_at > date_trunc('day', now()) - INTERVAL '14 DAY' AND inserted_at < date_trunc('day', now())"),
+      inner_join: b in Block,
+      on: t.block_number == b.number,
+      select: [fragment("date_trunc('day', ?)", b.timestamp), fragment("COUNT(*)")],
+      where: fragment("timestamp > date_trunc('day', now()) - INTERVAL '14 DAY' AND timestamp < date_trunc('day', now())"),
       group_by: [1],
       order_by: [1]
     )
