@@ -77,6 +77,7 @@ defmodule BlockScoutWeb.API.RPC.RPCTranslator do
   @doc false
   @spec translate_action(String.t()) :: {:ok, atom()} | {:error, :no_action}
   defp translate_action(action) do
+    IO.inspect action, label: "action"
     action_lowercase = String.downcase(action)
     {:ok, String.to_existing_atom(action_lowercase)}
   rescue
