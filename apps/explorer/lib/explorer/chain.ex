@@ -2249,15 +2249,20 @@ defmodule Explorer.Chain do
     end
   end
 
-  @doc """
+ @doc """
   Inserts a `t:SmartContract.t/0`.
 
   As part of inserting a new smart contract, an additional record is inserted for
   naming the address for reference.
   """
   @spec create_smart_contract(map()) :: {:ok, SmartContract.t()} | {:error, Ecto.Changeset.t()}
-  def create_smart_contract(attrs \\ %{}) do
-    smart_contract_changeset = SmartContract.changeset(%SmartContract{}, attrs)
+  def create_smart_contract(attrs \\ %{}, external_libraries \\ []) do
+    new_contract = %SmartContract{}
+
+    smart_contract_changeset =
+      new_contract
+      |> SmartContract.changeset(attrs)
+      |> Changeset.put_change(:external_libraries, external_libraries)
 
     insert_result =
       Multi.new()
@@ -2271,6 +2276,9 @@ defmodule Explorer.Chain do
     else
       {:error, :smart_contract, changeset, _} ->
         {:error, changeset}
+
+      {:error, :set_address_verified, message, _} ->
+        {:error, message}
     end
   end
 
