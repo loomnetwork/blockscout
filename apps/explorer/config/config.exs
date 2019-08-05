@@ -110,10 +110,6 @@ else
   config :explorer, Explorer.Staking.EpochCounter, enabled: false
 end
 
-<<<<<<< HEAD
-if System.get_env("SUPPLY_MODULE") == "TokenBridge" do
-  config :explorer, supply: Explorer.Chain.Supply.TokenBridge
-=======
 case System.get_env("SUPPLY_MODULE") do
   "TokenBridge" ->
     config :explorer, supply: Explorer.Chain.Supply.TokenBridge
@@ -123,7 +119,6 @@ case System.get_env("SUPPLY_MODULE") do
 
   _ ->
     :ok
->>>>>>> ebbecf38ee4f3fc7a11453f98fa92359739968fa
 end
 
 if System.get_env("SOURCE_MODULE") == "TokenBridge" do
