@@ -49,7 +49,7 @@
           <li><a href="https://solidityx.org" rel="noreferrer" class="footer-link" target="_blank">SolidityX.org</a></li>
         </ul>
       </div>
-      <% _main_nets = main_nets() %>
+      <% _main_nets = _main_nets() %>
 
       <%= unless Enum.empty?(other_explorers()) do %>
         <div class="col-md-<%= _col_size %> footer-list">
