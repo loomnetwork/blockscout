@@ -3,7 +3,7 @@ defmodule BlockScoutWeb.ChainView do
 
   alias BlockScoutWeb.LayoutView
 
-  defp market_cap(:standard, exchange_rate) do
+  defp _market_cap(:standard, exchange_rate) do
     exchange_rate.market_cap_usd
   end
 

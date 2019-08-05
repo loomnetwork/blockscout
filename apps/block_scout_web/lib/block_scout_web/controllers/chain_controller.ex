@@ -14,7 +14,7 @@ defmodule BlockScoutWeb.ChainController do
     transaction_estimated_count = Chain.transaction_estimated_count()
     block_count = Chain.block_estimated_count()
 
-    market_cap_calculation =
+    _market_cap_calculation =
       case Application.get_env(:explorer, :supply) do
         RSK ->
           RSK
