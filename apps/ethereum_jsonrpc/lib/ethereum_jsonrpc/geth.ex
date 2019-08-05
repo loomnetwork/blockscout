@@ -5,11 +5,7 @@ defmodule EthereumJSONRPC.Geth do
 
   import EthereumJSONRPC, only: [id_to_params: 1, integer_to_quantity: 1, json_rpc: 2, request: 1]
 
-<<<<<<< HEAD
-  alias EthereumJSONRPC.{FetchedBalance, FetchedCode}
-=======
   alias EthereumJSONRPC.{FetchedBalance, FetchedCode, Transactions}
->>>>>>> ebbecf38ee4f3fc7a11453f98fa92359739968fa
   alias EthereumJSONRPC.Geth.{Calls, Tracer}
 
   @behaviour EthereumJSONRPC.Variant
