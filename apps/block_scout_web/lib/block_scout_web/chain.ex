@@ -131,18 +131,10 @@ defmodule BlockScoutWeb.Chain do
     end
   end
 
-<<<<<<< HEAD
   def paging_options(%{"index" => index_string}) do
     with {index, ""} <- Integer.parse(index_string) do
       [paging_options: %{@default_paging_options | key: {index}}]
     else
-=======
-  def paging_options(%{"index" => index_string}) when is_binary(index_string) do
-    case Integer.parse(index_string) do
-      {index, ""} ->
-        [paging_options: %{@default_paging_options | key: {index}}]
-
->>>>>>> ebbecf38ee4f3fc7a11453f98fa92359739968fa
       _ ->
         [paging_options: @default_paging_options]
     end
@@ -177,19 +169,10 @@ defmodule BlockScoutWeb.Chain do
   def split_list_by_page(list_plus_one), do: Enum.split(list_plus_one, @page_size)
 
   defp address_from_param(param) do
-<<<<<<< HEAD
     with {:ok, hash} <- string_to_address_hash(param) do
       find_address_from_hash(hash)
     else
       :error -> {:error, :not_found}
-=======
-    case string_to_address_hash(param) do
-      {:ok, hash} ->
-        find_or_insert_address_from_hash(hash)
-
-      :error ->
-        {:error, :not_found}
->>>>>>> ebbecf38ee4f3fc7a11453f98fa92359739968fa
     end
   end
 
