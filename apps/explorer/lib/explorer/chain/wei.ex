@@ -31,21 +31,25 @@ defmodule Explorer.Chain.Wei do
 
   @impl Ecto.Type
   def cast("0x" <> hex_wei) do
-    with {int_wei, ""} <- Integer.parse(hex_wei, 16) do
-      decimal = Decimal.new(int_wei)
-      {:ok, %__MODULE__{value: decimal}}
-    else
-      _ -> :error
+    case Integer.parse(hex_wei, 16) do
+      {int_wei, ""} ->
+        decimal = Decimal.new(int_wei)
+        {:ok, %__MODULE__{value: decimal}}
+
+      _ ->
+        :error
     end
   end
 
   @impl Ecto.Type
   def cast(string_wei) when is_binary(string_wei) do
-    with {int_wei, ""} <- Integer.parse(string_wei) do
-      decimal = Decimal.new(int_wei)
-      {:ok, %__MODULE__{value: decimal}}
-    else
-      _ -> :error
+    case Integer.parse(string_wei) do
+      {int_wei, ""} ->
+        decimal = Decimal.new(int_wei)
+        {:ok, %__MODULE__{value: decimal}}
+
+      _ ->
+        :error
     end
   end
 
@@ -112,6 +116,17 @@ defmodule Explorer.Chain.Wei do
 
   @wei_per_ether Decimal.new(1_000_000_000_000_000_000)
   @wei_per_gwei Decimal.new(1_000_000_000)
+
+  @spec hex_format(Wei.t()) :: String.t()
+  def hex_format(%Wei{value: decimal}) do
+    hex =
+      decimal
+      |> Decimal.to_integer()
+      |> Integer.to_string(16)
+      |> String.downcase()
+
+    "0x" <> hex
+  end
 
   @doc """
   Sums two Wei values.

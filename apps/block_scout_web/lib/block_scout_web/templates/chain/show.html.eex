@@ -86,7 +86,7 @@
 <section class="container">
   <div class="card card-chain-blocks">
     <div class="card-body">
-      <%= link(gettext("View All Blocks →"), to: block_path(BlockScoutWeb.Endpoint, :index), class: "button button-secondary button-xsmall float-right") %>
+      <%= link(gettext("View All Blocks"), to: block_path(BlockScoutWeb.Endpoint, :index), class: "btn-line float-right") %>
       <h2 class="card-title"><%= gettext "Blocks" %></h2>
       <div class="row" data-selector="chain-block-list" data-url="<%= chain_blocks_path(@conn, :chain_blocks) %>">
         <button data-selector="error-message" class="alert alert-danger col-12 text-left" style="display: none;">
@@ -94,8 +94,8 @@
             <%= gettext "Something went wrong, click to reload." %>
           </span>
         </button>
-        <div data-selector="loading-message" class="tile tile-muted text-center mt-3 w-100">
-          <span class="loading-spinner-small mr-2">
+        <div hidden data-selector="loading-message" class="tile tile-muted text-center mt-3 w-100" >
+          <span  class="loading-spinner-small mr-2">
             <span class="loading-spinner-block-1"></span>
             <span class="loading-spinner-block-2"></span>
           </span>
@@ -107,8 +107,8 @@
 
   <div class="card card-chain-transactions">
     <div class="card-body">
-      <%= link(gettext("View All Transactions →"), to: transaction_path(BlockScoutWeb.Endpoint, :index), class: "button button-secondary button-xsmall float-right") %>
-      <h2 class="card-title"><%= gettext "Transactions" %></h2>
+      <%= link(gettext("View All Transactions"), to: transaction_path(BlockScoutWeb.Endpoint, :index), class: "btn-line float-right") %>
+      <h2 class="card-title lg-card-title"><%= gettext "Transactions" %></h2>
       <div data-selector="channel-batching-message" style="display: none;">
         <div data-selector="reload-button" class="alert alert-info">
           <a href="#" class="alert-link"><span data-selector="channel-batching-count"></span> <%= gettext "More transactions have come in" %></a>
@@ -120,12 +120,8 @@
             <%= gettext "Something went wrong, click to retry." %>
           </span>
         </button>
-        <div data-selector="loading-message" class="tile tile-muted text-center mt-3">
-          <span class="loading-spinner-small mr-2">
-            <span class="loading-spinner-block-1"></span>
-            <span class="loading-spinner-block-2"></span>
-          </span>
-          <%= gettext("Loading...") %>
+        <div hidden data-selector="loading-message">
+          <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
         </div>
       </span>
     </div>

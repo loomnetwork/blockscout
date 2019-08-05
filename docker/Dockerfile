@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir-phoenix
+FROM bitwalker/alpine-elixir-phoenix:1.9.0
 
 RUN apk --no-cache --update add alpine-sdk gmp-dev automake libtool inotify-tools autoconf python
 
@@ -36,7 +36,7 @@ RUN cd apps/block_scout_web/assets/ && \
 
 RUN cd apps/explorer/ && \
     npm install && \
-    apk del --force-broken-world alpine-sdk gmp-dev automake libtool inotify-tools autoconf python
+    apk update && apk del --force-broken-world alpine-sdk gmp-dev automake libtool inotify-tools autoconf python
 
 # RUN mix do ecto.drop --force, ecto.create, ecto.migrate
 

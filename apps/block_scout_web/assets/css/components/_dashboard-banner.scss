@@ -1,4 +1,24 @@
+$dashboard-banner-gradient-start: $primary !default;
+$dashboard-banner-gradient-end: lighten(
+  $dashboard-banner-gradient-start,
+  5%
+) !default;
+$dashboard-banner-network-plain-container-background-color: lighten($dashboard-banner-gradient-end, 5%)!default;
+$dashboard-line-color-price: lighten($dashboard-banner-gradient-end, 5%) !default;
+$dashboard-line-color-market: $secondary !default;
+$dashboard-stats-item-label-color: #fff !default;
+$dashboard-stats-item-value-color: rgba(#fff, 0.8) !default;
+$dashboard-banner-chart-legend-label-color: #fff !default;
+$dashboard-banner-chart-legend-value-color: $dashboard-stats-item-value-color !default;
+$dashboard-stats-item-border-color: $primary !default;
+$dashboard-banner-network-plain-container-height: 205px;
+$dashboard-banner-chart-axis-font-color: $dashboard-stats-item-value-color !default;
+
 .dashboard-banner-container {
+  @include gradient-container();
+  margin-bottom: 3rem;
+  overflow: hidden;
+  padding: 0;
   position: relative;
   margin-top: -6rem;
   background-color: $primary;
@@ -35,6 +55,8 @@
 }
 
 .dashboard-banner {
+  display: flex;
+  justify-content: space-between;
   position: relative;
   display: grid;
   grid-template-rows: 3rem 2fr 1fr;
@@ -47,9 +69,8 @@
   margin-bottom: 3rem;
   z-index: 9;
 
-  @media (max-width: 992px) {
-    grid-template-rows: 2rem auto;
-    grid-template-columns: auto;
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
   }
 }
 
@@ -112,24 +133,36 @@
   //   padding: 0.5rem 2rem;
   // }
 
-  &-item {
-    padding-left: 1rem;
-    color: $white;
-    border-left: 4px solid rgba($white, 0.6);
+  @include media-breakpoint-down(md) {
+    border-top-right-radius: 10px;
+    height: auto;
+    justify-content: flex-start;
+    margin-left: 0;
+    max-width: 100%;
+    padding: 20px 0 20px 20px;
+    width: 250px;
+    box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.2);
   }
 
-  &-label {
-    display: block;
-    white-space: nowrap;
+  @include media-breakpoint-down(sm) {
+    width: 100%;
   }
 
-  &-value {
+  &::after {
+    background-color: $dashboard-banner-network-plain-container-background-color;
+    bottom: 0;
+    content: "";
     display: block;
-    font-size: 1.5rem;
-    font-weight: 200;
+    height: $dashboard-banner-network-plain-container-height;
+    left: 0;
+    position: absolute;
+    width: 9999px;
+    z-index: -1;
+    box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 10px;
 
-    @media (max-width: 992px) {
-      font-size: 1.25rem;
+    @include media-breakpoint-down(md) {
+      display: none;
     }
   }
 }

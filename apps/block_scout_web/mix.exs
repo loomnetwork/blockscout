@@ -15,7 +15,7 @@ defmodule BlockScoutWeb.Mixfile do
         plt_add_deps: :transitive,
         ignore_warnings: "../../.dialyzer-ignore"
       ],
-      elixir: "~> 1.8",
+      elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
       lockfile: "../../mix.lock",
       package: package(),
@@ -71,7 +71,7 @@ defmodule BlockScoutWeb.Mixfile do
       {:bypass, "~> 1.0", only: :test},
       # To add (CORS)(https://www.w3.org/TR/cors/)
       {:cors_plug, "~> 2.0"},
-      {:credo, "1.0.0", only: :test, runtime: false},
+      {:credo, "~> 1.1", only: :test, runtime: false},
       # For Absinthe to load data in batches
       {:dataloader, "~> 1.0.0"},
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
@@ -125,10 +125,10 @@ defmodule BlockScoutWeb.Mixfile do
       {:spandex_datadog, "~> 0.4.0"},
       # `:spandex` tracing of `:phoenix`
       {:spandex_phoenix, "~> 0.3.1"},
-      {:timex, "~> 3.4"},
+      {:timex, "~> 3.6"},
       {:wallaby, "~> 0.22", only: [:test], runtime: false},
       # `:cowboy` `~> 2.0` and Phoenix 1.4 compatibility
-      {:wobserver, "~> 0.2.0", github: "KronicDeth/wobserver", ref: "99683a936c75c0a94ebb884cef019f7ed0b97112"},
+      {:wobserver, "~> 0.2.0", github: "poanetwork/wobserver", branch: "support-https"},
       {:phoenix_form_awesomplete, "~> 0.1.4"}
     ]
   end

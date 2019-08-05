@@ -1,6 +1,7 @@
 <section class="address-overview" data-page="address-details" data-page-address-hash="<%= @address.hash %>">
   <div class="row">
-    <div class="card-section col-md-12 col-lg-8">
+    <!-- Address details -->
+    <div class="card-section col-md-12 col-lg-8 pr-0-md">
       <div class="card">
         <div class="card-body">
           <div class="icon-links float-right">
@@ -28,7 +29,7 @@
           </h3>
           <div class="d-flex flex-column flex-lg-row justify-content-start text-muted">
             <%= if address_name = primary_name(@address) do %>
-              <strong class="mr-4 mb-2 text-primary"><%= address_name %></strong>
+              <strong class="mr-4 mb-2 text-dark"><%= address_name %></strong>
             <% end %>
             <%= if @address.token do %>
               <span class="mr-4 mb-2">
@@ -40,7 +41,7 @@
                 <%= if contract?(@address) do %>
                   <%= gettext(">=") %>
                   <span data-selector="transaction-count">
-                    <%= incoming_transaction_count(@address) %>
+                    <%= incoming_transaction_count(@address.hash) %>
                   </span>
                   <%= gettext("Incoming Transactions") %>
                 <% else %>
@@ -50,9 +51,11 @@
                   <%= gettext("Transactions Sent") %>
                 <% end %>
               </span>
-              <span class="address-detail-item">
-                <%= gettext("Last Balance Update: Block #") %><span data-selector="fetched-coin-balance-block-number"><%= @address.fetched_coin_balance_block_number %></span>
-              </span>
+              <%= if @address.fetched_coin_balance_block_number do %>
+                <span class="address-detail-item">
+                  <%= gettext("Last Balance Update: Block #") %><span data-selector="fetched-coin-balance-block-number"><%= @address.fetched_coin_balance_block_number %></span>
+                </span>
+              <% end %>
               <%= if validator?(@validation_count) do %>
                 <span class="address-detail-item">
                   <span data-selector="validation-count">
@@ -86,10 +89,15 @@
               <% end %>
             </span>
           <% end %>
+          <!-- Verify in other explorers -->
+          <!--
+          <%# <%= render "_verify_other_explorers.html", hash: @address.hash, type: "address" %> %>
+          -->
         </div>
       </div>
     </div>
-    <div class="card-section col-md-12 col-lg-4" data-selector="balance-card">
+    <!-- Balance -->
+    <div class="card-section col-md-12 col-lg-4 pl-0-md" data-selector="balance-card">
       <%= render BlockScoutWeb.AddressView, "_balance_card.html", conn: @conn, address: @address, exchange_rate: @exchange_rate, coin_balance_status: @coin_balance_status %>
     </div>
   </div>
@@ -106,7 +114,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <img src="data:image/png;base64, <%= qr_code(@address) %>" class="qr-code" alt="qr_code" title="<%= @address %>" />
+        <img src="data:image/png;base64, <%= qr_code(@address.hash) %>" class="qr-code" alt="qr_code" title="<%= @address %>" />
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><%= gettext "Close" %></button>

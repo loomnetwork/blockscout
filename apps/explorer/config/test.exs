@@ -13,7 +13,11 @@ config :explorer, Explorer.Repo,
 
 config :explorer, Explorer.ExchangeRates, enabled: false, store: :ets
 
+<<<<<<< HEAD
 config :explorer, Explorer.Chain.BlockNumberCache, enabled: false
+=======
+config :explorer, Explorer.Chain.Cache.BlockNumber, enabled: false
+>>>>>>> ebbecf38ee4f3fc7a11453f98fa92359739968fa
 
 config :explorer, Explorer.KnownTokens, enabled: false, store: :ets
 
