@@ -38,7 +38,7 @@
     <% _col_size = if Enum.empty?(other_explorers()), do: 4, else: 3 %>
 
     <div class="row">
-      <div class="col-md-<%= col_size %> footer-list">
+      <div class="col-md-<%= _col_size %> footer-list">
         <h3>Loom Network</h3>
         <hr>
         <ul>
@@ -52,7 +52,7 @@
       <% _main_nets = main_nets() %>
 
       <%= unless Enum.empty?(other_explorers()) do %>
-        <div class="col-md-<%= col_size %> footer-list">
+        <div class="col-md-<%= _col_size %> footer-list">
           <h3><%= gettext("Other Explorers") %></h3>
           <ul>
             <%= for {name, url} <- other_explorers() do %>
