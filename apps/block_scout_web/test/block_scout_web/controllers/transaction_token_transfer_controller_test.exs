@@ -48,19 +48,24 @@ defmodule BlockScoutWeb.TransactionTokenTransferControllerTest do
     test "includes token transfers for the transaction", %{conn: conn} do
       transaction = insert(:transaction)
 
-      insert(:token_transfer, transaction: transaction)
+      expected_token_transfer = insert(:token_transfer, transaction: transaction)
 
       insert(:token_transfer, transaction: transaction)
 
       path = transaction_token_transfer_path(BlockScoutWeb.Endpoint, :index, transaction.hash)
 
-      conn = get(conn, path, %{type: "JSON"})
+      conn = get(conn, path)
 
-      assert json_response(conn, 200)
+      actual_token_transfer_primary_keys =
+        conn.assigns.token_transfers
+        |> Enum.map(&{&1.transaction_hash, &1.log_index})
 
-      {:ok, %{"items" => items}} = conn.resp_body |> Poison.decode()
+      assert html_response(conn, 200)
 
-      assert Enum.count(items) == 2
+      assert Enum.member?(
+               actual_token_transfer_primary_keys,
+               {expected_token_transfer.transaction_hash, expected_token_transfer.log_index}
+             )
     end
 
     test "includes USD exchange rate value for address in assigns", %{conn: conn} do
@@ -77,7 +82,7 @@ defmodule BlockScoutWeb.TransactionTokenTransferControllerTest do
         |> insert()
         |> with_block()
 
-      insert(:token_transfer, transaction: transaction, block_number: 1000, log_index: 1)
+      token_transfer = insert(:token_transfer, transaction: transaction, block_number: 1000, log_index: 1)
 
       Enum.each(2..5, fn item ->
         insert(:token_transfer, transaction: transaction, block_number: item + 1001, log_index: item + 1)
@@ -86,16 +91,15 @@ defmodule BlockScoutWeb.TransactionTokenTransferControllerTest do
       conn =
         get(conn, transaction_token_transfer_path(BlockScoutWeb.Endpoint, :index, transaction.hash), %{
           "block_number" => "1000",
-          "index" => "1",
-          "type" => "JSON"
+          "index" => "1"
         })
 
-      {:ok, %{"items" => items}} = conn.resp_body |> Poison.decode()
+      actual_log_indexes = Enum.map(conn.assigns.token_transfers, & &1.log_index)
 
-      refute Enum.count(items) == 3
+      refute Enum.any?(actual_log_indexes, fn log_index -> log_index == token_transfer.log_index end)
     end
 
-    test "next_page_path exists if not on last page", %{conn: conn} do
+    test "next_page_params exist if not on last page", %{conn: conn} do
       transaction =
         :transaction
         |> insert()
@@ -110,15 +114,12 @@ defmodule BlockScoutWeb.TransactionTokenTransferControllerTest do
         )
       end)
 
-      conn =
-        get(conn, transaction_token_transfer_path(BlockScoutWeb.Endpoint, :index, transaction.hash), %{type: "JSON"})
+      conn = get(conn, transaction_token_transfer_path(BlockScoutWeb.Endpoint, :index, transaction.hash))
 
-      {:ok, %{"next_page_path" => path}} = conn.resp_body |> Poison.decode()
-
-      assert path
+      assert Enum.any?(conn.assigns.next_page_params)
     end
 
-    test "next_page_path is empty if on last page", %{conn: conn} do
+    test "next_page_params are empty if on last page", %{conn: conn} do
       transaction =
         :transaction
         |> insert()
@@ -133,12 +134,9 @@ defmodule BlockScoutWeb.TransactionTokenTransferControllerTest do
         )
       end)
 
-      conn =
-        get(conn, transaction_token_transfer_path(BlockScoutWeb.Endpoint, :index, transaction.hash), %{type: "JSON"})
+      conn = get(conn, transaction_token_transfer_path(BlockScoutWeb.Endpoint, :index, transaction.hash))
 
-      {:ok, %{"next_page_path" => path}} = conn.resp_body |> Poison.decode()
-
-      refute path
+      assert is_nil(conn.assigns.next_page_params)
     end
 
     test "preloads to_address smart contract verified", %{conn: conn} do

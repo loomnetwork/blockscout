@@ -77,8 +77,7 @@ defmodule BlockScoutWeb.API.RPC.TransactionView do
     %{
       "address" => "#{log.address_hash}",
       "topics" => get_topics(log),
-      "data" => "#{log.data}",
-      "index" => "#{log.index}"
+      "data" => "#{log.data}"
     }
   end
 

@@ -4,7 +4,6 @@ import humps from 'humps'
 import numeral from 'numeral'
 import { formatUsdValue } from '../lib/currency'
 import sassVariables from '../../css/app.scss'
-import { showLoader } from '../lib/utils'
 
 const config = {
   type: 'line',
@@ -26,9 +25,6 @@ const config = {
         time: {
           unit: 'day',
           stepSize: 14
-        },
-        ticks: {
-          fontColor: sassVariables.dashboardBannerChartAxisFontColor
         }
       }],
       yAxes: [{
@@ -40,8 +36,7 @@ const config = {
         ticks: {
           beginAtZero: true,
           callback: (value, index, values) => `$${numeral(value).format('0,0.00')}`,
-          maxTicksLimit: 4,
-          fontColor: sassVariables.dashboardBannerChartAxisFontColor
+          maxTicksLimit: 4
         }
       }, {
         id: 'marketCap',
@@ -88,17 +83,6 @@ function getMarketCapData (marketHistoryData, availableSupply) {
   }
 }
 
-// colors for light and dark theme
-var priceLineColor
-var mcapLineColor
-if (localStorage.getItem('current-color-mode') === 'dark') {
-  priceLineColor = sassVariables.darkprimary
-  mcapLineColor = sassVariables.darksecondary
-} else {
-  priceLineColor = sassVariables.dashboardLineColorPrice
-  mcapLineColor = sassVariables.dashboardLineColorMarket
-}
-
 class MarketHistoryChart {
   constructor (el, availableSupply, marketHistoryData) {
     this.price = {
@@ -107,8 +91,8 @@ class MarketHistoryChart {
       data: getPriceData(marketHistoryData),
       fill: false,
       pointRadius: 0,
-      backgroundColor: priceLineColor,
-      borderColor: priceLineColor,
+      backgroundColor: sassVariables.primary,
+      borderColor: sassVariables.primary,
       lineTension: 0
     }
     this.marketCap = {
@@ -117,8 +101,8 @@ class MarketHistoryChart {
       data: getMarketCapData(marketHistoryData, availableSupply),
       fill: false,
       pointRadius: 0,
-      backgroundColor: mcapLineColor,
-      borderColor: mcapLineColor,
+      backgroundColor: sassVariables.secondary,
+      borderColor: sassVariables.secondary,
       lineTension: 0
     }
     this.availableSupply = availableSupply
@@ -141,10 +125,6 @@ class MarketHistoryChart {
 export function createMarketHistoryChart (el) {
   const dataPath = el.dataset.market_history_chart_path
   const $chartLoading = $('[data-chart-loading-message]')
-
-  const isTimeout = true
-  const timeoutID = showLoader(isTimeout, $chartLoading)
-
   const $chartError = $('[data-chart-error-message]')
   const chart = new MarketHistoryChart(el, 0, [])
   $.getJSON(dataPath, {type: 'JSON'})
@@ -159,7 +139,6 @@ export function createMarketHistoryChart (el) {
     })
     .always(() => {
       $chartLoading.hide()
-      clearTimeout(timeoutID)
     })
   return chart
 }

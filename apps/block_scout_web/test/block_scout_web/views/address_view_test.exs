@@ -140,12 +140,6 @@ defmodule BlockScoutWeb.AddressViewTest do
     assert "1.0000% Market Cap" = AddressView.balance_percentage(address)
   end
 
-  test "balance_percentage with nil total_supply" do
-    address = insert(:address, fetched_coin_balance: 2_524_608_000_000_000_000_000_000)
-
-    assert "" = AddressView.balance_percentage(address, nil)
-  end
-
   describe "contract?/1" do
     test "with a smart contract" do
       {:ok, code} = Data.cast("0x000000000000000000000000862d67cb0773ee3f8ce7ea89b328ffea861ab3ef")
@@ -199,7 +193,7 @@ defmodule BlockScoutWeb.AddressViewTest do
   describe "qr_code/1" do
     test "it returns an encoded value" do
       address = build(:address)
-      assert {:ok, _} = Base.decode64(AddressView.qr_code(address.hash))
+      assert {:ok, _} = Base.decode64(AddressView.qr_code(address))
     end
   end
 

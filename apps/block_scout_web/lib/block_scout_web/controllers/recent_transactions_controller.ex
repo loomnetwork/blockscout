@@ -6,13 +6,13 @@ defmodule BlockScoutWeb.RecentTransactionsController do
   alias Phoenix.View
 
   def index(conn, _params) do
-    if ajax?(conn) do
+    with true <- ajax?(conn) do
       recent_transactions =
         Chain.recent_collated_transactions(
           necessity_by_association: %{
             :block => :required,
             [created_contract_address: :names] => :optional,
-            [from_address: :names] => :optional,
+            [from_address: :names] => :required,
             [to_address: :names] => :optional
           },
           paging_options: %PagingOptions{page_size: 5}
@@ -29,7 +29,7 @@ defmodule BlockScoutWeb.RecentTransactionsController do
 
       json(conn, %{transactions: transactions})
     else
-      unprocessable_entity(conn)
+      _ -> unprocessable_entity(conn)
     end
   end
 end

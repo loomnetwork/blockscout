@@ -47,7 +47,10 @@ defmodule BlockScoutWeb.API.RPC.ContractControllerTest do
                  "Address" => to_string(contract.address_hash),
                  "CompilerVersion" => contract.compiler_version,
                  "ContractName" => contract.name,
-                 "OptimizationUsed" => if(contract.optimization, do: "1", else: "0")
+                 "DecompiledSourceCode" => "Contract source code not decompiled.",
+                 "DecompilerVersion" => "",
+                 "OptimizationUsed" => if(contract.optimization, do: "1", else: "0"),
+                 "SourceCode" => contract.contract_source_code
                }
              ]
     end
@@ -69,7 +72,10 @@ defmodule BlockScoutWeb.API.RPC.ContractControllerTest do
                  "Address" => to_string(address.hash),
                  "CompilerVersion" => "",
                  "ContractName" => "",
-                 "OptimizationUsed" => ""
+                 "DecompiledSourceCode" => "Contract source code not decompiled.",
+                 "DecompilerVersion" => "",
+                 "OptimizationUsed" => "",
+                 "SourceCode" => ""
                }
              ]
     end
@@ -92,34 +98,10 @@ defmodule BlockScoutWeb.API.RPC.ContractControllerTest do
                  "Address" => to_string(address.hash),
                  "CompilerVersion" => "",
                  "ContractName" => "",
-                 "OptimizationUsed" => ""
-               }
-             ]
-    end
-
-    test "filtering for only unverified contracts does not show self destructed contracts", %{
-      params: params,
-      conn: conn
-    } do
-      address = insert(:contract_address)
-      insert(:smart_contract)
-      insert(:contract_address, contract_code: "0x")
-
-      response =
-        conn
-        |> get("/api", Map.put(params, "filter", "unverified"))
-        |> json_response(200)
-
-      assert response["message"] == "OK"
-      assert response["status"] == "1"
-
-      assert response["result"] == [
-               %{
-                 "ABI" => "Contract source code not verified",
-                 "Address" => to_string(address.hash),
-                 "CompilerVersion" => "",
-                 "ContractName" => "",
-                 "OptimizationUsed" => ""
+                 "DecompiledSourceCode" => "Contract source code not decompiled.",
+                 "DecompilerVersion" => "",
+                 "OptimizationUsed" => "",
+                 "SourceCode" => ""
                }
              ]
     end
@@ -141,8 +123,11 @@ defmodule BlockScoutWeb.API.RPC.ContractControllerTest do
                  "ABI" => Jason.encode!(contract.abi),
                  "Address" => to_string(contract.address_hash),
                  "CompilerVersion" => contract.compiler_version,
+                 "DecompiledSourceCode" => "Contract source code not decompiled.",
+                 "DecompilerVersion" => "",
                  "ContractName" => contract.name,
-                 "OptimizationUsed" => if(contract.optimization, do: "1", else: "0")
+                 "OptimizationUsed" => if(contract.optimization, do: "1", else: "0"),
+                 "SourceCode" => contract.contract_source_code
                }
              ]
     end
@@ -165,7 +150,10 @@ defmodule BlockScoutWeb.API.RPC.ContractControllerTest do
                  "Address" => to_string(decompiled_smart_contract.address_hash),
                  "CompilerVersion" => "",
                  "ContractName" => "",
-                 "OptimizationUsed" => ""
+                 "DecompiledSourceCode" => decompiled_smart_contract.decompiled_source_code,
+                 "DecompilerVersion" => "test_decompiler",
+                 "OptimizationUsed" => "",
+                 "SourceCode" => ""
                }
              ]
     end
@@ -188,7 +176,10 @@ defmodule BlockScoutWeb.API.RPC.ContractControllerTest do
                  "Address" => to_string(smart_contract.address_hash),
                  "CompilerVersion" => "",
                  "ContractName" => "",
-                 "OptimizationUsed" => ""
+                 "DecompiledSourceCode" => smart_contract.decompiled_source_code,
+                 "DecompilerVersion" => "bizbuz",
+                 "OptimizationUsed" => "",
+                 "SourceCode" => ""
                }
              ]
     end
@@ -207,15 +198,18 @@ defmodule BlockScoutWeb.API.RPC.ContractControllerTest do
       assert response["message"] == "OK"
       assert response["status"] == "1"
 
-      assert %{
-               "ABI" => "Contract source code not verified",
-               "Address" => to_string(smart_contract.address_hash),
-               "CompilerVersion" => "",
-               "ContractName" => "",
-               "OptimizationUsed" => ""
-             } in response["result"]
-
-      refute to_string(non_match.address_hash) in Enum.map(response["result"], &Map.get(&1, "Address"))
+      assert response["result"] == [
+               %{
+                 "ABI" => "Contract source code not verified",
+                 "Address" => to_string(smart_contract.address_hash),
+                 "CompilerVersion" => "",
+                 "ContractName" => "",
+                 "DecompiledSourceCode" => smart_contract.decompiled_source_code,
+                 "DecompilerVersion" => "bizbuz",
+                 "OptimizationUsed" => "",
+                 "SourceCode" => ""
+               }
+             ]
     end
 
     test "filtering for only not_decompiled (and by extension not verified contracts)", %{params: params, conn: conn} do
@@ -237,35 +231,10 @@ defmodule BlockScoutWeb.API.RPC.ContractControllerTest do
                  "Address" => to_string(contract_address.hash),
                  "CompilerVersion" => "",
                  "ContractName" => "",
-                 "OptimizationUsed" => ""
-               }
-             ]
-    end
-
-    test "filtering for only not_decompiled (and by extension not verified contracts) does not show empty contracts", %{
-      params: params,
-      conn: conn
-    } do
-      insert(:decompiled_smart_contract)
-      insert(:smart_contract)
-      insert(:contract_address, contract_code: "0x")
-      contract_address = insert(:contract_address)
-
-      response =
-        conn
-        |> get("/api", Map.put(params, "filter", "not_decompiled"))
-        |> json_response(200)
-
-      assert response["message"] == "OK"
-      assert response["status"] == "1"
-
-      assert response["result"] == [
-               %{
-                 "ABI" => "Contract source code not verified",
-                 "Address" => to_string(contract_address.hash),
-                 "CompilerVersion" => "",
-                 "ContractName" => "",
-                 "OptimizationUsed" => ""
+                 "DecompiledSourceCode" => "Contract source code not decompiled.",
+                 "DecompilerVersion" => "",
+                 "OptimizationUsed" => "",
+                 "SourceCode" => ""
                }
              ]
     end

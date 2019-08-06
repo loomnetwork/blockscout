@@ -1,8 +1,8 @@
 <section>
   <div class="row">
-    <div class="col-md-12 col-lg-8 pr-0-md">
+    <div class="col-md-12 col-lg-8">
       <!-- Block Details -->
-      <div class="card card-mr-50-md">
+      <div class="card">
         <div class="card-body">
           <h1 class="card-title" data-test="detail_type">
             <%= gettext("%{block_type} Details", block_type: block_type(@block)) %>
@@ -16,12 +16,12 @@
               <%= link(@block, to: block_path(BlockScoutWeb.Endpoint, :show, @block.number)) %>
             <% end %>
           </h3>
-          <div class="d-flex justify-content-start text-muted block-details-row">
+          <div class="d-flex flex-row justify-content-start text-muted">
             <!-- # of Transactions -->
-            <span class="mr-4 block-detail-el"> <%= gettext "%{count} Transactions", count: @block_transaction_count %> </span>
+            <span class="mr-4"> <%= gettext "%{count} Transactions", count: @block_transaction_count %> </span>
 
             <!-- Block Age -->
-            <span class="mr-4 block-detail-el" data-from-now="<%= @block.timestamp %>"></span>
+            <span class="mr-4" data-from-now="<%= @block.timestamp %>"></span>
           </div>
 
           <hr>
@@ -30,18 +30,18 @@
 
           <!-- Block Hash -->
           <dl class="row">
-            <dt class="col-sm-3 text-muted"><%= gettext "Hash" %></dt>
-            <dd class="col-sm-9"><a class="transaction__link"><%= to_string(@block.hash) %></a></dd>
+            <dt class="col-sm-3 text-muted"> <%= gettext "Hash" %> </dt>
+            <dd class="col-sm-9"> <%= to_string(@block.hash) %> </dd>
           </dl>
 
           <%= unless @block.number == 0 do %>
               <!-- Parent Hash -->
               <dl class="row">
-                <dt class="col-sm-3 text-muted"><%= gettext "Parent Hash" %></dt>
+                <dt class="col-sm-3 text-muted"> <%= gettext "Parent Hash" %> </dt>
                 <dd class="col-sm-9">
                   <%= link(
                       @block.parent_hash,
-                      class: "transaction__link",
+                      class: "block__link",
                       to: block_path(@conn, :show, @block.number - 1)
                     ) %>
                 </dd>
@@ -54,14 +54,15 @@
               <dl class="row">
                 <dt class="col-sm-3 text-muted"><%= gettext "Gas Used" %></dt>
                 <dd class="col-sm-9">
-                  <span><%= @block.gas_used |> Cldr.Number.to_string! %></span>
-                  <span class="text-muted">(<%= (Decimal.to_integer(@block.gas_used) / Decimal.to_integer(@block.gas_limit)) |> Cldr.Number.to_string!(format: "#.#%") %>)</span>
+                  <%= @block.gas_used |> Cldr.Number.to_string! %>
+                  <span class="text-muted"> (<%= (Decimal.to_integer(@block.gas_used) / Decimal.to_integer(@block.gas_limit)) |> Cldr.Number.to_string!(format: "#.#%") %>) </span>
                 </dt>
               </dl>
+
               <dl class="row mb-0">
                 <dt class="col-sm-3 text-muted"><%= gettext "Gas Limit" %></dt>
                 <dd class="col-sm-9">
-                  <span><%= Cldr.Number.to_string!(@block.gas_limit) %></span>
+                  <%= Cldr.Number.to_string!(@block.gas_limit) %>
                 </dd>
               </dl>
             <% end %>
@@ -70,8 +71,7 @@
       </div>
     </div>
 
-    <div class="col-md-12 col-lg-4 d-flex flex-column flex-md-row flex-lg-column pl-0-md">
-
+    <div class="col-md-12 col-lg-4 d-flex flex-column flex-md-row flex-lg-column">
       <!-- Validator -->
       <div class="card card-primary flex-grow-1">
         <div class="card-body">
@@ -85,6 +85,8 @@
             contract: false,
             class: "text-white" %>
             </h3>
+            <!-- Validator's address hash -->
+            <span class="text-light text-truncate"> </span>
           </div>
         </div>
       </div>

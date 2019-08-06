@@ -1,19 +1,20 @@
 .nav-tabs {
+
   .nav-link {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    padding: 1.25rem 2.5rem;
     color: $text-muted;
     font-size: 14px;
-    padding: 1.25rem 2.5rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 
     &:hover {
       color: $primary;
     }
 
     &.active {
+      color: $white;
       background-color: $primary;
       border-color: $primary;
-      color: $white;
     }
 
     &:hover {
@@ -22,10 +23,11 @@
   }
 }
 
+
 .nav-tabs .nav-item.show .nav-link {
+  color: $white;
   background-color: darken($primary, 10%);
   border-color: darken($primary, 10%);
-  color: $white;
 }
 
 .api-doc-tab {

@@ -55,18 +55,12 @@ defmodule BlockScoutWeb.WeiHelpers do
     converted_value =
       wei
       |> Wei.to(unit)
-
-    formatted_value =
-      if Decimal.cmp(converted_value, 1_000_000_000_000) == :gt do
-        Cldr.Number.to_string!(converted_value, format: "0.###E+0")
-      else
-        Cldr.Number.to_string!(converted_value, format: "#,##0.##################")
-      end
+      |> Cldr.Number.to_string!(format: "#,##0.##################")
 
     if Keyword.get(options, :include_unit_label, true) do
       "#{converted_value} #{Explorer.coin}"
     else
-      formatted_value
+      converted_value
     end
   end
 end

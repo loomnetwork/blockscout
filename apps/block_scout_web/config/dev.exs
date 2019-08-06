@@ -6,25 +6,10 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-
-port =
-  case System.get_env("PORT") && Integer.parse(System.get_env("PORT")) do
-    {port, _} -> port
-    :error -> nil
-    nil -> nil
-  end
-
 config :block_scout_web, BlockScoutWeb.Endpoint,
-  http: [
-    port: port || 4000
-  ],
-  url: [
-    scheme: "http",
-    host: System.get_env("BLOCKSCOUT_HOST") || "localhost",
-    path: System.get_env("NETWORK_PATH") || "/"
-  ],
+  http: [port: 4000],
   https: [
-    port: (port && port + 1) || 4001,
+    port: 4001,
     cipher_suite: :strong,
     certfile: System.get_env("CERTFILE") || "priv/cert/selfsigned.pem",
     keyfile: System.get_env("KEYFILE") || "priv/cert/selfsigned_key.pem"

@@ -18,7 +18,6 @@ config :block_scout_web, BlockScoutWeb.Chain,
   subnetwork: System.get_env("SUBNETWORK"),
   network_icon: System.get_env("NETWORK_ICON"),
   logo: System.get_env("LOGO"),
-  logo_footer: System.get_env("LOGO_FOOTER"),
   has_emission_funds: false
 
 config :block_scout_web,
@@ -41,7 +40,7 @@ config :block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter,
 config :block_scout_web, BlockScoutWeb.Endpoint,
   instrumenters: [BlockScoutWeb.Prometheus.Instrumenter, SpandexPhoenix.Instrumenter],
   url: [
-    host: System.get_env("BLOCKSCOUT_HOST") || "localhost",
+    host: "localhost",
     path: System.get_env("NETWORK_PATH") || "/"
   ],
   render_errors: [view: BlockScoutWeb.ErrorView, accepts: ~w(html json)],

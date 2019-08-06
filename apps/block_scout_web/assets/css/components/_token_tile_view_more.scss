@@ -1,47 +1,62 @@
 .token-tile-view-more {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  line-height: 1.2;
-  padding-top: 10px;
+  line-height: 0.5;
   text-align: center;
 
-  a {
+  &:hover, :focus {
     text-decoration: none;
   }
+}
+.token-tile-view-more span {
+  display: inline-block;
+  position: relative;
+}
+.token-tile-view-more span:before,
+.token-tile-view-more span:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  border-bottom: 1px solid $border-color;
+  border-top: 1px solid $border-color;
+  top: 0;
+  width: 43%;
+}
+.token-tile-view-more span:before {
+  right: 55%;
+  margin-right: .9375rem;
+}
+.token-tile-view-more span:after {
+  left: 55%;
+  margin-left: .9375rem;
+}
 
-  &:before,
-  &:after {
-    border-bottom: 1px solid $border-color;
-    border-top: 1px solid $border-color;
-    content: "";
-    height: 4px;
-    flex-grow: 1;
 
-    @include media-breakpoint-down(md) {
-    }
 
-    @include media-breakpoint-down(sm) {
-    }
+@include media-breakpoint-down(md) {
+
+  .token-tile-view-more span:before,
+  .token-tile-view-more span:after {
+    width: 40%;
+  }
+  .token-tile-view-more span:before {
+    right: 58%;
+  }
+  .token-tile-view-more span:after {
+    left: 58%;
   }
 
-  &:before {
-    margin-right: 10px;
+}
 
-    @include media-breakpoint-down(md) {
-    }
+@include media-breakpoint-down(sm) {
 
-    @include media-breakpoint-down(sm) {
-    }
+  .token-tile-view-more span:before,
+  .token-tile-view-more span:after {
+    width: 28%;
+  }
+  .token-tile-view-more span:before {
+    right: 66%;
+  }
+  .token-tile-view-more span:after {
+    left: 66%;
   }
 
-  &:after {
-    margin-left: 10px;
-
-    @include media-breakpoint-down(md) {
-    }
-
-    @include media-breakpoint-down(sm) {
-    }
-  }
 }

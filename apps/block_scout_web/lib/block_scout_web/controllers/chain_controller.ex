@@ -2,9 +2,8 @@ defmodule BlockScoutWeb.ChainController do
   use BlockScoutWeb, :controller
 
   alias BlockScoutWeb.ChainView
-  alias Explorer.{Chain, PagingOptions}
+  alias Explorer.{Chain, PagingOptions, Repo}
   alias Explorer.Chain.{Address, Block, Transaction}
-  alias Explorer.Chain.Supply.RSK
   alias Explorer.Counters.AverageBlockTime
   alias Explorer.ExchangeRates.Token
   alias Explorer.Market
@@ -12,16 +11,7 @@ defmodule BlockScoutWeb.ChainController do
 
   def show(conn, _params) do
     transaction_estimated_count = Chain.transaction_estimated_count()
-    block_count = Chain.block_estimated_count()
-
-    _market_cap_calculation =
-      case Application.get_env(:explorer, :supply) do
-        RSK ->
-          RSK
-
-        _ ->
-          :standard
-      end
+    block_count = Chain.block_count()
 
     exchange_rate = Market.get_exchange_rate(Explorer.coin()) || Token.null()
 
@@ -53,8 +43,6 @@ defmodule BlockScoutWeb.ChainController do
     end
   end
 
-  def search(conn, _), do: not_found(conn)
-
   def token_autocomplete(conn, %{"q" => term}) when is_binary(term) do
     if term == "" do
       json(conn, "{}")
@@ -75,15 +63,9 @@ defmodule BlockScoutWeb.ChainController do
   def chain_blocks(conn, _params) do
     if ajax?(conn) do
       blocks =
-        [
-          paging_options: %PagingOptions{page_size: 4},
-          necessity_by_association: %{
-            [miner: :names] => :optional,
-            :transactions => :optional,
-            :rewards => :optional
-          }
-        ]
+        [paging_options: %PagingOptions{page_size: 4}]
         |> Chain.list_blocks()
+        |> Repo.preload([[miner: :names], :transactions, :rewards])
         |> Enum.map(fn block ->
           %{
             chain_block_html:

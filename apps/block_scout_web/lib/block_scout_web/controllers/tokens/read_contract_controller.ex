@@ -4,10 +4,8 @@ defmodule BlockScoutWeb.Tokens.ReadContractController do
   alias Explorer.{Chain, Market}
 
   def index(conn, %{"token_id" => address_hash_string}) do
-    options = [necessity_by_association: %{[contract_address: :smart_contract] => :optional}]
-
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
-         {:ok, token} <- Chain.token_from_address_hash(address_hash, options) do
+         {:ok, token} <- Chain.token_from_address_hash(address_hash) do
       render(
         conn,
         "index.html",

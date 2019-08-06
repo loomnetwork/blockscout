@@ -3,7 +3,10 @@
   <%= render BlockScoutWeb.AddressView, "overview.html", assigns %>
 
   <div class="card">
-    <%= render BlockScoutWeb.AddressView, "_tabs.html", assigns %>
+    <div class="card-header">
+      <%= render BlockScoutWeb.AddressView, "_tabs.html", assigns %>
+    </div>
+
     <!-- loaded via AJAX -->
     <div class="card-body" data-smart-contract-functions data-hash="<%= to_string(@address.hash) %>" data-url="<%= smart_contract_path(@conn, :index) %>">
       <div>

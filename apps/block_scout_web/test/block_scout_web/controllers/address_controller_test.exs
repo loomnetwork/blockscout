@@ -15,24 +15,23 @@ defmodule BlockScoutWeb.AddressControllerTest do
       start_supervised!(AddressesWithBalanceCounter)
       AddressesWithBalanceCounter.consolidate()
 
-      conn = get(conn, address_path(conn, :index, %{type: "JSON"}))
-      {:ok, %{"items" => items}} = Poison.decode(conn.resp_body)
+      conn = get(conn, address_path(conn, :index))
 
-      assert Enum.count(items) == Enum.count(address_hashes)
+      assert conn.assigns.address_tx_count_pairs
+             |> Enum.map(fn {address, _transaction_count} -> address end)
+             |> Enum.map(& &1.hash) == address_hashes
     end
 
     test "returns an address's primary name when present", %{conn: conn} do
       address = insert(:address, fetched_coin_balance: 1)
-      insert(:address_name, address: address, primary: true, name: "POA Wallet")
+      address_name = insert(:address_name, address: address, primary: true, name: "POA Wallet")
 
       start_supervised!(AddressesWithBalanceCounter)
       AddressesWithBalanceCounter.consolidate()
 
-      conn = get(conn, address_path(conn, :index, %{type: "JSON"}))
+      conn = get(conn, address_path(conn, :index))
 
-      {:ok, %{"items" => [item]}} = Poison.decode(conn.resp_body)
-
-      assert String.contains?(item, "POA Wallet")
+      assert html_response(conn, 200) =~ address_name.name
     end
   end
 

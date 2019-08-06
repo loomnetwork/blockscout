@@ -16,7 +16,7 @@ defmodule BlockScoutWeb.AddressCoinBalanceController do
 
   def index(conn, %{"address_id" => address_hash_string, "type" => "JSON"} = params) do
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
-         :ok <- Chain.check_address_exists(address_hash) do
+         {:ok, address} <- Chain.hash_to_address(address_hash) do
       full_options = paging_options(params)
 
       coin_balances_plus_one = Chain.address_to_coin_balances(address_hash, full_options)
@@ -32,7 +32,7 @@ defmodule BlockScoutWeb.AddressCoinBalanceController do
             address_coin_balance_path(
               conn,
               :index,
-              address_hash,
+              address,
               Map.delete(next_page_params, "type")
             )
         end
@@ -52,7 +52,7 @@ defmodule BlockScoutWeb.AddressCoinBalanceController do
       :error ->
         unprocessable_entity(conn)
 
-      :not_found ->
+      {:error, :not_found} ->
         not_found(conn)
     end
   end
@@ -64,16 +64,10 @@ defmodule BlockScoutWeb.AddressCoinBalanceController do
         address: address,
         coin_balance_status: CoinBalanceOnDemand.trigger_fetch(address),
         exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
-        transaction_count: transaction_count(address_hash),
-        validation_count: validation_count(address_hash),
+        transaction_count: transaction_count(address),
+        validation_count: validation_count(address),
         current_path: current_path(conn)
       )
-    else
-      :error ->
-        unprocessable_entity(conn)
-
-      {:error, :not_found} ->
-        not_found(conn)
     end
   end
 end

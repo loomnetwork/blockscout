@@ -460,8 +460,7 @@ defmodule BlockScoutWeb.API.RPC.TransactionControllerTest do
           %{
             "address" => "#{address.hash}",
             "data" => "#{log.data}",
-            "topics" => ["first topic", "second topic", nil, nil],
-            "index" => "#{log.index}"
+            "topics" => ["first topic", "second topic", nil, nil]
           }
         ],
         "next_page_params" => nil

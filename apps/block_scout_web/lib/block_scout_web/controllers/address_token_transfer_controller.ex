@@ -85,8 +85,8 @@ defmodule BlockScoutWeb.AddressTokenTransferController do
         exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
         current_path: current_path(conn),
         token: token,
-        transaction_count: transaction_count(address_hash),
-        validation_count: validation_count(address_hash)
+        transaction_count: transaction_count(address),
+        validation_count: validation_count(address)
       )
     else
       :error ->

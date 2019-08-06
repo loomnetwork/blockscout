@@ -25,8 +25,7 @@ defmodule BlockScoutWeb.Chain do
     InternalTransaction,
     Log,
     TokenTransfer,
-    Transaction,
-    Wei
+    Transaction
   }
 
   alias Explorer.PagingOptions
@@ -86,16 +85,6 @@ defmodule BlockScoutWeb.Chain do
     Map.merge(params, paging_params(List.last(list)))
   end
 
-  def paging_options(%{"hash" => hash, "fetched_coin_balance" => fetched_coin_balance}) do
-    with {coin_balance, ""} <- Integer.parse(fetched_coin_balance),
-         {:ok, address_hash} <- string_to_address_hash(hash) do
-      [paging_options: %{@default_paging_options | key: {%Wei{value: Decimal.new(coin_balance)}, address_hash}}]
-    else
-      _ ->
-        [paging_options: @default_paging_options]
-    end
-  end
-
   def paging_options(%{
         "block_number" => block_number_string,
         "transaction_index" => transaction_index_string,
@@ -122,10 +111,9 @@ defmodule BlockScoutWeb.Chain do
   end
 
   def paging_options(%{"block_number" => block_number_string}) do
-    case Integer.parse(block_number_string) do
-      {block_number, ""} ->
-        [paging_options: %{@default_paging_options | key: {block_number}}]
-
+    with {block_number, ""} <- Integer.parse(block_number_string) do
+      [paging_options: %{@default_paging_options | key: {block_number}}]
+    else
       _ ->
         [paging_options: @default_paging_options]
     end
@@ -183,10 +171,6 @@ defmodule BlockScoutWeb.Chain do
     end
   end
 
-  defp paging_params({%Address{hash: hash, fetched_coin_balance: fetched_coin_balance}, _}) do
-    %{"hash" => hash, "fetched_coin_balance" => Decimal.to_string(fetched_coin_balance.value)}
-  end
-
   defp paging_params({%Reward{block: %{number: number}}, _}) do
     %{"block_number" => number, "index" => 0}
   end
@@ -200,12 +184,8 @@ defmodule BlockScoutWeb.Chain do
     %{"block_number" => block_number, "transaction_index" => transaction_index, "index" => index}
   end
 
-  defp paging_params(%Log{index: index} = log) do
-    if Ecto.assoc_loaded?(log.transaction) do
-      %{"block_number" => log.transaction.block_number, "transaction_index" => log.transaction.index, "index" => index}
-    else
-      %{"index" => index}
-    end
+  defp paging_params(%Log{index: index}) do
+    %{"index" => index}
   end
 
   defp paging_params(%Transaction{block_number: nil, inserted_at: inserted_at, hash: hash}) do
@@ -241,22 +221,18 @@ defmodule BlockScoutWeb.Chain do
   end
 
   defp transaction_from_param(param) do
-    case string_to_transaction_hash(param) do
-      {:ok, hash} ->
-        hash_to_transaction(hash)
-
-      :error ->
-        {:error, :not_found}
+    with {:ok, hash} <- string_to_transaction_hash(param) do
+      hash_to_transaction(hash)
+    else
+      :error -> {:error, :not_found}
     end
   end
 
   defp hash_string_to_block(hash_string) do
-    case string_to_block_hash(hash_string) do
-      {:ok, hash} ->
-        hash_to_block(hash)
-
-      :error ->
-        {:error, :not_found}
+    with {:ok, hash} <- string_to_block_hash(hash_string) do
+      hash_to_block(hash)
+    else
+      :error -> {:error, :not_found}
     end
   end
 end

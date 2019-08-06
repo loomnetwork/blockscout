@@ -1,18 +1,19 @@
 defmodule BlockScoutWeb.TransactionView do
   use BlockScoutWeb, :view
 
+  alias ABI.TypeDecoder
   alias BlockScoutWeb.{AddressView, BlockView, TabHelpers}
   alias Cldr.Number
-  alias Explorer.{Chain, Repo}
+  alias Explorer.Chain
   alias Explorer.Chain.Block.Reward
-  alias Explorer.Chain.{Address, Block, InternalTransaction, Transaction, Wei}
+  alias Explorer.Chain.{Address, Block, InternalTransaction, TokenTransfer, Transaction, Wei}
   alias Explorer.ExchangeRates.Token
   alias Timex.Duration
 
   import BlockScoutWeb.Gettext
   import BlockScoutWeb.Tokens.Helpers
 
-  @tabs ["token_transfers", "internal_transactions", "logs", "raw_trace"]
+  @tabs ["token_transfers", "internal_transactions", "logs"]
 
   defguardp is_transaction_type(mod) when mod in [InternalTransaction, Transaction]
 
@@ -32,20 +33,84 @@ defmodule BlockScoutWeb.TransactionView do
 
   def value_transfer?(_), do: false
 
-  def token_transfer_type(transaction) do
-    transaction_with_transfers = Repo.preload(transaction, token_transfers: :token)
+  def erc20_token_transfer(
+        %Transaction{
+          status: :ok,
+          created_contract_address_hash: nil,
+          input: input,
+          value: value
+        },
+        token_transfers
+      ) do
+    zero_wei = %Wei{value: Decimal.new(0)}
 
-    type = Chain.transaction_token_transfer_type(transaction)
-    if type, do: {type, transaction_with_transfers}
-  end
+    case {to_string(input), value} do
+      {unquote(TokenTransfer.transfer_function_signature()) <> params, ^zero_wei} ->
+        types = [:address, {:uint, 256}]
 
-  def token_type_name(type) do
-    case type do
-      :erc20 -> gettext("ERC-20 ")
-      :erc721 -> gettext("ERC-721 ")
-      :token_transfer -> ""
+        [address, value] = decode_params(params, types)
+
+        decimal_value = Decimal.new(value)
+
+        Enum.find(token_transfers, fn token_transfer ->
+          token_transfer.to_address_hash.bytes == address && token_transfer.amount == decimal_value
+        end)
+
+      _ ->
+        nil
     end
+  rescue
+    _ -> nil
   end
+
+  def erc20_token_transfer(_, _) do
+    nil
+  end
+
+  def erc721_token_transfer(
+        %Transaction{
+          status: :ok,
+          created_contract_address_hash: nil,
+          input: input,
+          value: value
+        },
+        token_transfers
+      ) do
+    zero_wei = %Wei{value: Decimal.new(0)}
+
+    # https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC721/ERC721.sol#L35
+    {from_address, to_address} =
+      case {to_string(input), value} do
+        # transferFrom(address,address,uint256)
+        {"0x23b872dd" <> params, ^zero_wei} ->
+          types = [:address, :address, {:uint, 256}]
+          [from_address, to_address, _value] = decode_params(params, types)
+          {from_address, to_address}
+
+        # safeTransferFrom(address,address,uint256)
+        {"0x42842e0e" <> params, ^zero_wei} ->
+          types = [:address, :address, {:uint, 256}]
+          [from_address, to_address, _value] = decode_params(params, types)
+          {from_address, to_address}
+
+        # safeTransferFrom(address,address,uint256,bytes)
+        {"0xb88d4fde" <> params, ^zero_wei} ->
+          types = [:address, :address, {:uint, 256}, :bytes]
+          [from_address, to_address, _value, _data] = decode_params(params, types)
+          {from_address, to_address}
+
+        _ ->
+          nil
+      end
+
+    Enum.find(token_transfers, fn token_transfer ->
+      token_transfer.from_address_hash.bytes == from_address && token_transfer.to_address_hash.bytes == to_address
+    end)
+  rescue
+    _ -> nil
+  end
+
+  def erc721_token_transfer(_, _), do: nil
 
   def processing_time_duration(%Transaction{block: nil}) do
     :pending
@@ -273,5 +338,10 @@ defmodule BlockScoutWeb.TransactionView do
   defp tab_name(["token_transfers"]), do: gettext("Token Transfers")
   defp tab_name(["internal_transactions"]), do: gettext("Internal Transactions")
   defp tab_name(["logs"]), do: gettext("Logs")
-  defp tab_name(["raw_trace"]), do: gettext("Raw Trace")
+
+  defp decode_params(params, types) do
+    params
+    |> Base.decode16!(case: :mixed)
+    |> TypeDecoder.decode_raw(types)
+  end
 end

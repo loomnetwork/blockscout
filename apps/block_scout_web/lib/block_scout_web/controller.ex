@@ -12,9 +12,8 @@ defmodule BlockScoutWeb.Controller do
   def not_found(conn) do
     conn
     |> put_status(:not_found)
-    |> put_view(BlockScoutWeb.PageNotFoundView)
-    |> render(:index)
-    |> halt()
+    |> put_view(BlockScoutWeb.ErrorView)
+    |> render("404.html")
   end
 
   def unprocessable_entity(conn) do
