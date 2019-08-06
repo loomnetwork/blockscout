@@ -1,28 +1,25 @@
-$button-primary-color: $primary !default;
-$button-secondary-color: $secondary !default;
-
-.button, .btn {
-  border-radius: 2px;
+.button {
   border: none;
-  cursor: pointer;
   display: inline-block;
-  line-height: 1.2;
-  padding: 10px 16px;
   text-align: center;
   text-decoration: none;
-  transition: $transition-cont;
-  white-space: nowrap;
+  white-space:  nowrap;
+  padding: 8px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  -webkit-transition: all 0.25s;
+  transition: all 0.25s;
 
   &-primary {
-    background-color: $button-primary-color;
-    border: 1px solid $button-primary-color;
-    color: #fff;
+    background-color: $primary;
+    color: $white;
+    border: 1px solid $primary;
 
     &:hover,
     &:focus {
-      background-color: darken($button-primary-color, 10%);
-      border-color: darken($button-primary-color, 10%);
-      color: #fff;
+      color: $white;
+      background-color: darken($primary, 10%);
+      border-color: darken($primary, 10%);
       text-decoration: none;
     }
 
@@ -34,18 +31,18 @@ $button-secondary-color: $secondary !default;
   }
 
   &-secondary {
-    background-color: #fff;
-    border: 1px solid $button-secondary-color;
-    color: $button-secondary-color;
+    border: 1px solid $tertiary;
+    color: $tertiary;
+    background-color: $white;
     font-weight: 400;
 
     &:hover,
     &:focus {
-      background-color: darken($button-secondary-color, 10%);
-      border-color: darken($button-secondary-color, 10%);
-      color: #fff;
-      outline: none !important;
+      background-color: darken($tertiary, 10%);
+      border-color: darken($tertiary, 10%);
+      color: $white;
       text-decoration: none;
+      outline: none !important;
     }
   }
 
@@ -69,8 +66,8 @@ $button-secondary-color: $secondary !default;
     padding: 20px 60px 20px;
   }
 
-  // Block button
-  // -------------------------
+// Block button
+// -------------------------
 
   &-block {
     display: block;
@@ -78,11 +75,12 @@ $button-secondary-color: $secondary !default;
   }
 
   &-disabled,
-  &:disabled {
+  &:disabled, {
     background-color: $gray-300;
     color: $gray-500;
     text-decoration: none;
   }
+
 }
 
 // Vertically space out multiple block buttons
