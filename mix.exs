@@ -78,4 +78,11 @@ defmodule BlockScout.Mixfile do
       {:excoveralls, "~> 0.10.0", only: [:test], github: "KronicDeth/excoveralls", branch: "circle-workflows"}
     ]
   end
+
+defp deps do
+    [
+      {:credo, "~> 1.0", override: true}
+    ]
+  end
+
 end
