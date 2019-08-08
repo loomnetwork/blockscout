@@ -4,6 +4,14 @@
       <!-- Block Details -->
       <div class="card">
         <div class="card-body">
+          <div class="icon-links float-right">
+            <span data-clipboard-text="<%= @block.hash %>">
+              <button type="button" class="icon-link" id="button" data-toggle="tooltip" data-placement="top" title="<%= gettext("Copy Block Hash") %>" aria-label="<%= gettext("Copy Block Hash") %>">
+                <i class="fas fa-clone"></i>
+              </button>
+            </span>
+          </div>
+
           <h1 class="card-title" data-test="detail_type">
             <%= gettext("%{block_type} Details", block_type: block_type(@block)) %>
           </h1>
