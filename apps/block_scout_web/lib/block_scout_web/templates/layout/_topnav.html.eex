@@ -33,24 +33,9 @@
             <%= gettext("Accounts") %>
           <% end %>
         </li>
-        <li class="nav-item dropdown">
-
-          <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
-            <%= link(
-                  gettext("GraphQL"),
-                  class: "dropdown-item",
-                  to: "/graphiql"
-                ) %>
-            <%= link(
-                  gettext("RPC"),
-                  class: "dropdown-item",
-                  to: api_docs_path(@conn, :index)
-                ) %>
-          </div>
-        </li>
       </ul>
       <div class="search-form d-lg-flex d-inline-block">
-        <%= form_for @conn, chain_path(@conn, :search), [class: "form-inline my-2 my-lg-0", method: :get, enforce_utf8: false], fn f -> %>
+        <%= form_for @conn, chain_path(@conn, :search), [class: "form-inline my-lg-0", method: :get, enforce_utf8: false], fn f -> %>
           <div class="input-group">
             <%= search_input f, :q, class: 'form-control mr-auto', placeholder: gettext("Search by address, token symbol name, transaction hash, or block number"), "aria-describedby": "search-icon", "aria-label": gettext("Search"), "data-test": "search_input" %>
             <div class="input-group-append">
