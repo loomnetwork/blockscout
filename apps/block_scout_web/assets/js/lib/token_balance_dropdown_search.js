@@ -42,10 +42,12 @@ const TokenBalanceDropdownSearch = (element, event) => {
   $tokensCount.html($tokensCount.html().replace(/\d+/g, $tokens.not('.d-none').length))
 }
 
-$('[data-token-balance-dropdown]').on('hidden.bs.dropdown', _event => {
-  $('[data-filter-dropdown-tokens]').val('').trigger('input')
-})
-
-$('[data-token-balance-dropdown]').on('input', function (event) {
-  TokenBalanceDropdownSearch(this, event)
-})
+setTimeout(() => {
+  $('[data-token-balance-dropdown]').on('hidden.bs.dropdown', _event => {
+    console.log('sdsdd')
+    $('[data-filter-dropdown-tokens]').val('').trigger('input')
+  })
+  $('[data-token-balance-dropdown]').on('input', function (event) {
+    TokenBalanceDropdownSearch(this, event)
+  })
+}, 1000)
