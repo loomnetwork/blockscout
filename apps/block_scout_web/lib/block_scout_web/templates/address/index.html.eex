@@ -3,9 +3,8 @@
     <div class="card-body">
       <h1><%= gettext "Addresses" %></h1>
       <p>
-        <%= gettext "Showing 250 addresses of" %>
-        <%= Cldr.Number.to_string!(@address_count, format: "#,###") %>
-        <%= gettext "total addresses with a balance" %>
+        Showing <%= Cldr.Number.to_string!(@address_count, format: "#,###") %>
+        <%= gettext "Addresses" %>
       </p>
 
       <span data-selector="top-addresses-list">
