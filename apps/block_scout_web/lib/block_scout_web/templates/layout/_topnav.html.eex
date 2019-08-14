@@ -12,11 +12,6 @@
     <%= link to: webapp_url(@conn), class: "navbar-brand", "data-test": "header_logo" do %>
       <img class="navbar-logo" id="navbar-logo" src="<%= logo() %>" alt="<%= subnetwork_title() %>" />
     <% end %>
-    <script>
-      if (localStorage.getItem("current-color-mode") === "dark") {
-        document.getElementById("navbar-logo").style.filter = "brightness(0) invert(1)";
-      }
-    </script>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
       <span class="navbar-toggler-icon"></span>
     </button>

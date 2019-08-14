@@ -1,6 +1,6 @@
 // Default variables
 $header-background-color: #fff !default;
-$header-links-color: #828ba0 !default;
+$header-links-color: #ddd !default;
 $header-links-color-active: #333 !default;
 $header-icon-color: $header-links-color !default;
 $header-icon-color-hover: $secondary !default;
@@ -14,7 +14,7 @@ $navbar-logo-height: 28px !default;
 $navbar-logo-width: auto !default;
 
 .navbar.navbar-primary {
-  background-color: $header-background-color;
+  background-color: $primary;
   position: relative;
   z-index: 100;
 
@@ -26,7 +26,7 @@ $navbar-logo-width: auto !default;
     
     .nav-link {
       align-items: center;
-      color: $header-links-color;
+      color: $white;
       display: flex;
       font-size: 14px;
       position: relative;
@@ -119,8 +119,8 @@ $navbar-logo-width: auto !default;
   }
 
   .form-control {
-    background: $header-textfield-background-color;
-    border-color: $header-textfield-background-color;
+    background: $primary;
+    border-color: $primary;
     color: $header-textfield-text-color;
     font-size: 14px;
     height: 100%;
