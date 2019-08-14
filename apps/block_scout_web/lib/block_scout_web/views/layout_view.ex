@@ -62,6 +62,11 @@ defmodule BlockScoutWeb.LayoutView do
       title: "RSK Mainnet",
       url: "https://blockscout.com/rsk/mainnet",
       other?: true
+    },
+    %{
+      title: "RSK Mainnet",
+      url: "https://blockscout.com/rsk/mainnet",
+      other?: true
     }
   ]
 
@@ -76,8 +81,7 @@ defmodule BlockScoutWeb.LayoutView do
   end
 
   def logo_footer do
-    Keyword.get(application_config(), :logo_footer) || Keyword.get(application_config(), :logo) ||
-      "/images/blockscout_logo.svg"
+    Keyword.get(application_config(), :logo) || "/images/logo_loom.svg"
   end
 
   def subnetwork_title do
