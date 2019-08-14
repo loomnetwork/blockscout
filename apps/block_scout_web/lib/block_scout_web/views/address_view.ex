@@ -217,6 +217,11 @@ defmodule BlockScoutWeb.AddressView do
     |> String.slice(0..5)
   end
 
+  def loomnify(address) do
+    last = String.length("#{address}") - 1
+    "loom#{String.slice("#{address}", 2..last)}"
+  end
+
   def token_title(%Token{name: name, symbol: symbol}), do: "#{name} (#{symbol})"
 
   def incoming_transaction_count(address_hash) do

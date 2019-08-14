@@ -66,7 +66,7 @@ defmodule BlockScoutWeb.WeiHelpers do
       end
 
     if Keyword.get(options, :include_unit_label, true) do
-      "#{formatted_value} ETH"
+      "#{converted_value} #{Explorer.coin}"
     else
       formatted_value
     end

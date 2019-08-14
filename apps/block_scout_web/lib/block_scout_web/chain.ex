@@ -180,6 +180,8 @@ defmodule BlockScoutWeb.Chain do
 
   defp address_from_param(param) do
     case string_to_address_hash(param) do
+      {:ok, hash} ->
+        find_address_from_hash(hash)
       :error ->
         {:error, :not_found}
     end
