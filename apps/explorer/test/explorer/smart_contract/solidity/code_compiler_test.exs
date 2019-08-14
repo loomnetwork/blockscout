@@ -53,6 +53,26 @@ defmodule Explorer.SmartContract.Solidity.CodeCompilerTest do
               }} = response
     end
 
+    test "compiles smart contract with default evm version", %{contract_code_info: contract_code_info} do
+      optimize = true
+
+      response =
+        CodeCompiler.run(
+          name: contract_code_info.name,
+          compiler_version: contract_code_info.version,
+          code: contract_code_info.source_code,
+          optimize: optimize,
+          evm_version: "default"
+        )
+
+      assert {:ok,
+              %{
+                "abi" => _,
+                "bytecode" => _,
+                "name" => _
+              }} = response
+    end
+
     test "compiles code with external libraries" do
       Enum.each(@compiler_tests, fn compiler_test ->
         compiler_version = compiler_test["compiler_version"]
@@ -268,6 +288,20 @@ defmodule Explorer.SmartContract.Solidity.CodeCompilerTest do
 
       assert Enum.any?(abi, fn el -> el["type"] == "constructor" end)
     end
+
+    test "can compile a large file" do
+      path = File.cwd!() <> "/test/support/fixture/smart_contract/large_smart_contract.sol"
+      contract = File.read!(path)
+
+      assert {:ok, %{"abi" => abi}} =
+               CodeCompiler.run(
+                 name: "HomeWorkDeployer",
+                 compiler_version: "v0.5.9+commit.e560f70d",
+                 code: contract,
+                 evm_version: "constantinople",
+                 optimize: true
+               )
+    end
   end
 
   describe "get_contract_info/1" do
@@ -309,6 +343,34 @@ defmodule Explorer.SmartContract.Solidity.CodeCompilerTest do
       assert contract_inner_info == response
     end
   end
+
+  # describe "allowed_evm_versions/0" do
+  #   test "returns allowed evm versions defined by ALLOWED_EVM_VERSIONS env var" do
+  #     Application.put_env(:explorer, :allowed_evm_versions, "CustomEVM1,CustomEVM2,CustomEVM3")
+  #     response = CodeCompiler.allowed_evm_versions()
+
+  #     assert ["CustomEVM1", "CustomEVM2", "CustomEVM3"] = response
+  #   end
+
+  #   test "returns allowed evm versions defined by not trimmed ALLOWED_EVM_VERSIONS env var" do
+  #     Application.put_env(:explorer, :allowed_evm_versions, "CustomEVM1,  CustomEVM2, CustomEVM3")
+  #     response = CodeCompiler.allowed_evm_versions()
+
+  #     assert ["CustomEVM1", "CustomEVM2", "CustomEVM3"] = response
+  #   end
+
+  #   test "returns default_allowed_evm_versions" do
+  #     Application.put_env(
+  #       :explorer,
+  #       :allowed_evm_versions,
+  #       "homestead,tangerineWhistle,spuriousDragon,byzantium,constantinople,petersburg"
+  #     )
+
+  #     response = CodeCompiler.allowed_evm_versions()
+
+  #     assert ["homestead", "tangerineWhistle", "spuriousDragon", "byzantium", "constantinople", "petersburg"] = response
+  #   end
+  # end
 
   defp remove_init_data_and_whisper_data(code) do
     {res, _} =

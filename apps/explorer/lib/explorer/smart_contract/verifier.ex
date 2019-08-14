@@ -72,7 +72,8 @@ defmodule Explorer.SmartContract.Verifier do
       generated_bytecode != blockchain_bytecode_without_whisper ->
         {:error, :generated_bytecode}
 
-      has_constructor_with_params?(abi) && !ConstructorArguments.verify(address_hash, arguments_data) ->
+      has_constructor_with_params?(abi) &&
+          !ConstructorArguments.verify(address_hash, blockchain_bytecode_without_whisper, arguments_data) ->
         {:error, :constructor_arguments}
 
       true ->
@@ -103,6 +104,13 @@ defmodule Explorer.SmartContract.Verifier do
         |> :binary.list_to_bin()
 
       "a165627a7a72305820" <> <<_::binary-size(64)>> <> "0029" <> _constructor_arguments ->
+        extracted
+        |> Enum.reverse()
+        |> :binary.list_to_bin()
+
+      # Solidity >= 0.5.9; https://github.com/ethereum/solidity/blob/aa4ee3a1559ebc0354926af962efb3fcc7dc15bd/docs/metadata.rst
+      "a265627a7a72305820" <>
+          <<_::binary-size(64)>> <> "64736f6c6343" <> <<_::binary-size(6)>> <> "0032" <> _constructor_arguments ->
         extracted
         |> Enum.reverse()
         |> :binary.list_to_bin()

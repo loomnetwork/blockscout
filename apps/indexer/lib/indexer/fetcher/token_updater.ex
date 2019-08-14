@@ -29,15 +29,17 @@ defmodule Indexer.Fetcher.TokenUpdater do
     |> Enum.reverse()
     |> update_metadata()
 
-    Process.send_after(self(), :update_tokens, :timer.hours(state.update_interval) * 24)
+    Process.send_after(self(), :update_tokens, :timer.seconds(state.update_interval))
 
     {:noreply, state}
   end
 
   @doc false
   def update_metadata(token_addresses) when is_list(token_addresses) do
+    options = [necessity_by_association: %{[contract_address: :smart_contract] => :optional}]
+
     Enum.each(token_addresses, fn address ->
-      case Chain.token_from_address_hash(address) do
+      case Chain.token_from_address_hash(address, options) do
         {:ok, %Token{cataloged: true} = token} ->
           update_metadata(token)
       end

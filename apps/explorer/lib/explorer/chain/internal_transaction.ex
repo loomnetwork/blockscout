@@ -392,7 +392,7 @@ defmodule Explorer.Chain.InternalTransaction do
   @create_required_fields ~w(from_address_hash gas index init trace_address transaction_hash value)a
   @create_allowed_fields @create_optional_fields ++ @create_required_fields
 
-  defp type_changeset(changeset, attrs, :create) do
+  defp type_changeset(changeset, attrs, type) when type in [:create, :create2] do
     changeset
     |> cast(attrs, @create_allowed_fields)
     |> validate_required(@create_required_fields)
@@ -470,7 +470,12 @@ defmodule Explorer.Chain.InternalTransaction do
     from_address_hash, created_contract_address_hash from internal_transactions' table.
   """
   def where_address_fields_match(query, address_hash, :to) do
-    where(query, [t], t.to_address_hash == ^address_hash)
+    where(
+      query,
+      [t],
+      t.to_address_hash == ^address_hash or
+        (is_nil(t.to_address_hash) and t.created_contract_address_hash == ^address_hash)
+    )
   end
 
   def where_address_fields_match(query, address_hash, :from) do
@@ -532,7 +537,7 @@ defmodule Explorer.Chain.InternalTransaction do
     |> put_raw_call_error_or_result(transaction)
   end
 
-  defp internal_transaction_to_raw(%{type: :create} = transaction) do
+  defp internal_transaction_to_raw(%{type: type} = transaction) when type in [:create, :create2] do
     %{
       from_address_hash: from_address_hash,
       gas: gas,
@@ -544,7 +549,7 @@ defmodule Explorer.Chain.InternalTransaction do
     action = %{"from" => from_address_hash, "gas" => gas, "init" => init, "value" => value}
 
     %{
-      "type" => "create",
+      "type" => Atom.to_string(type),
       "action" => Action.to_raw(action),
       "traceAddress" => trace_address
     }

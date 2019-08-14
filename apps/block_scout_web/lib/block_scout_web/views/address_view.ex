@@ -3,8 +3,6 @@ defmodule BlockScoutWeb.AddressView do
 
   require Logger
 
-  import BlockScoutWeb.AddressController, only: [validation_count: 1]
-
   alias BlockScoutWeb.LayoutView
   alias Explorer.Chain
   alias Explorer.Chain.{Address, Hash, InternalTransaction, SmartContract, Token, TokenTransfer, Transaction, Wei}
@@ -111,6 +109,8 @@ defmodule BlockScoutWeb.AddressView do
     format_wei_value(balance, :ether)
   end
 
+  def balance_percentage(_, nil), do: ""
+
   def balance_percentage(%Address{fetched_coin_balance: balance}, total_supply) do
     balance
     |> Wei.to(:ether)
@@ -189,8 +189,8 @@ defmodule BlockScoutWeb.AddressView do
     |> Timex.format!("{M}-{D}-{YYYY}")
   end
 
-  def qr_code(%Address{hash: hash}) do
-    hash
+  def qr_code(address_hash) do
+    address_hash
     |> to_string()
     |> QRCode.to_png()
     |> Base.encode64()
@@ -219,15 +219,10 @@ defmodule BlockScoutWeb.AddressView do
 
   def token_title(%Token{name: name, symbol: symbol}), do: "#{name} (#{symbol})"
 
-  def loomnify(address) do
-    last = String.length("#{address}") - 1
-    "loom#{String.slice("#{address}", 2..last)}"
-  end
-
-  def incoming_transaction_count(%Address{} = address) do
-    count = Chain.address_to_incoming_transaction_count(address)
-
-    Cldr.Number.to_string!(count, format: "#,###")
+  def incoming_transaction_count(address_hash) do
+    address_hash
+    |> Chain.address_to_incoming_transaction_count()
+    |> BlockScoutWeb.Cldr.Number.to_string!(format: "#,###")
   end
 
   def trimmed_hash(%Hash{} = hash) do
@@ -236,6 +231,11 @@ defmodule BlockScoutWeb.AddressView do
   end
 
   def trimmed_hash(_), do: ""
+
+  def trimmed_verify_link(hash) do
+    string_hash = to_string(hash)
+    "#{String.slice(string_hash, 0..21)}..."
+  end
 
   def transaction_hash(%Address{contracts_creation_internal_transaction: %InternalTransaction{}} = address) do
     address.contracts_creation_internal_transaction.transaction_hash
@@ -253,10 +253,16 @@ defmodule BlockScoutWeb.AddressView do
     address.contracts_creation_transaction.from_address_hash
   end
 
-  def from_address_hash(address) do
-    Logger.error(fn -> ["Found a contract with no creator: ", to_string(address)] end)
-
+  def from_address_hash(_address) do
     nil
+  end
+
+  def address_link_to_other_explorer(link, address, full) do
+    if full do
+      link <> to_string(address)
+    else
+      trimmed_verify_link(link <> to_string(address))
+    end
   end
 
   defp matching_address_check(%Address{hash: hash} = current_address, %Address{hash: hash}, contract?, truncate) do
@@ -303,6 +309,7 @@ defmodule BlockScoutWeb.AddressView do
   defp tab_name(["read_contract"]), do: gettext("Read Contract")
   defp tab_name(["coin_balances"]), do: gettext("Coin Balance History")
   defp tab_name(["validations"]), do: gettext("Blocks Validated")
+  defp tab_name(["logs"]), do: gettext("Logs")
 
   def short_hash(%Address{hash: hash}) do
     <<

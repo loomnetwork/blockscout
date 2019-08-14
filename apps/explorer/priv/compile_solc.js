@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var sourceCode = process.argv[2];
+var sourceCodePath = process.argv[2];
 var version = process.argv[3];
 var optimize = process.argv[4];
 var optimizationRuns = parseInt(process.argv[5], 10);
@@ -13,15 +13,10 @@ var solc = require('solc')
 var compilerSnapshot = require(compilerVersionPath);
 var solc = solc.setupMethods(compilerSnapshot);
 
-const input = {
-  language: 'Solidity',
-  sources: {
-    [newContractName]: {
-      content: sourceCode
-    }
-  },
-  settings: {
-    evmVersion: evmVersion,
+var fs = require('fs');
+var sourceCode = fs.readFileSync(sourceCodePath, 'utf8');
+
+var settings = {
     optimizer: {
       enabled: optimize == '1',
       runs: optimizationRuns
@@ -34,7 +29,20 @@ const input = {
         '*': ['*']
       }
     }
-  }
+}
+
+if (evmVersion !== 'default') {
+    settings = Object.assign(settings, {evmVersion: evmVersion})
+}
+
+const input = {
+  language: 'Solidity',
+  sources: {
+    [newContractName]: {
+      content: sourceCode
+    }
+  },
+  settings: settings
 }
 
 

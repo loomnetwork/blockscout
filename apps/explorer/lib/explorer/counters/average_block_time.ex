@@ -11,7 +11,7 @@ defmodule Explorer.Counters.AverageBlockTime do
   alias Explorer.Repo
   alias Timex.Duration
 
-  @refresh_period 30 * 60 * 1_000
+  @refresh_period Application.get_env(:explorer, __MODULE__)[:period]
 
   @doc """
   Starts a process to periodically update the counter of the token holders.
@@ -70,9 +70,19 @@ defmodule Explorer.Counters.AverageBlockTime do
         select: {block.number, block.timestamp}
       )
 
+    query =
+      if Application.get_env(:explorer, :include_uncles_in_average_block_time) do
+        timestamps_query
+      else
+        from(block in timestamps_query,
+          where: block.consensus == true
+        )
+      end
+
     timestamps =
-      timestamps_query
+      query
       |> Repo.all()
+      |> Enum.sort_by(fn {_, timestamp} -> timestamp end, &>=/2)
       |> Enum.map(fn {number, timestamp} ->
         {number, DateTime.to_unix(timestamp, :millisecond)}
       end)

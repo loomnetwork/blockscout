@@ -26,7 +26,9 @@ defmodule Explorer.Factory do
     SmartContract,
     Token,
     TokenTransfer,
-    Transaction
+    Transaction,
+    StakingPool,
+    StakingPoolsDelegator
   }
 
   alias Explorer.Market.MarketHistory
@@ -145,7 +147,8 @@ defmodule Explorer.Factory do
       size: Enum.random(1..100_000),
       gas_limit: Enum.random(1..100_000),
       gas_used: Enum.random(1..100_000),
-      timestamp: DateTime.utc_now()
+      timestamp: DateTime.utc_now(),
+      refetch_needed: false
     }
   end
 
@@ -482,6 +485,7 @@ defmodule Explorer.Factory do
 
     address = %Address{
       hash: address_hash(),
+      verified: true,
       contract_code: contract_code_info().bytecode,
       smart_contract: smart_contract
     }
@@ -519,7 +523,7 @@ defmodule Explorer.Factory do
     contract_code_info = contract_code_info()
 
     %SmartContract{
-      address_hash: insert(:address, contract_code: contract_code_info.bytecode).hash,
+      address_hash: insert(:address, contract_code: contract_code_info.bytecode, verified: true).hash,
       compiler_version: contract_code_info.version,
       name: contract_code_info.name,
       contract_source_code: contract_code_info.source_code,
@@ -532,7 +536,7 @@ defmodule Explorer.Factory do
     contract_code_info = contract_code_info()
 
     %DecompiledSmartContract{
-      address_hash: insert(:address, contract_code: contract_code_info.bytecode).hash,
+      address_hash: insert(:address, contract_code: contract_code_info.bytecode, decompiled: true).hash,
       decompiler_version: "test_decompiler",
       decompiled_source_code: contract_code_info.source_code
     }
@@ -611,22 +615,34 @@ defmodule Explorer.Factory do
   end
 
   def staking_pool_factory do
-    %{
-      address_hash: address_hash(),
-      metadata: %{
-        banned_unitil: 0,
-        delegators_count: 0,
-        is_active: true,
-        is_banned: false,
-        is_validator: true,
-        mining_address: address_hash(),
-        retries_count: 1,
-        staked_amount: 25,
-        was_banned_count: 0,
-        was_validator_count: 1
-      },
-      name: "anonymous",
-      primary: true
+    wei_per_ether = 1_000_000_000_000_000_000
+
+    %StakingPool{
+      staking_address_hash: address_hash(),
+      mining_address_hash: address_hash(),
+      banned_until: 0,
+      delegators_count: 0,
+      is_active: true,
+      is_banned: false,
+      is_validator: true,
+      staked_amount: wei_per_ether * 500,
+      self_staked_amount: wei_per_ether * 300,
+      was_banned_count: 0,
+      was_validator_count: 1
+    }
+  end
+
+  def staking_pools_delegator_factory do
+    wei_per_ether = 1_000_000_000_000_000_000
+
+    %StakingPoolsDelegator{
+      pool_address_hash: address_hash(),
+      delegator_address_hash: address_hash(),
+      max_ordered_withdraw_allowed: wei_per_ether * 100,
+      max_withdraw_allowed: wei_per_ether * 50,
+      ordered_withdraw: wei_per_ether * 600,
+      stake_amount: wei_per_ether * 200,
+      ordered_withdraw_epoch: 2
     }
   end
 end
