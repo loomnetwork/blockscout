@@ -1,15 +1,7 @@
 <footer class="footer">
   <div class="footer-body container">
     <div class="row">
-      <div class="col-md-4">
-        <%= link to: chain_path(@conn, :show), class: "footer-brand" do %>
-          <img class="footer-logo" src="<%= logo() %>" alt="<%= subnetwork_title() %>" />
-        <% end %>
-      </div>
-      <div class="col-md-5">
-      </div>
-
-      <div class="col-md-3">
+      <div class="col-md-12">
         <div class="icon-links icon-links-primary footer-social-icons">
           <a href="https://github.com/loomnetwork" rel="noreferrer" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="Github">
             <i class="fab fa-github"></i>
