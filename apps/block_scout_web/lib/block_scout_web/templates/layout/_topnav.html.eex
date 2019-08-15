@@ -10,7 +10,7 @@
   </script>
   <div class="container-fluid navbar-container">
     <%= link to: webapp_url(@conn), class: "navbar-brand", "data-test": "header_logo" do %>
-      <img class="navbar-logo" id="navbar-logo" src="<%= logo() %>" alt="<%= subnetwork_title() %>" />
+      <img class="navbar-logo-loom" id="navbar-logo" src="<%= logo() %>" alt="<%= subnetwork_title() %>" />
     <% end %>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
       <span class="navbar-toggler-icon"></span>
@@ -28,7 +28,7 @@
             <% end %>
           </li>
           <li class="nav-item">
-            <%= link to: transaction_path(@conn, :index), class: "nav-link topnav-nav-link #{tab_status("transactions", @conn.request_path)}" do %>
+            <%= link to: transaction_path(@conn, :index), class: "nav-link topnav-nav-link #{tab_status("txs", @conn.request_path)}" do %>
               <span class="nav-link-icon">
                 <%= render BlockScoutWeb.IconsView, "_transaction_icon.html" %>
               </span>
@@ -112,11 +112,3 @@
     </div>
   </div>
 </nav>
-<%= render BlockScoutWeb.LayoutView, "_network_selector.html" %>
-<script>
-  if (localStorage.getItem("current-color-mode") === "dark") {
-    var modeChanger = document.getElementById("dark-mode-changer");
-    modeChanger.className += " " + "dark-mode-changer--dark";
-    document.body.className += " " + "dark-theme-applied";
-  }
-</script> 

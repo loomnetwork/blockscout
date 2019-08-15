@@ -17,9 +17,69 @@
     <meta name="theme-color" content="#ffffff">
 
     <%= render_existing(@view_module, "_metatags.html", assigns) || render("_default_title.html") %>
+
+    <style>
+      .box {
+        position: absolute;
+      }
+
+      .ribbon {
+        position: absolute;
+        left: -5px; top: -5px;
+        z-index: 1000000000000;
+        overflow: hidden;
+        width: 75px; height: 75px;
+        text-align: right;
+      }
+
+      .ribbon span {
+        font-size: 10px;
+        font-weight: bold;
+        color: #FFF;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 20px;
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        width: 100px;
+        display: block;
+        background: #F79E05;
+        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 19px; left: -21px;
+      }
+
+      .ribbon span::before {
+        content: "";
+        position: absolute; left: 0px; top: 100%;
+        z-index: -1;
+        border-left: 3px solid #8F5408;
+        border-right: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid #8F5408;
+      }
+
+      .ribbon span::after {
+        content: "";
+        position: absolute; right: 0px; top: 100%;
+        z-index: -1;
+        border-left: 3px solid transparent;
+        border-right: 3px solid #8F5408;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid #8F5408;
+      }
+
+      .navbar-logo-loom {
+        height: 50px;
+      }
+    </style>
   </head>
 
   <body>
+    <div class="box">
+      <div class="ribbon"><span>BETA</span></div>
+    </div>
+
     <script>
       if (localStorage.getItem("current-color-mode") === "dark") {
         document.body.style.backgroundColor = "#1c1d31";
@@ -38,7 +98,7 @@
       <% end %>
       <%= render BlockScoutWeb.LayoutView, "_topnav.html", assigns %>
 
-      <main>
+      <main class="mt-2">
         <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
         <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
         <%= render @view_module, @view_template, assigns %>

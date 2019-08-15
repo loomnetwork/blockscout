@@ -77,11 +77,11 @@ defmodule BlockScoutWeb.LayoutView do
   end
 
   def logo do
-    Keyword.get(application_config(), :logo) || "/images/logo_loom.svg"
+    Keyword.get(application_config(), :logo) || "/images/loom.svg"
   end
 
   def logo_footer do
-    Keyword.get(application_config(), :logo) || "/images/logo_loom.svg"
+    Keyword.get(application_config(), :logo) || "/images/loom.svg"
   end
 
   def subnetwork_title do

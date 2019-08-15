@@ -1,6 +1,13 @@
-<div class='dashboard-banner-container' data-page="chain-details">
+<div class='dashboard-banner-container' data-page="chain-details" style="margin-top: -10px">
   <div class="container">
     <div class="dashboard-banner">
+      <!-- Graph and legend -->
+
+        <!-- Graph -->
+        <!-- Legend -->
+
+
+      <!-- Stats -->
       <div class="dashboard-banner-network-plain-container">
         <div class="dashboard-banner-network-stats">
           <%= case @average_block_time do %>
@@ -45,54 +52,6 @@
     </div>
   </div>
 </div>
-
-<section class="container">
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-sm-12  col-md-12 col-lg-6">
-          <div data-address-total-chart-loading-message class="tile tile-muted text-center mt-5">
-            <span class="loading-spinner-small mr-2">
-              <span class="loading-spinner-block-1"></span>
-              <span class="loading-spinner-block-2"></span>
-            </span>
-            <%= gettext("Loading chart") %>...
-          </div>
-          <button data-address-total-chart-error-message class="alert alert-danger col-12 text-left mt-5" style="display: none;">
-            <span><%= gettext("There was a problem loading the chart.") %></span>
-          </button>
-          <canvas
-            data-address-total-chart="addressTotalHistoryChart"
-            data-address-total_history_chart_path="<%= @address_total_chart_data_path %>"
-            width="350"
-            height="152"
-            style="display: none;"
-          />
-        </div>
-        <div class="col-sm-12  col-md-12 col-lg-6">
-          <div data-transaction-chart-loading-message class="tile tile-muted text-center mt-5">
-            <span class="loading-spinner-small mr-2">
-              <span class="loading-spinner-block-1"></span>
-              <span class="loading-spinner-block-2"></span>
-            </span>
-            <%= gettext("Loading chart") %>...
-          </div>
-          <button data-transaction-chart-error-message class="alert alert-danger col-12 text-left mt-5" style="display: none;">
-            <span><%= gettext("There was a problem loading the chart.") %></span>
-          </button>
-          <canvas
-            data-transaction-chart="transactionHistoryChart"
-            data-transaction_history_chart_path="<%= @transaction_chart_data_path %>"
-            width="350"
-            height="152"
-            style="display: none;"
-          />
-        </div>
-      </div>
-    <div>
-  </div>
-</section>
-
 <section class="container">
   <div class="card card-chain-blocks">
     <div class="card-body">

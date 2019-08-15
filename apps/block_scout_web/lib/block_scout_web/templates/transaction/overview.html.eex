@@ -176,7 +176,7 @@
         <div class="card card-background-1 flex-grow-1">
           <div class="card-body card-body-flex-column-space-between">
             <%= if @transaction.value && @transaction.value.value != Decimal.new(0) do %>
-              <h2 class="card-title balance-card-title"><%= gettext "Ether" %> <%= gettext "Value" %></h2>
+              <h2 class="card-title balance-card-title">Ether <%= gettext "Value" %></h2>
               <div class="text-right">
                 <h3 class="address-balance-text">
                   <%= value(@transaction) %>
@@ -206,7 +206,7 @@
         <!-- Value -->
         <div class="card card-background-1 flex-grow-1">
           <div class="card-body card-body-flex-column-space-between">
-            <h2 class="card-title balance-card-title"><%= gettext "Ether" %> <%= gettext "Value" %></h2>
+            <h2 class="card-title balance-card-title">Ether <%= gettext "Value" %></h2>
             <div class="text-right">
               <h3 class="address-balance-text">
                 <%= value(@transaction) %>
@@ -221,25 +221,6 @@
           </div>
       </div>
     <% end %>
-      <!-- Gas -->
-      <div class="card flex-grow-1 ml-0 ml-md-5 ml-lg-0">
-        <div class="card-body card-body-flex-column-space-between">
-          <h2 class="card-title balance-card-title"> <%= gettext "Gas" %> </h2>
-          <div class="text-right">
-            <!-- Gas Used -->
-            <h3 class="address-balance-text">
-              <%= gettext "Used" %>
-              <%= gas_used(@transaction) %> @
-              <%= gas_price(@transaction, :gwei) %>
-            </h3>
-            <!-- Gas Limit -->
-            <p class="address-current-balance">
-              <%= gettext "Limit" %> <%= format_gas_limit(@transaction.gas) %>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <%= unless skip_decoding?(@transaction) do %>

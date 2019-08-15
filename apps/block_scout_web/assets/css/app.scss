@@ -113,14 +113,10 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "components/radio_big";
 @import "components/btn_no_border";
 
-@import "theme/dark-theme";
-
 :export {
   dashboardBannerChartAxisFontColor: $dashboard-banner-chart-axis-font-color;
   dashboardLineColorMarket: $dashboard-line-color-market;
   dashboardLineColorPrice: $dashboard-line-color-price;
   primary: $primary;
   secondary: $secondary;
-  darkprimary: $dark-primary;
-  darksecondary: $dark-secondary;
 }

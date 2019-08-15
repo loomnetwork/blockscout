@@ -6,15 +6,6 @@
         class="address-balance-text"
         data-test="address_balance"
       ><%= balance(@address) %></h3>
-      <%= if !match?({:pending, _}, @coin_balance_status) && !empty_exchange_rate?(@exchange_rate) do %>
-        <p class="address-current-balance">
-          <span
-            data-wei-value="<%= if @address.fetched_coin_balance, do: @address.fetched_coin_balance.value %>"
-            data-usd-exchange-rate="<%= @exchange_rate.usd_value %>">
-          </span>
-          <small>(@ <span data-usd-unit-price="<%= @exchange_rate.usd_value %>"></span>/<%= gettext("Ether") %>)</small>
-        </p>
-      <% end %>
 
       <p
         class="address-current-balance"
