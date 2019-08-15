@@ -6,7 +6,7 @@
       </span>
   </td>
   <td class="stakes-td">
-    <%= @address |> BlockScoutWeb.AddressView.address_partial_selector(nil, nil) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+    <%= @address |> BlockScoutWeb.AddressView.address_partial_selector(nil, nil) |> BlockScoutWeb.RenderHelpers.render_partial()  %>
   </td>
   <td class="stakes-td">
     <span data-test="address_balance"><%= balance(@address) %></span>
@@ -17,12 +17,6 @@
         data-usd-exchange-rate="<%= @exchange_rate.usd_value %>">
       <% end %>
     </span>
-  </td>
-  <td class="stakes-td color-lighten">
-    <!-- percentage of coins from total supply -->
-    <%= if @total_supply do %>
-      <%= balance_percentage(@address, @total_supply) %>
-    <% end %>
   </td>
   <td class="stakes-td">
     <span class="mr-4">

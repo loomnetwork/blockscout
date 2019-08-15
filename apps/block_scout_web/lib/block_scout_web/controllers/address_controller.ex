@@ -40,7 +40,7 @@ defmodule BlockScoutWeb.AddressController do
         View.render_to_string(
           AddressView,
           "_tile.html",
-          address: address,
+          address: address |> BlockScoutWeb.AddressView.loomnify(),
           index: index,
           exchange_rate: exchange_rate,
           total_supply: total_supply,
