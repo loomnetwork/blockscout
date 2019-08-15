@@ -1,19 +1,18 @@
 defmodule BlockScoutWeb.TransactionView do
   use BlockScoutWeb, :view
 
-  alias ABI.TypeDecoder
   alias BlockScoutWeb.{AddressView, BlockView, TabHelpers}
-  alias Cldr.Number
-  alias Explorer.Chain
+  alias BlockScoutWeb.Cldr.Number
+  alias Explorer.{Chain, Repo}
   alias Explorer.Chain.Block.Reward
-  alias Explorer.Chain.{Address, Block, InternalTransaction, TokenTransfer, Transaction, Wei}
+  alias Explorer.Chain.{Address, Block, InternalTransaction, Transaction, Wei}
   alias Explorer.ExchangeRates.Token
   alias Timex.Duration
 
   import BlockScoutWeb.Gettext
   import BlockScoutWeb.Tokens.Helpers
 
-  @tabs ["token_transfers", "internal_transactions", "logs"]
+  @tabs ["token_transfers", "internal_transactions", "logs", "raw_trace"]
 
   defguardp is_transaction_type(mod) when mod in [InternalTransaction, Transaction]
 
@@ -33,84 +32,60 @@ defmodule BlockScoutWeb.TransactionView do
 
   def value_transfer?(_), do: false
 
-  def erc20_token_transfer(
-        %Transaction{
-          status: :ok,
-          created_contract_address_hash: nil,
-          input: input,
-          value: value
-        },
-        token_transfers
-      ) do
-    zero_wei = %Wei{value: Decimal.new(0)}
+  def token_transfer_type(transaction) do
+    transaction_with_transfers = Repo.preload(transaction, token_transfers: :token)
 
-    case {to_string(input), value} do
-      {unquote(TokenTransfer.transfer_function_signature()) <> params, ^zero_wei} ->
-        types = [:address, {:uint, 256}]
+    type = Chain.transaction_token_transfer_type(transaction)
+    if type, do: {type, transaction_with_transfers}, else: {nil, transaction_with_transfers}
+  end
 
-        [address, value] = decode_params(params, types)
+  def aggregate_token_transfers(token_transfers) do
+    {transfers, nft_transfers} =
+      token_transfers
+      |> Enum.reduce({%{}, []}, fn token_transfer, acc ->
+        aggregate_reducer(token_transfer, acc)
+      end)
 
-        decimal_value = Decimal.new(value)
+    final_transfers = Map.values(transfers)
 
-        Enum.find(token_transfers, fn token_transfer ->
-          token_transfer.to_address_hash.bytes == address && token_transfer.amount == decimal_value
-        end)
+    final_transfers ++ nft_transfers
+  end
 
-      _ ->
-        nil
+  defp aggregate_reducer(%{amount: amount} = token_transfer, {acc1, acc2}) when is_nil(amount) do
+    new_entry = %{
+      token: token_transfer.token,
+      amount: nil,
+      token_id: token_transfer.token_id
+    }
+
+    {acc1, [new_entry | acc2]}
+  end
+
+  defp aggregate_reducer(token_transfer, {acc1, acc2}) do
+    new_entry = %{
+      token: token_transfer.token,
+      amount: token_transfer.amount,
+      token_id: token_transfer.token_id
+    }
+
+    existing_entry = Map.get(acc1, token_transfer.token_contract_address, %{new_entry | amount: Decimal.new(0)})
+
+    new_acc1 =
+      Map.put(acc1, token_transfer.token_contract_address, %{
+        new_entry
+        | amount: Decimal.add(new_entry.amount, existing_entry.amount)
+      })
+
+    {new_acc1, acc2}
+  end
+
+  def token_type_name(type) do
+    case type do
+      :erc20 -> gettext("ERC-20 ")
+      :erc721 -> gettext("ERC-721 ")
+      _ -> ""
     end
-  rescue
-    _ -> nil
   end
-
-  def erc20_token_transfer(_, _) do
-    nil
-  end
-
-  def erc721_token_transfer(
-        %Transaction{
-          status: :ok,
-          created_contract_address_hash: nil,
-          input: input,
-          value: value
-        },
-        token_transfers
-      ) do
-    zero_wei = %Wei{value: Decimal.new(0)}
-
-    # https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC721/ERC721.sol#L35
-    {from_address, to_address} =
-      case {to_string(input), value} do
-        # transferFrom(address,address,uint256)
-        {"0x23b872dd" <> params, ^zero_wei} ->
-          types = [:address, :address, {:uint, 256}]
-          [from_address, to_address, _value] = decode_params(params, types)
-          {from_address, to_address}
-
-        # safeTransferFrom(address,address,uint256)
-        {"0x42842e0e" <> params, ^zero_wei} ->
-          types = [:address, :address, {:uint, 256}]
-          [from_address, to_address, _value] = decode_params(params, types)
-          {from_address, to_address}
-
-        # safeTransferFrom(address,address,uint256,bytes)
-        {"0xb88d4fde" <> params, ^zero_wei} ->
-          types = [:address, :address, {:uint, 256}, :bytes]
-          [from_address, to_address, _value, _data] = decode_params(params, types)
-          {from_address, to_address}
-
-        _ ->
-          nil
-      end
-
-    Enum.find(token_transfers, fn token_transfer ->
-      token_transfer.from_address_hash.bytes == from_address && token_transfer.to_address_hash.bytes == to_address
-    end)
-  rescue
-    _ -> nil
-  end
-
-  def erc721_token_transfer(_, _), do: nil
 
   def processing_time_duration(%Transaction{block: nil}) do
     :pending
@@ -165,7 +140,7 @@ defmodule BlockScoutWeb.TransactionView do
 
       %Block{consensus: true} ->
         {:ok, confirmations} = Chain.confirmations(block, named_arguments)
-        Cldr.Number.to_string!(confirmations, format: "#,###")
+        BlockScoutWeb.Cldr.Number.to_string!(confirmations, format: "#,###")
     end
   end
 
@@ -221,7 +196,7 @@ defmodule BlockScoutWeb.TransactionView do
   end
 
   def gas(%type{gas: gas}) when is_transaction_type(type) do
-    Cldr.Number.to_string!(gas)
+    BlockScoutWeb.Cldr.Number.to_string!(gas)
   end
 
   def skip_decoding?(transaction) do
@@ -338,10 +313,5 @@ defmodule BlockScoutWeb.TransactionView do
   defp tab_name(["token_transfers"]), do: gettext("Token Transfers")
   defp tab_name(["internal_transactions"]), do: gettext("Internal Transactions")
   defp tab_name(["logs"]), do: gettext("Logs")
-
-  defp decode_params(params, types) do
-    params
-    |> Base.decode16!(case: :mixed)
-    |> TypeDecoder.decode_raw(types)
-  end
+  defp tab_name(["raw_trace"]), do: gettext("Raw Trace")
 end

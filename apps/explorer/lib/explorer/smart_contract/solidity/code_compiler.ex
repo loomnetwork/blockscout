@@ -8,7 +8,6 @@ defmodule Explorer.SmartContract.Solidity.CodeCompiler do
   require Logger
 
   @new_contract_name "New.sol"
-  @allowed_evm_versions ["homestead", "tangerineWhistle", "spuriousDragon", "byzantium", "constantinople", "petersburg"]
 
   @doc """
   Compiles a code in the solidity command line.
@@ -71,14 +70,14 @@ defmodule Explorer.SmartContract.Solidity.CodeCompiler do
     compiler_version = Keyword.fetch!(params, :compiler_version)
     code = Keyword.fetch!(params, :code)
     optimize = Keyword.fetch!(params, :optimize)
-    optimization_runs = params |> Keyword.get(:optimization_runs, 200) |> Integer.to_string()
-    evm_version = Keyword.get(params, :evm_version, List.last(@allowed_evm_versions))
+    optimization_runs = optimization_runs(params)
+    evm_version = Keyword.get(params, :evm_version, List.last(allowed_evm_versions()))
     external_libs = Keyword.get(params, :external_libs, %{})
 
     external_libs_string = Jason.encode!(external_libs)
 
     checked_evm_version =
-      if evm_version in @allowed_evm_versions do
+      if evm_version in allowed_evm_versions() do
         evm_version
       else
         "byzantium"
@@ -92,7 +91,7 @@ defmodule Explorer.SmartContract.Solidity.CodeCompiler do
           "node",
           [
             Application.app_dir(:explorer, "priv/compile_solc.js"),
-            code,
+            create_source_file(code),
             compiler_version,
             optimize_value(optimize),
             optimization_runs,
@@ -125,7 +124,12 @@ defmodule Explorer.SmartContract.Solidity.CodeCompiler do
     end
   end
 
-  def allowed_evm_versions, do: @allowed_evm_versions
+  def allowed_evm_versions do
+    :explorer
+    |> Application.get_env(:allowed_evm_versions)
+    |> String.split(",")
+    |> Enum.map(fn version -> String.trim(version) end)
+  end
 
   def get_contract_info(contracts, _) when contracts == %{}, do: {:error, :compilation}
 
@@ -158,4 +162,22 @@ defmodule Explorer.SmartContract.Solidity.CodeCompiler do
 
   defp optimize_value(true), do: "1"
   defp optimize_value("true"), do: "1"
+
+  defp optimization_runs(params) do
+    value = params |> Keyword.get(:optimization_runs, "200")
+
+    if is_binary(value) do
+      value
+    else
+      "#{value}"
+    end
+  end
+
+  defp create_source_file(source) do
+    {:ok, path} = Briefly.create()
+
+    File.write!(path, source)
+
+    path
+  end
 end

@@ -9,9 +9,25 @@ use Mix.Config
 config :explorer,
   ecto_repos: [Explorer.Repo],
   coin: System.get_env("COIN") || "ETH",
-  token_functions_reader_max_retries: 3
+  token_functions_reader_max_retries: 3,
+  allowed_evm_versions:
+    System.get_env("ALLOWED_EVM_VERSIONS") ||
+      "homestead,tangerineWhistle,spuriousDragon,byzantium,constantinople,petersburg,default",
+  include_uncles_in_average_block_time:
+    if(System.get_env("UNCLES_IN_AVERAGE_BLOCK_TIME") == "false", do: false, else: true),
+  healthy_blocks_period: System.get_env("HEALTHY_BLOCKS_PERIOD") || :timer.minutes(5)
 
-config :explorer, Explorer.Counters.AverageBlockTime, enabled: true
+average_block_period =
+  case Integer.parse(System.get_env("AVERAGE_BLOCK_CACHE_PERIOD", "")) do
+    {secs, ""} -> :timer.seconds(secs)
+    _ -> :timer.minutes(30)
+  end
+
+config :explorer, Explorer.Counters.AverageBlockTime,
+  enabled: true,
+  period: average_block_period
+
+config :explorer, Explorer.Chain.Cache.BlockNumber, enabled: true
 
 config :explorer, Explorer.Chain.BlockNumberCache, enabled: false
 
@@ -63,7 +79,7 @@ config :explorer, Explorer.KnownTokens, enabled: true, store: :ets
 
 config :explorer, Explorer.Integrations.EctoLogger, query_time_ms_threshold: :timer.seconds(2)
 
-config :explorer, Explorer.Market.History.Cataloger, enabled: true
+config :explorer, Explorer.Market.History.Cataloger, enabled: System.get_env("DISABLE_INDEXER") != "true"
 
 config :explorer, Explorer.Repo, migration_timestamps: [type: :utc_datetime_usec]
 
@@ -77,7 +93,7 @@ if System.get_env("METADATA_CONTRACT") && System.get_env("VALIDATORS_CONTRACT") 
     metadata_contract_address: System.get_env("METADATA_CONTRACT"),
     validators_contract_address: System.get_env("VALIDATORS_CONTRACT")
 
-  config :explorer, Explorer.Validator.MetadataProcessor, enabled: true
+  config :explorer, Explorer.Validator.MetadataProcessor, enabled: System.get_env("DISABLE_INDEXER") != "true"
 else
   config :explorer, Explorer.Validator.MetadataProcessor, enabled: false
 end
@@ -94,16 +110,24 @@ else
   config :explorer, Explorer.Staking.EpochCounter, enabled: false
 end
 
-if System.get_env("SUPPLY_MODULE") == "TokenBridge" do
-  config :explorer, supply: Explorer.Chain.Supply.TokenBridge
+case System.get_env("SUPPLY_MODULE") do
+  "TokenBridge" ->
+    config :explorer, supply: Explorer.Chain.Supply.TokenBridge
+
+  "rsk" ->
+    config :explorer, supply: Explorer.Chain.Supply.RSK
+
+  _ ->
+    :ok
 end
 
-if System.get_env("SOURCE_MODULE") == "TransactionAndLog" do
-  config :explorer, Explorer.ExchangeRates.Source, source: Explorer.ExchangeRates.Source.TransactionAndLog
+if System.get_env("SOURCE_MODULE") == "TokenBridge" do
+  config :explorer, Explorer.ExchangeRates.Source, source: Explorer.ExchangeRates.Source.TokenBridge
 end
 
 config :explorer,
-  solc_bin_api_url: "https://solc-bin.ethereum.org"
+  solc_bin_api_url: "https://solc-bin.ethereum.org",
+  checksum_function: System.get_env("CHECKSUM_FUNCTION") && String.to_atom(System.get_env("CHECKSUM_FUNCTION"))
 
 config :logger, :explorer,
   # keep synced with `config/config.exs`
@@ -117,6 +141,14 @@ config :spandex_ecto, SpandexEcto.EctoLogger,
   service: :ecto,
   tracer: Explorer.Tracer,
   otp_app: :explorer
+
+market_history_cache_period =
+  case Integer.parse(System.get_env("MARKET_HISTORY_CACHE_PERIOD", "")) do
+    {secs, ""} -> :timer.seconds(secs)
+    _ -> :timer.hours(6)
+  end
+
+config :explorer, Explorer.Market.MarketHistoryCache, period: market_history_cache_period
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

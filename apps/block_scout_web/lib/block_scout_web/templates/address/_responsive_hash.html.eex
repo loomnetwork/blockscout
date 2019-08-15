@@ -6,7 +6,7 @@
       <%= BlockScoutWeb.AddressView.trimmed_hash(@address.hash |>  BlockScoutWeb.AddressView.loomnify) %>
     <% else %>
       <span class="d-none d-md-none d-lg-inline"><%= @address |>  BlockScoutWeb.AddressView.loomnify %></span>
-      <span class="d-md-inline-block d-lg-none"><%= BlockScoutWeb.AddressView.trimmed_hash(@address.hash) %></span>
+      <span class="d-md-inline-block d-xl-none"><%= BlockScoutWeb.AddressView.trimmed_hash(@address.hash) %></span>
     <% end %>
   <% end %>
 </span>

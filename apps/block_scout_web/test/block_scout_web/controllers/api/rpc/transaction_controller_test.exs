@@ -456,11 +456,13 @@ defmodule BlockScoutWeb.API.RPC.TransactionControllerTest do
         "input" => "#{transaction.input}",
         "gasLimit" => "#{transaction.gas}",
         "gasUsed" => "#{transaction.gas_used}",
+        "gasPrice" => "#{transaction.gas_price.value}",
         "logs" => [
           %{
             "address" => "#{address.hash}",
             "data" => "#{log.data}",
-            "topics" => ["first topic", "second topic", nil, nil]
+            "topics" => ["first topic", "second topic", nil, nil],
+            "index" => "#{log.index}"
           }
         ],
         "next_page_params" => nil

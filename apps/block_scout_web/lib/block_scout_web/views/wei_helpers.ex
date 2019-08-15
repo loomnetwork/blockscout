@@ -3,7 +3,9 @@ defmodule BlockScoutWeb.WeiHelpers do
   Helper functions for interacting with `t:Explorer.Chain.Wei.t/0` values.
   """
 
-  alias BlockScoutWeb.Cldr
+  import BlockScoutWeb.Gettext
+
+  alias BlockScoutWeb.CldrHelper
   alias Explorer.Chain.Wei
 
   @valid_units ~w(wei gwei ether)a
@@ -55,12 +57,18 @@ defmodule BlockScoutWeb.WeiHelpers do
     converted_value =
       wei
       |> Wei.to(unit)
-      |> Cldr.Number.to_string!(format: "#,##0.##################")
+
+    formatted_value =
+      if Decimal.cmp(converted_value, 1_000_000_000_000) == :gt do
+        CldrHelper.Number.to_string!(converted_value, format: "0.###E+0")
+      else
+        CldrHelper.Number.to_string!(converted_value, format: "#,##0.##################")
+      end
 
     if Keyword.get(options, :include_unit_label, true) do
       "#{converted_value} #{Explorer.coin}"
     else
-      converted_value
+      formatted_value
     end
   end
 end

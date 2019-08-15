@@ -68,6 +68,7 @@ defmodule BlockScoutWeb.API.RPC.TransactionView do
       "input" => "#{transaction.input}",
       "gasLimit" => "#{transaction.gas}",
       "gasUsed" => "#{transaction.gas_used}",
+      "gasPrice" => "#{transaction.gas_price.value}",
       "logs" => Enum.map(logs, &prepare_log/1),
       "next_page_params" => next_page_params
     }
@@ -77,7 +78,8 @@ defmodule BlockScoutWeb.API.RPC.TransactionView do
     %{
       "address" => "#{log.address_hash}",
       "topics" => get_topics(log),
-      "data" => "#{log.data}"
+      "data" => "#{log.data}",
+      "index" => "#{log.index}"
     }
   end
 

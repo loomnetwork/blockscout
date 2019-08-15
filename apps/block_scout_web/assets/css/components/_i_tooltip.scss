@@ -1,0 +1,19 @@
+$i-tooltip-background: #1a829b !default;
+$i-tooltip-background-active: #1a829b !default;
+
+.i-tooltip {
+  display: block;
+  height: 16px;
+  width: 16px;
+  background-color: $primary;
+
+  path {
+    fill: $i-tooltip-background;
+  }
+
+  &:hover {
+    path {
+      fill: $i-tooltip-background-active;
+    }
+  }
+}
