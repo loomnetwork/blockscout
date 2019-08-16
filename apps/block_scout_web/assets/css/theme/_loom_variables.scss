@@ -1,33 +1,11 @@
-// ------------------------------- //
-// Neutral Theme 1: Blue Shifted
-// ------------------------------- //
-
-// $primary:       #254F8D;
-// $secondary:     #72B0FB;
-// $tertiary:      #72B0FB;
-
-
-// ------------------------------- //
-// Neutral Theme 2: Black and Blue
-// ------------------------------- //
-
-// $primary:       #34373E;
-// $secondary:     #72B0FB;
-// $tertiary:      #72B0FB;
-
-
-// ------------------------------- //
-// Neutral Theme 3: Purple Shifted
-// ------------------------------- //
-
 $primary:       #0f5d6f;
-$secondary:     #1a829b;
+$secondary:     #0f5d6f;
 $tertiary:      #9e5812;
 
 $additional-font: #89cae6;
 
 // stylelint-disable
-$white:    #fff !default;
+$white:    $white !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;
@@ -67,19 +45,19 @@ $dark-purple: #009097;
 
 // footer
 $footer-background-color: $primary;
-$footer-title-color: #fff;
-$footer-text-color: #89cae6;
-$footer-item-disc-color: $secondary;
+$footer-title-color: $white;
+$footer-text-color: $white;
+$footer-item-disc-color: $white;
 .footer-logo { filter: brightness(0) invert(1); }
 .footer-social-icons .footer-social-icon { color: $secondary; }
 
 // dashboard
 $dashboard-line-color-price: $tertiary; // price left border
 
-$dashboard-banner-chart-legend-label-color: #89cae6;
-$dashboard-stats-item-label-color: #89cae6;
-$dashboard-banner-chart-legend-value-color: #fff; // chart labels
-$dashboard-stats-item-value-color: #fff; // stat values
+$dashboard-banner-chart-legend-label-color: $white;
+$dashboard-stats-item-label-color: $white;
+$dashboard-banner-chart-legend-value-color: $white; // chart labels
+$dashboard-stats-item-value-color: $white; // stat values
 
 $dashboard-stats-item-border-color: $secondary; // stat border
 
@@ -94,7 +72,7 @@ $dashboard-banner-network-plain-container-background-color: $primary; // stats b
 .navbar { box-shadow: 0px 0px 30px 0px rgba(21, 53, 80, 0.12); } // header shadow
 
 // buttons
-$btn-line-bg: #fff; // button bg
+$btn-line-bg: $white; // button bg
 $btn-line-color: $secondary; // button border and font color && hover bg color
 $btn-copy-color: $secondary; // btn copy
 $btn-qr-color: $secondary; // btn qr-code
@@ -118,18 +96,4 @@ $card-tab-active: $secondary;
 	    $dashboard-banner-gradient-end
 	  );
 	}
-}
-
-// Dark theme
-$dark-primary: #49a2ee;
-$dark-secondary: #4ad7a7;
-$dark-primary-alternate: #49a2ee;
-
-.dark-theme-applied {
-  .dashboard-banner-chart-legend .dashboard-banner-chart-legend-item:nth-child(1)::before {
-    background-color: $dark-primary !important;
-  }
-  .dashboard-banner-chart-legend .dashboard-banner-chart-legend-item:nth-child(2)::before {
-    background-color: $dark-secondary !important;
-  }
 }
