@@ -671,11 +671,19 @@ defmodule Explorer.Chain do
   """
   @spec finished_indexing?() :: boolean()
   def finished_indexing? do
-    ratio = indexed_ratio()
+    min_block_number_transaction = Repo.aggregate(Transaction, :min, :block_number)
 
-    case Decimal.cmp(ratio, 1) do
-      :lt -> false
-      _ -> true
+    if min_block_number_transaction do
+      Transaction
+      |> where([t], t.block_number == ^min_block_number_transaction)
+      |> limit(1)
+      |> Repo.one()
+      |> case do
+        nil -> true
+        _ -> false
+      end
+    else
+      false
     end
   end
 
@@ -1192,18 +1200,14 @@ defmodule Explorer.Chain do
 
   @doc """
   The percentage of indexed blocks on the chain.
-
       iex> for index <- 5..9 do
       ...>   insert(:block, number: index)
       ...> end
       iex> Explorer.Chain.indexed_ratio()
       Decimal.new(1, 50, -2)
-
   If there are no blocks, the percentage is 0.
-
       iex> Explorer.Chain.indexed_ratio()
       Decimal.new(0)
-
   """
   @spec indexed_ratio() :: Decimal.t()
   def indexed_ratio do
