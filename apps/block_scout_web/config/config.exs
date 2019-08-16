@@ -24,7 +24,9 @@ config :block_scout_web, BlockScoutWeb.Chain,
 config :block_scout_web,
   link_to_other_explorers: true,
   other_explorers: %{
-    "Legacy Block Explorer" => "https://blockexplorer.loomx.io"
+    "Extdev Chain" => "http://extdev-blockexplorer.dappchains.com",
+    "Game Chain" => "http://gamechain-blockexplorer.dappchains.com",
+    "Plasma Chain" => "http://plasma-blockexplorer.dappchains.com",
   },
   other_networks: System.get_env("SUPPORTED_CHAINS"),
   webapp_url: System.get_env("WEBAPP_URL"),

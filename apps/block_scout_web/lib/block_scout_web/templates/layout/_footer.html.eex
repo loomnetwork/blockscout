@@ -39,18 +39,6 @@
           <li><a href="https://solidityx.org" rel="noreferrer" class="footer-link" target="_blank">SolidityX.org</a></li>
         </ul>
       </div>
-
-      <%= unless Enum.empty?(other_explorers()) do %>
-        <div class="col-md-<%= col_size %> footer-list">
-          <h3><%= gettext("Other Explorers") %></h3>
-          <hr>
-          <ul>
-            <%= for {name, url} <- other_explorers() do %>
-              <li><a href="<%= url%>" rel="noreferrer" class="footer-link"> <%= name %> </a></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
     </div>
   </div>
 </footer>
