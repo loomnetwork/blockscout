@@ -222,8 +222,6 @@ defmodule BlockScoutWeb.AddressView do
     "loom#{String.slice("#{address}", 2..last)}"
   end
 
-  def token_title(%Token{name: name, symbol: symbol}), do: "#{name} (#{symbol})"
-
   def incoming_transaction_count(address_hash) do
     address_hash
     |> Chain.address_to_incoming_transaction_count()
