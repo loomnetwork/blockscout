@@ -15,7 +15,6 @@ defmodule BlockScoutWeb.Counters.BlocksIndexedCounter do
   # test ends, that test will fail.
   config = Application.get_env(:block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter)
   @enabled Keyword.get(config, :enabled)
-  @show_indexing_banner Keyword.get(config, :show_indexing_banner)
 
   @doc """
   Starts a process to periodically update the % of blocks indexed.
@@ -36,17 +35,13 @@ defmodule BlockScoutWeb.Counters.BlocksIndexedCounter do
     {:ok, args}
   end
 
-  def show_indexing_banner do
-    @show_indexing_banner
-  end
-
   def calculate_blocks_indexed do
     ratio = Chain.indexed_ratio()
 
     finished? =
       case Decimal.cmp(ratio, 1) do
         :lt -> false
-        _ -> true
+        _ -> Chain.finished_indexing?()
       end
 
     Notifier.broadcast_blocks_indexed_ratio(ratio, finished?)

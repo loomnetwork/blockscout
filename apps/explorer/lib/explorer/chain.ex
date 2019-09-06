@@ -671,11 +671,11 @@ defmodule Explorer.Chain do
   """
   @spec finished_indexing?() :: boolean()
   def finished_indexing? do
-    min_block_number_transaction = Repo.aggregate(Transaction, :min, :block_number)
+    min_block_number_transaction = Repo.aggregate(Block, :min, :number)
 
     if min_block_number_transaction do
-      Transaction
-      |> where([t], t.block_number == ^min_block_number_transaction)
+      Block
+      |> where([t], t.number == ^min_block_number_transaction)
       |> limit(1)
       |> Repo.one()
       |> case do
