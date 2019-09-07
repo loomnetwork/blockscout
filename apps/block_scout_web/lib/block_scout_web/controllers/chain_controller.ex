@@ -50,11 +50,11 @@ defmodule BlockScoutWeb.ChainController do
         redirect_search_results(conn, item)
 
       {:error, :not_found} ->
-        not_found(conn)
+        not_found_search(conn)
     end
   end
 
-  def search(conn, _), do: not_found(conn)
+  def search(conn, _), do: not_found_search(conn)
 
   def token_autocomplete(conn, %{"q" => term}) when is_binary(term) do
     if term == "" do

@@ -17,6 +17,17 @@ defmodule BlockScoutWeb.Controller do
     |> halt()
   end
 
+  @doc """
+  Renders HTML Not Found error
+  """
+  def not_found_search(conn) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(BlockScoutWeb.PageNotFoundSearchView)
+    |> render(:index)
+    |> halt()
+  end
+
   def unprocessable_entity(conn) do
     conn
     |> put_status(:unprocessable_entity)
