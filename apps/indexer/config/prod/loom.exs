@@ -20,3 +20,6 @@ config :indexer,
       url: System.get_env("ETHEREUM_JSONRPC_WS_URL") || "ws://localhost:46658/eth"
     ]
   ]
+
+config :indexer, Indexer.Fetcher.ReplacedTransaction.Supervisor, disabled?: true
+config :indexer, Indexer.Fetcher.BlockReward.Supervisor, disabled?: true
