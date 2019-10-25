@@ -8,7 +8,7 @@ use Mix.Config
 # General application configuration
 config :explorer,
   ecto_repos: [Explorer.Repo],
-  coin: System.get_env("COIN") || "POA",
+  coin: System.get_env("COIN") || "ETH",
   token_functions_reader_max_retries: 3,
   allowed_evm_versions:
     System.get_env("ALLOWED_EVM_VERSIONS") ||
@@ -64,6 +64,32 @@ config :explorer, Explorer.Counters.AddressesWithBalanceCounter,
   enabled: false,
   enable_consolidation: true,
   update_interval_in_seconds: balances_update_interval || 30 * 60
+
+transaction_history_update_interval =
+if System.get_env("TRANSACTION_HISTORY_UPDATE_INTERVAL") do
+  case Integer.parse(System.get_env("TRANSACTION_HISTORY_UPDATE_INTERVAL")) do
+    {integer, ""} -> integer
+    _ -> nil
+  end
+end
+
+config :explorer, Explorer.Chain.Transaction.HistoryCache,
+enabled: true,
+enable_consolidation: true,
+update_interval_in_seconds: transaction_history_update_interval || 30 * 60
+
+address_total_history_update_interval =
+if System.get_env("ADDRESS_TOTAL_HISTORY_UPDATE_INTERVAL") do
+  case Integer.parse(System.get_env("ADDRESS_TOTAL_HISTORY_UPDATE_INTERVAL")) do
+    {integer, ""} -> integer
+    _ -> nil
+  end
+end
+
+config :explorer, Explorer.Chain.Address.HistoryCache,
+enabled: true,
+enable_consolidation: true,
+update_interval_in_seconds: address_total_history_update_interval || 30 * 60
 
 config :explorer, Explorer.Counters.AddressesCounter,
   enabled: true,

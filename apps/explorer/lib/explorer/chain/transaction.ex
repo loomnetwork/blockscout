@@ -609,6 +609,21 @@ defmodule Explorer.Chain.Transaction do
   end
 
   @doc """
+  Counts all the transactions per day
+  """
+  def count_transactions_per_day do
+    from(
+      t in Transaction,
+      inner_join: b in Block,
+      on: t.block_number == b.number,
+      select: [fragment("date_trunc('day', ?)", b.timestamp), fragment("COUNT(*)")],
+      where: fragment("timestamp > date_trunc('day', now()) - INTERVAL '14 DAY' AND timestamp < date_trunc('day', now())"),
+      group_by: [1],
+      order_by: [1]
+    )
+  end
+
+  @doc """
   Builds an `Ecto.Query` to fetch the last nonce from the given address hash.
 
   The last nonce value means the total of transactions that the given address has sent through the

@@ -27,11 +27,6 @@
 						</th>
 						<th class="stakes-table-th">
 							<div class="stakes-table-th-content">
-								Percentage
-							</div>
-						</th>
-						<th class="stakes-table-th">
-							<div class="stakes-table-th-content">
 								Txn Count
 							</div>
 						</th>

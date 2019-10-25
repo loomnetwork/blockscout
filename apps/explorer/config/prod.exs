@@ -7,6 +7,20 @@ config :explorer, Explorer.Repo,
   ssl: String.equivalent?(System.get_env("ECTO_USE_SSL") || "true", "true"),
   prepare: :unnamed,
   timeout: :timer.seconds(60)
+  # Our goal is to stay under `:queue_target` for `:queue_interval`.
+  # In case we can't reach that, then we double the :queue_target.
+  # If we go above that, then we start dropping messages.
+
+  # For example, by default our queue time is 50ms. If we stay above
+  # 50ms for a whole second (1000ms), we double the target to 100ms and we
+  # start dropping messages once it goes above the new limit.
+
+  # This allows us to better plan for overloads as we can refuse
+  # requests before they are sent to the database, which would
+  # otherwise increase the burden on the database, making the
+  # overload worse.
+  queue_target: String.to_integer(System.get_env("QUEUE_TARGET") || "50"),
+  queue_interval: String.to_integer(System.get_env("QUEUE_INTERVAL") || "1000"),
 
 config :explorer, Explorer.Tracer, env: "production", disabled?: true
 

@@ -74,6 +74,8 @@ defmodule Explorer.Application do
       configure(Explorer.Chain.Events.Listener),
       configure(Explorer.Counters.AddressesWithBalanceCounter),
       configure(Explorer.Counters.AddressesCounter),
+      configure(Explorer.Chain.Transaction.HistoryCache),
+      configure(Explorer.Chain.Address.HistoryCache),
       configure(Explorer.Counters.AverageBlockTime),
       configure(Explorer.Validator.MetadataProcessor),
       configure(Explorer.Staking.EpochCounter)

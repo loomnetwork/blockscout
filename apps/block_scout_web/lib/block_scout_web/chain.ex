@@ -5,7 +5,7 @@ defmodule BlockScoutWeb.Chain do
 
   import Explorer.Chain,
     only: [
-      find_or_insert_address_from_hash: 1,
+      find_address_from_hash: 1,
       hash_to_block: 1,
       hash_to_transaction: 1,
       number_to_block: 1,
@@ -71,6 +71,10 @@ defmodule BlockScoutWeb.Chain do
 
   @spec from_param(String.t()) :: {:ok, Address.t() | Block.t() | Transaction.t()} | {:error, :not_found}
   def from_param(param)
+
+  def from_param("loom" <> number_string = _param) do
+    from_param("0x#{number_string}" )
+  end
 
   def from_param("0x" <> number_string = param) when byte_size(number_string) == @address_hash_len,
     do: address_from_param(param)
@@ -187,8 +191,7 @@ defmodule BlockScoutWeb.Chain do
   defp address_from_param(param) do
     case string_to_address_hash(param) do
       {:ok, hash} ->
-        find_or_insert_address_from_hash(hash)
-
+        find_address_from_hash(hash)
       :error ->
         {:error, :not_found}
     end
@@ -196,7 +199,7 @@ defmodule BlockScoutWeb.Chain do
 
   defp token_address_from_name(name) do
     case token_contract_address_from_token_name(name) do
-      {:ok, hash} -> find_or_insert_address_from_hash(hash)
+      {:ok, hash} -> find_address_from_hash(hash)
       _ -> {:error, :not_found}
     end
   end

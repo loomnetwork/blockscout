@@ -17,12 +17,6 @@
         to: address_internal_transaction_path(@conn, :index, @address.hash)
       ) %>
   <%= link(
-        gettext("Coin Balance History"),
-        class: "card-tab #{tab_status("coin_balances", @conn.request_path)}",
-        "data-test": "coin_balance_tab_link",
-        to: address_coin_balance_path(@conn, :index, @address.hash)
-      ) %>
-  <%= link(
       gettext("Logs"),
       class: "card-tab #{tab_status("logs", @conn.request_path)}",
       to: address_logs_path(@conn, :index, @address.hash)

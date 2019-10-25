@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgresql
+      POSTGRES_DB: explorer_dev
+      POSTGRES_PASSWORD: ""
+    ports:
+      - 5432:5432
+  blockscout:
+    image: blockscout_prod
+    command: >
+      /bin/bash -c "mix do ecto.create, ecto.migrate, phx.server"
+    environment:
+      TRANSACTION_HISTORY_UPDATE_INTERVAL: 60
+      ADDRESS_TOTAL_HISTORY_UPDATE_INTERVAL: 60
+      ADDRESS_WITH_BALANCES_UPDATE_INTERVAL: 60
+      COIN: ETH
+      POOL_SIZE: 50
+      ETHEREUM_JSONRPC_VARIANT: ganache
+      ETHEREUM_JSONRPC_WS_URL: ws://extdev-plasma-us1.dappchains.com:80/eth
+      ETHEREUM_JSONRPC_HTTP_URL: http://extdev-plasma-us1.dappchains.com:80/eth
+      DATABASE_URL: postgres://postgresql:@db:5432/explorer_dev?ssl=false
+    ports:
+      - 4000:4000
+    links:
+      - db

@@ -227,13 +227,13 @@ defmodule Explorer.Chain.Address do
   end
 
   @doc """
-  Counts all the addresses where the `fetched_coin_balance` is > 0.
+  Counts all the addresses where the `fetched_coin_balance` is >= 0.
   """
   def count_with_fetched_coin_balance do
     from(
       a in Address,
       select: fragment("COUNT(*)"),
-      where: a.fetched_coin_balance > ^0
+      where: a.fetched_coin_balance >= ^0
     )
   end
 
@@ -244,6 +244,21 @@ defmodule Explorer.Chain.Address do
     from(
       a in Address,
       select: fragment("COUNT(*)")
+    )
+  end
+
+  @doc """
+  Counts all the address_total per day
+  """
+  def count_address_total_per_day do
+    from(
+      a in Address,
+      inner_join: b in Block,
+      on: a.fetched_coin_balance_block_number == b.number,
+      select: [fragment("date_trunc('day', ?)", b.timestamp), fragment("COUNT(*)")],
+      where: fragment("timestamp > date_trunc('day', now()) - INTERVAL '14 DAY' AND timestamp < date_trunc('day', now())"),
+      group_by: [1],
+      order_by: [1]
     )
   end
 

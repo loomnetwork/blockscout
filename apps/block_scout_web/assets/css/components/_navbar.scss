@@ -1,10 +1,10 @@
 // Default variables
-$header-background-color: #fff !default;
-$header-links-color: #828ba0 !default;
-$header-links-color-active: #333 !default;
+$header-background-color: $primary !default;
+$header-links-color: #fff !default;
+$header-links-color-active: #eee !default;
 $header-icon-color: $header-links-color !default;
-$header-icon-color-hover: $secondary !default;
-$header-icon-border-color-hover: $secondary !default;
+$header-icon-color-hover: #fff !default;
+$header-icon-border-color-hover: #fff !default;
 $header-toggler-icon: "data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{transparentize($primary, 0.5)}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E" !default;
 $header-textfield-text-color: $header-links-color !default;
 $header-textfield-background-color: #f5f6fa !default;
@@ -94,9 +94,10 @@ $navbar-logo-width: auto !default;
   .navbar-toggler {
     outline: none;
     color: $primary;
+    border-color: $white;
 
     .navbar-toggler-icon {
-      background-image: url($header-toggler-icon);
+      color: $white;
     }
   }
   .search-form {
@@ -119,8 +120,8 @@ $navbar-logo-width: auto !default;
   }
 
   .form-control {
-    background: $header-textfield-background-color;
-    border-color: $header-textfield-background-color;
+    background: $primary;
+    border-color: $primary;
     color: $header-textfield-text-color;
     font-size: 14px;
     height: 100%;
@@ -224,7 +225,7 @@ $navbar-logo-width: auto !default;
 }
 
 .navbar-logo {
-  height: $navbar-logo-height;
+  max-height: $navbar-logo-height;
   width: $navbar-logo-width;
 }
 

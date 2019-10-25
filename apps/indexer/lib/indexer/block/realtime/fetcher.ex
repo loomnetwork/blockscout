@@ -269,6 +269,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
   defp can_be_skipped?(_, _), do: false
 
   @reorg_delay 5_000
+  @small_delay 2_000
 
   @decorate trace(name: "fetch", resource: "Indexer.Block.Realtime.Fetcher.fetch_and_import_block/3", tracer: Tracer)
   def fetch_and_import_block(block_number_to_fetch, block_fetcher, reorg?, retry \\ 3) do
@@ -279,6 +280,8 @@ defmodule Indexer.Block.Realtime.Fetcher do
           # before fetching again, to reduce block consensus mistakes
           :timer.sleep(@reorg_delay)
         end
+
+        :timer.sleep(@small_delay)
 
         do_fetch_and_import_block(block_number_to_fetch, block_fetcher, retry)
       end,
@@ -296,7 +299,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
       {:ok, %{inserted: _, errors: [_ | _] = errors}} ->
         Logger.error(fn ->
           [
-            "failed to fetch block: ",
+            "failed to fetch realtime block: ",
             inspect(errors),
             ".  Block will be retried by catchup indexer."
           ]
@@ -332,7 +335,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
         Logger.error(
           fn ->
             [
-              "failed to fetch: ",
+              "failed to fetch realtime block:",
               inspect(reason),
               ".  Block will be retried by catchup indexer."
             ]
