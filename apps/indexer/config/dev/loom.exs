@@ -1,8 +1,6 @@
 use Mix.Config
 
 config :indexer,
-  # Block interval for loomchain is 1 second
-  # Let 5 to not overload the server
   block_interval: :timer.seconds(10),
   json_rpc_named_arguments: [
     transport: EthereumJSONRPC.HTTP,
@@ -11,7 +9,7 @@ config :indexer,
       url: System.get_env("ETHEREUM_JSONRPC_HTTP_URL") || "http://localhost:46658/eth",
       http_options: [recv_timeout: :timer.minutes(1), timeout: :timer.minutes(1), hackney: [pool: :ethereum_jsonrpc]]
     ],
-    variant: EthereumJSONRPC.Geth
+    variant: EthereumJSONRPC.Loom
   ],
   subscribe_named_arguments: [
     transport: EthereumJSONRPC.WebSocket,
@@ -20,3 +18,6 @@ config :indexer,
       url: System.get_env("ETHEREUM_JSONRPC_WS_URL") || "ws://localhost:46658/eth"
     ]
   ]
+
+config :indexer, Indexer.Fetcher.ReplacedTransaction.Supervisor, disabled?: true
+config :indexer, Indexer.Fetcher.BlockReward.Supervisor, disabled?: true
