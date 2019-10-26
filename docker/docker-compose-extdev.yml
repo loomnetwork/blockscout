@@ -14,15 +14,19 @@ services:
     command: >
       /bin/bash -c "mix do ecto.create, ecto.migrate, phx.server"
     environment:
+      NETWORK: Loom
+      SUBNETWORK: Testnet
       TRANSACTION_HISTORY_UPDATE_INTERVAL: 60
       ADDRESS_TOTAL_HISTORY_UPDATE_INTERVAL: 60
       ADDRESS_WITH_BALANCES_UPDATE_INTERVAL: 60
       COIN: ETH
       POOL_SIZE: 50
-      ETHEREUM_JSONRPC_VARIANT: ganache
-      ETHEREUM_JSONRPC_WS_URL: ws://extdev-plasma-us1.dappchains.com:80/eth
-      ETHEREUM_JSONRPC_HTTP_URL: http://extdev-plasma-us1.dappchains.com:80/eth
+      ETHEREUM_JSONRPC_VARIANT: loom
+      ETHEREUM_JSONRPC_WS_URL: ws://be-extdev1.dappchains.com/eth
+      ETHEREUM_JSONRPC_HTTP_URL: http://be-extdev1.dappchains.com/eth
       DATABASE_URL: postgres://postgresql:@db:5432/explorer_dev?ssl=false
+      LOGO: /images/loom.svg
+      LOGO_FOOTER: /images/loom.svg
     ports:
       - 4000:4000
     links:
