@@ -6,7 +6,7 @@ config :explorer, Explorer.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: String.equivalent?(System.get_env("ECTO_USE_SSL") || "true", "true"),
   prepare: :unnamed,
-  timeout: :timer.seconds(60)
+  timeout: :timer.seconds(60),
   # Our goal is to stay under `:queue_target` for `:queue_interval`.
   # In case we can't reach that, then we double the :queue_target.
   # If we go above that, then we start dropping messages.
