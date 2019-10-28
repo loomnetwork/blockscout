@@ -20,7 +20,7 @@ config :explorer, Explorer.Repo,
   # otherwise increase the burden on the database, making the
   # overload worse.
   queue_target: String.to_integer(System.get_env("QUEUE_TARGET") || "50"),
-  queue_interval: String.to_integer(System.get_env("QUEUE_INTERVAL") || "1000"),
+  queue_interval: String.to_integer(System.get_env("QUEUE_INTERVAL") || "1000")
 
 config :explorer, Explorer.Tracer, env: "production", disabled?: true
 
