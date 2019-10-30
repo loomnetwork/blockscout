@@ -264,7 +264,7 @@ $navbar-logo-width: auto !default;
 .nav-link-new {
   margin-left: auto;
   font-size: 14px;
-  color: #333333;
+  color: $header-links-color;
   @include media-breakpoint-up(lg) {
       display: none;
   }
@@ -299,7 +299,7 @@ $navbar-logo-width: auto !default;
   }
   .navbar.navbar-primary .navbar-nav .nav-link {
       font-size: 28px;
-      color: #333333;
+      color: $header-links-color;
       padding: 0.7rem 1.4rem;
       font-weight: 600;
   }
