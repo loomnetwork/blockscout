@@ -79,17 +79,6 @@
             <dt class="col-sm-3 text-muted"> <%= gettext "Nonce" %> </dt>
             <dd class="col-sm-9"> <%= @transaction.nonce %> </dd>
           </dl>
-          <!-- TX Fee -->
-          <dl class="row">
-            <dt class="col-sm-3 text-muted"> <%= gettext "TX Fee" %> </dt>
-            <dd class="col-sm-9">
-              <%= formatted_fee(@transaction, denomination: :ether) %>
-
-              <%= if !empty_exchange_rate?(@exchange_rate) do %>
-                (<span data-wei-value=<%= fee(@transaction) %> data-usd-exchange-rate=<%= @exchange_rate.usd_value %>></span>)
-              <% end %>
-            </dd>
-          </dl>
           <!-- Processing Time -->
           <%= case processing_time_duration(@transaction) do %>
             <% :pending -> %>
@@ -226,25 +215,6 @@
           </div>
       </div>
     <% end %>
-      <!-- Gas -->
-      <div class="card flex-grow-1 ml-0 ml-md-5 ml-lg-0 mob-transaction">
-        <div class="card-body card-body-flex-column-space-between">
-          <h2 class="card-title balance-card-title"> <%= gettext "Gas" %> </h2>
-          <div class="text-right">
-            <!-- Gas Used -->
-            <h3 class="address-balance-text">
-              <%= gettext "Used" %>
-              <%= gas_used(@transaction) %> @
-              <%= gas_price(@transaction, :gwei) %>
-            </h3>
-            <!-- Gas Limit -->
-            <p class="address-current-balance">
-              <%= gettext "Limit" %> <%= format_gas_limit(@transaction.gas) %>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <%= unless skip_decoding?(@transaction) do %>

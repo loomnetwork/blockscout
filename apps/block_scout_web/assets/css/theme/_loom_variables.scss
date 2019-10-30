@@ -1,0 +1,100 @@
+$primary:       #0f5d6f;
+$secondary:     #0f5d6f;
+$tertiary:      #9e5812;
+
+$additional-font: #89cae6;
+
+// stylelint-disable
+$white:    $white !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #cdcdcc !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+$grays: () !default;
+$grays: map-merge((
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900
+), $grays);
+
+$blue:    #9e5812;
+$indigo:  #9e5812;
+$purple:  #9e5812;
+$pink:    #ef9a60;
+$lilac:   #ef9a60;
+$red:     #c74d39;
+$orange:  #ef9a60;
+$yellow:  #ffc107;
+$green:   #9e5812;
+$teal:    #009097;
+$cyan:    #90e1d8;
+$dark-purple: #009097;
+
+// footer
+$footer-background-color: $primary;
+$footer-title-color: $white;
+$footer-text-color: $white;
+$footer-item-disc-color: $white;
+.footer-logo { filter: brightness(0) invert(1); }
+.footer-social-icons .footer-social-icon { color: $secondary; }
+
+// dashboard
+$dashboard-line-color-price: $tertiary; // price left border
+
+$dashboard-banner-chart-legend-label-color: $white;
+$dashboard-stats-item-label-color: $white;
+$dashboard-banner-chart-legend-value-color: $white; // chart labels
+$dashboard-stats-item-value-color: $white; // stat values
+
+$dashboard-stats-item-border-color: $secondary; // stat border
+
+$dashboard-banner-gradient-start: $primary; // gradient begin
+
+$dashboard-banner-gradient-end: lighten($primary, 5); // gradient end
+
+$dashboard-banner-network-plain-container-background-color: $primary; // stats bg
+
+
+// navigation
+.navbar { box-shadow: 0px 0px 30px 0px rgba(21, 53, 80, 0.12); } // header shadow
+
+// buttons
+$btn-line-bg: $white; // button bg
+$btn-line-color: $secondary; // button border and font color && hover bg color
+$btn-copy-color: $secondary; // btn copy
+$btn-qr-color: $secondary; // btn qr-code
+$btn-address-card-icon-color: $secondary; // btn address color
+$btn-contract-color: $secondary;
+
+//links & tile
+$tile-body-a-color: $secondary;
+$tile-type-block-color: $secondary;
+$tile-type-progress-bar-color: $secondary;
+a.tile-title { color: $secondary !important; }
+
+// card
+$card-background-1: $secondary;
+$card-tab-active: $secondary;
+
+.layout-container {
+	.dashboard-banner-container {
+	  background-image: linear-gradient(
+	    to bottom,
+	    $dashboard-banner-gradient-start,
+	    $dashboard-banner-gradient-end
+	  );
+	}
+}

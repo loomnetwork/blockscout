@@ -155,6 +155,26 @@ defmodule Explorer.Chain do
     )
   end
 
+  def count_transactions_per_day_from_cache do
+    Transaction.HistoryCache.fetch()
+  end
+
+  def count_transactions_per_day do
+    Transaction.count_transactions_per_day
+    |> Repo.debug_query
+    |> Repo.all(timeout: :infinity)
+  end
+
+  def count_address_total_per_day_from_cache do
+    Address.HistoryCache.fetch()
+  end
+
+  def count_address_total_per_day do
+    Address.count_address_total_per_day
+    |> Repo.debug_query
+    |> Repo.all(timeout: :infinity)
+  end
+
   @doc """
   `t:Explorer.Chain.InternalTransaction/0`s from the address with the given `hash`.
 
@@ -715,28 +735,19 @@ defmodule Explorer.Chain do
   """
   @spec finished_indexing?() :: boolean()
   def finished_indexing? do
-    transaction_exists =
-      Transaction
+    min_block_number_transaction = Repo.aggregate(Block, :min, :number)
+
+    if min_block_number_transaction do
+      Block
+      |> where([t], t.number == ^min_block_number_transaction)
       |> limit(1)
       |> Repo.one()
-
-    min_block_number_transaction = Repo.aggregate(Transaction, :min, :block_number)
-
-    if transaction_exists do
-      if min_block_number_transaction do
-        Transaction
-        |> where([t], t.block_number == ^min_block_number_transaction and is_nil(t.internal_transactions_indexed_at))
-        |> limit(1)
-        |> Repo.one()
-        |> case do
-          nil -> true
-          _ -> false
-        end
-      else
-        false
+      |> case do
+        nil -> true
+        _ -> false
       end
     else
-      true
+      false
     end
   end
 
@@ -904,6 +915,10 @@ defmodule Explorer.Chain do
         create_address(%{hash: to_string(hash)})
         hash_to_address(hash, options, query_decompiled_code_flag)
     end
+  end
+
+  def find_address_from_hash(%Hash{byte_count: unquote(Hash.Address.byte_count())} = hash) do
+    hash_to_address(hash)
   end
 
   @doc """
@@ -1468,7 +1483,7 @@ defmodule Explorer.Chain do
   defp fetch_top_addresses(paging_options) do
     base_query =
       from(a in Address,
-        where: a.fetched_coin_balance > ^0,
+        where: a.fetched_coin_balance >= ^0,
         order_by: [desc: a.fetched_coin_balance, asc: a.hash],
         preload: [:names],
         select: {a, fragment("coalesce(1 + ?, 0)", a.nonce)}
@@ -2512,7 +2527,7 @@ defmodule Explorer.Chain do
   def transaction_to_status(%Transaction{status: :ok}), do: :success
 
   def transaction_to_status(%Transaction{status: :error, internal_transactions_indexed_at: nil, error: nil}),
-    do: {:error, :awaiting_internal_transactions}
+    do: {:error, "Transaction failed"}
 
   def transaction_to_status(%Transaction{status: :error, error: error}) when is_binary(error), do: {:error, error}
 

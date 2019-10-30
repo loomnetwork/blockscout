@@ -89,7 +89,7 @@ defmodule Indexer.Fetcher.UncleBlock do
       {:error, reason} ->
         Logger.error(
           fn ->
-            ["failed to fetch: ", inspect(reason)]
+            ["failed to fetch uncle block:", inspect(reason)]
           end,
           error_count: entry_count
         )
@@ -220,7 +220,7 @@ defmodule Indexer.Fetcher.UncleBlock do
       Logger.error(
         fn ->
           [
-            "failed to fetch: ",
+            "failed to fetch uncle block:",
             errors_to_iodata(loggable_errors)
           ]
         end,

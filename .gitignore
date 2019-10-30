@@ -9,6 +9,10 @@
 /*.ez
 /logs
 
+.vscode
+.idea
+*.iml
+
 # Generated on crash by the VM
 erl_crash.dump
 

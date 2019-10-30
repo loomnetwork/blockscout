@@ -14,14 +14,7 @@
 }
 
 @mixin gradient-container() {
-  background-color: $primary;
-  background-image: linear-gradient(
-    to right,
-    $dashboard-banner-gradient-start,
-    $dashboard-banner-gradient-end
-  );
-  box-shadow: 0 5px 40px -5px rgba(#000, 0.25);
-  margin-top: -3rem;
+  background-color: $secondary;
 }
 
 @mixin stats-item($border-color: #fff, $text-color: #fff, $value-color: #fff) {

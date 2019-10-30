@@ -22,17 +22,19 @@ config :block_scout_web, BlockScoutWeb.Chain,
   has_emission_funds: false
 
 config :block_scout_web,
-  link_to_other_explorers: System.get_env("LINK_TO_OTHER_EXPLORERS") == "true",
+  link_to_other_explorers: true,
   other_explorers: %{
-    "Etherscan" => "https://etherscan.io/",
-    "EtherChain" => "https://www.etherchain.org/",
-    "Bloxy" => "https://bloxy.info/"
+    "Extdev Chain" => "http://extdev-blockexplorer.dappchains.com",
+    "Game Chain" => "http://gamechain-blockexplorer.dappchains.com",
+    "Basechain" => "http://basechain-blockexplorer.dappchains.com",
   },
   other_networks: System.get_env("SUPPORTED_CHAINS"),
   webapp_url: System.get_env("WEBAPP_URL"),
   api_url: System.get_env("API_URL")
 
-config :block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter, enabled: true
+config :block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter,
+  enabled: true,
+  show_indexing_banner: false
 
 # Configures the endpoint
 config :block_scout_web, BlockScoutWeb.Endpoint,
@@ -54,10 +56,10 @@ config :block_scout_web, BlockScoutWeb.Tracer,
 config :block_scout_web, BlockScoutWeb.Gettext, locales: ~w(en), default_locale: "en"
 
 config :block_scout_web, BlockScoutWeb.SocialMedia,
-  twitter: "PoaNetwork",
-  telegram: "poa_network",
-  facebook: "PoaNetwork",
-  instagram: "PoaNetwork"
+  twitter: "loomnetwork",
+  telegram: "loomnetwork",
+  facebook: "loomxnetwork",
+  instagram: "loomxnetwork"
 
 config :ex_cldr,
   default_locale: "en",
