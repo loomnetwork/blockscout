@@ -167,7 +167,7 @@ defmodule EthereumJSONRPC.Log do
     Enum.into(log, %{}, &entry_to_elixir/1)
   end
 
-  defp entry_to_elixir({key, _} = entry) when key in ~w(address blockHash data removed topics transactionHash type),
+  defp entry_to_elixir({key, _} = entry) when key in ~w(address blockHash data removed topics transactionHash type blockTime),
     do: entry
 
   defp entry_to_elixir({key, quantity}) when key in ~w(blockNumber logIndex transactionIndex transactionLogIndex) do
