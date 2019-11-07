@@ -232,7 +232,7 @@ defmodule BlockScoutWeb.AddressView do
 
   def trimmed_hash(%Hash{} = hash) do
     string_hash = to_string(hash)
-    "loom#{String.slice(string_hash, 2..5)}–#{String.slice(string_hash, -6..-1)}"
+    "#{String.slice(string_hash, 0..5)}–#{String.slice(string_hash, -6..-1)}"
   end
 
   def trimmed_hash(_), do: ""
