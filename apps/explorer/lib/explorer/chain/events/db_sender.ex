@@ -21,6 +21,11 @@ defmodule Explorer.Chain.Events.DBSender do
   end
 
   defp send_notify(payload) do
-    Repo.query!("select pg_notify('chain_event', $1::text);", [payload])
+    try do
+      Repo.query!("select pg_notify('chain_event', $1::text);", [payload])
+    rescue
+      postgrex_error in Postgrex.Error ->
+        {:error, %{exception: postgrex_error}}
+    end
   end
 end
