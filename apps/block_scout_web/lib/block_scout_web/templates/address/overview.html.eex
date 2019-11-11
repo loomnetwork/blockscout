@@ -105,7 +105,7 @@
             <span class="text-muted" data-test="address_contract_creator">
               <%= if from_address_hash do %>
                 <%= gettext "Created by" %> <%= link(
-                  trimmed_hash(from_address_hash(@address)),
+                  trimmed_hash(from_address_hash(@address))|> loomnify ,
                   to: address_path(@conn, :show, from_address_hash(@address))
                 ) %>
 

@@ -162,12 +162,15 @@ defmodule EthereumJSONRPC.Log do
         "transactionIndex" => 0
       }
 
+  Loom includes a `"blockTime"` key whose value could be converted to an integer, but since it's not
+  used by Blockscout it's just kept untransformed (thought it should probably be discarded entirely).
+
   """
   def to_elixir(log) when is_map(log) do
     Enum.into(log, %{}, &entry_to_elixir/1)
   end
 
-  defp entry_to_elixir({key, _} = entry) when key in ~w(address blockHash data removed topics transactionHash type),
+  defp entry_to_elixir({key, _} = entry) when key in ~w(address blockHash data removed topics transactionHash type blockTime),
     do: entry
 
   defp entry_to_elixir({key, quantity}) when key in ~w(blockNumber logIndex transactionIndex transactionLogIndex) do
