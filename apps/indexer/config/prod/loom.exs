@@ -2,8 +2,6 @@ use Mix.Config
 
 config :indexer,
   block_interval: :timer.seconds(5),
-  blocks_batch_size: 20,
-  blocks_concurrency: 1,
   receipts_concurrency: 1,
   json_rpc_named_arguments: [
     transport: EthereumJSONRPC.HTTP,
