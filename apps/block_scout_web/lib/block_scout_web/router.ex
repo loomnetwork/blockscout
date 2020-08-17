@@ -4,8 +4,13 @@ defmodule BlockScoutWeb.Router do
   alias BlockScoutWeb.Plug.GraphQL
   alias BlockScoutWeb.{ApiRouter, WebRouter}
 
-  forward("/wobserver", Wobserver.Web.Router)
-  forward("/admin", BlockScoutWeb.AdminRouter)
+  if Application.get_env(:block_scout_web, ApiRouter)[:wobserver_enabled] do
+    forward("/wobserver", Wobserver.Web.Router)
+  end
+
+  if Application.get_env(:block_scout_web, ApiRouter)[:admin_panel_enabled] do
+    forward("/admin", BlockScoutWeb.AdminRouter)
+  end
 
   pipeline :browser do
     plug(:accepts, ["html"])

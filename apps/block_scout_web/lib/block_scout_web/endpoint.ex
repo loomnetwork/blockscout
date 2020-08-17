@@ -7,7 +7,10 @@ defmodule BlockScoutWeb.Endpoint do
   end
 
   socket("/socket", BlockScoutWeb.UserSocket, websocket: [timeout: 45_000])
-  socket("/wobserver", Wobserver.Web.PhoenixSocket)
+
+  if Application.get_env(:block_scout_web, ApiRouter)[:wobserver_enabled] do
+    socket("/wobserver", Wobserver.Web.PhoenixSocket)
+  end
 
   # Serve at "/" the static files from "priv/static" directory.
   #
