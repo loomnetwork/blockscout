@@ -8,10 +8,8 @@ defmodule BlockScoutWeb.Endpoint do
 
   socket("/socket", BlockScoutWeb.UserSocket, websocket: [timeout: 45_000])
 
-  if Application.get_env(:block_scout_web, BlockScoutWeb.ApiRouter)[:wobserver_enabled] do
-    socket("/wobserver", Wobserver.Web.PhoenixSocket)
-  end
-
+  socket("/wobserver", Wobserver.Web.PhoenixSocket)
+  
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
