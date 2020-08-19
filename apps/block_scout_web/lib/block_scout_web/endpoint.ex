@@ -8,7 +8,7 @@ defmodule BlockScoutWeb.Endpoint do
 
   socket("/socket", BlockScoutWeb.UserSocket, websocket: [timeout: 45_000])
 
-  if Application.get_env(:block_scout_web, ApiRouter)[:wobserver_enabled] do
+  if Application.get_env(:block_scout_web, BlockScoutWeb.ApiRouter)[:wobserver_enabled] do
     socket("/wobserver", Wobserver.Web.PhoenixSocket)
   end
 
